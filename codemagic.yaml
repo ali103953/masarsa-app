@@ -1,0 +1,59 @@
+workflows:
+  ios-testflight:
+    name: مسارسا iOS TestFlight
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: Masarsa ASC
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: online.masarsa.app
+      vars:
+        XCODE_SCHEME: App
+        BUNDLE_ID: online.masarsa.app
+        APP_VERSION: 1.0.0
+        BUILD_NUMBER: $(($(date +%s) % 100000))
+    scripts:
+      - name: Install Node dependencies
+        script: |
+          npm install
+
+      - name: Add iOS platform
+        script: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+
+      - name: Sync Capacitor
+        script: |
+          npx cap sync ios
+
+      - name: Set version and build number
+        script: |
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $APP_VERSION" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(date +%s | tail -c 6)" ios/App/App/Info.plist
+
+      - name: Build IPA
+        script: |
+          xcode-project build-ipa \
+            --project ios/App/App.xcodeproj \
+            --scheme "$XCODE_SCHEME" \
+            --config Release
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      email:
+        recipients:
+          - your@email.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers

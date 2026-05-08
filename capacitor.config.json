@@ -1,0 +1,12 @@
+{
+  "appId": "online.masarsa.app",
+  "appName": "مسارسا",
+  "webDir": "www",
+  "server": {
+    "url": "https://masarsa.online",
+    "cleartext": false
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}

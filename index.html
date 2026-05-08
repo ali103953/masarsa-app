@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إنجليزي الشغل — نظام احترافي</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&family=Tajawal:wght@300;400;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f0f14;--paper:#f7f5f0;--cream:#edeae2;--gold:#b8860b;
+  --gold-light:#e8d5a3;--gold-pale:#faf6ed;--muted:#8a8680;
+  --border:rgba(15,15,20,0.1);--white:#fff;
+  --p1:#1a3a6b;--p2:#1a6b45;--p3:#6b3a1a;--p4:#4a1a6b;--p5:#6b1a1a;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3;
+background-image:url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");}
+
+.app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 16px 90px;}
+.screen{display:none;}.screen.on{display:block;animation:rise .3s cubic-bezier(.22,1,.36,1) both;}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* TOP NAV */
+.tnav{position:sticky;top:0;z-index:50;background:rgba(247,245,240,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:11px 16px;display:flex;align-items:center;gap:10px;margin:0 -16px 20px;}
+.tnav-back{background:none;border:1px solid var(--border);border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s;color:var(--ink);flex-shrink:0;}
+.tnav-back:hover{background:var(--cream);}.tnav-back.hide{visibility:hidden;}
+.tnav-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;flex:1;text-align:center;}
+.tnav-pill{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;background:var(--ink);color:var(--paper);padding:4px 10px;border-radius:20px;flex-shrink:0;}
+
+/* HOME */
+.home-hero{padding:28px 0 20px;text-align:center;}
+.h-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-light);padding:5px 14px;border-radius:2px;margin-bottom:16px;}
+.h-title{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;line-height:1.05;letter-spacing:-1.5px;margin-bottom:8px;background:linear-gradient(135deg,var(--ink),#3a3a5c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.h-sub{font-family:'Tajawal',sans-serif;font-size:15px;color:var(--muted);line-height:1.6;}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:20px 0;background:var(--white);}
+.sr-stat{padding:14px;text-align:center;border-left:1px solid var(--border);}
+.sr-stat:last-child{border-left:none;}
+.sr-n{font-family:'Playfair Display',serif;font-size:26px;color:var(--ink);}
+.sr-l{font-family:'Tajawal',sans-serif;font-size:11px;color:var(--muted);margin-top:2px;}
+
+.phases-list{display:flex;flex-direction:column;gap:2px;}
+.phase-row{background:var(--white);border:1px solid var(--border);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .18s;position:relative;overflow:hidden;}
+.phase-row:first-child{border-radius:12px 12px 0 0;}.phase-row:last-child{border-radius:0 0 12px 12px;}
+.phase-row::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--pc,#ccc);opacity:0;transition:opacity .2s;}
+.phase-row:hover::after{opacity:1;}.phase-row:hover{background:var(--gold-pale);}
+.pr-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);background:var(--cream);padding:4px 8px;border-radius:4px;flex-shrink:0;}
+.pr-body{flex:1;text-align:right;}
+.pr-title{font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px;}
+.pr-desc{font-size:12px;color:var(--muted);}
+.pr-pbar{margin-top:7px;background:var(--cream);border-radius:3px;height:3px;overflow:hidden;}
+.pr-pfill{height:3px;border-radius:3px;transition:width .5s;}
+.pr-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;}
+
+/* WORD LIST */
+.search-box{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.s-inp{flex:1;border:none;background:none;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;direction:rtl;}
+.s-inp::placeholder{color:var(--muted);}
+.chips{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;}
+.chip{border:1px solid var(--border);background:var(--white);border-radius:20px;padding:5px 13px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Tajawal',sans-serif;color:var(--ink);flex-shrink:0;transition:all .15s;}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.wlist{display:flex;flex-direction:column;gap:5px;}
+.wrow{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;display:flex;align-items:center;gap:11px;transition:all .15s;}
+.wrow:hover{background:var(--gold-pale);border-color:var(--gold-light);transform:translateX(-2px);}
+.wr-spk{background:none;border:1px solid var(--border);border-radius:7px;width:30px;height:30px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;color:var(--ink);}
+.wr-spk:hover{background:var(--ink);color:var(--paper);}
+.wr-bd{flex:1;text-align:right;}
+.wr-en{font-family:'Playfair Display',serif;font-size:18px;}
+.wr-ar{font-size:12px;color:var(--muted);margin-top:1px;font-family:'Tajawal',sans-serif;}
+.wr-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;border-radius:10px;flex-shrink:0;}
+
+/* DETAIL */
+.d-hero{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px 20px;margin-bottom:12px;text-align:center;position:relative;overflow:hidden;}
+.d-accent{position:absolute;bottom:0;left:0;right:0;height:3px;}
+.d-word{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;direction:ltr;letter-spacing:-1px;line-height:1;margin-bottom:6px;}
+.d-ar{font-family:'Tajawal',sans-serif;font-size:17px;color:var(--muted);margin-bottom:16px;}
+.d-btns{display:flex;gap:8px;justify-content:center;}
+.d-btn{background:var(--ink);color:var(--paper);border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;}
+.d-btn:hover{opacity:.85;}.d-btn.ghost{background:none;border:1px solid var(--border);color:var(--ink);}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:10px;}
+.card-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.card-txt{font-family:'Tajawal',sans-serif;font-size:14px;line-height:1.7;color:var(--ink);}
+.card-txt.ltr{font-family:'DM Sans',sans-serif;font-size:13px;direction:ltr;text-align:left;}
+.ex-card{background:var(--gold-pale);border:1px solid var(--gold-light);border-radius:12px;padding:15px 17px;margin-bottom:10px;cursor:pointer;transition:border-color .15s;}
+.ex-card:hover{border-color:var(--gold);}
+.ex-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.ex-en{font-family:'DM Sans',sans-serif;font-size:14px;direction:ltr;text-align:left;font-weight:500;margin-bottom:5px;}
+.ex-ar{font-family:'Tajawal',sans-serif;font-size:12px;color:var(--muted);}
+.tip-card{background:var(--cream);border-radius:10px;padding:13px 15px;margin-bottom:13px;}
+.tip-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.tip-txt{font-family:'Tajawal',sans-serif;font-size:13px;color:var(--ink);line-height:1.6;}
+.nav-row{display:flex;gap:8px;}
+.nb{flex:1;border-radius:10px;padding:12px;font-size:14px;font-weight:500;color:var(--paper);cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:opacity .15s;}
+.nb:hover{opacity:.88;}.nb.ghost{background:none!important;border:1px solid var(--border);color:var(--ink);}
+.nb:disabled{opacity:.3;cursor:default;}
+
+/* QUIZ */
+.qprog{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.qpbar{flex:1;background:var(--cream);border-radius:3px;height:4px;overflow:hidden;}
+.qpfill{height:4px;border-radius:3px;background:var(--ink);transition:width .4s;}
+.qpnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;}
+.qmain{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 18px;text-align:center;margin-bottom:14px;}
+.qword{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;direction:ltr;letter-spacing:-1px;margin-bottom:5px;}
+.qar{font-family:'Tajawal',sans-serif;font-size:14px;color:var(--muted);margin-bottom:12px;}
+.q-listen{background:none;border:1px solid var(--border);border-radius:7px;padding:6px 16px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--ink);}
+.qinst{font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:10px;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;color:var(--ink);text-align:right;transition:all .15s;line-height:1.5;}
+.opt:hover:not(:disabled){background:var(--gold-pale);border-color:var(--gold-light);}
+.opt.ok{background:#eaf3de;border-color:#3b6d11;color:#1a6b45;}
+.opt.no{background:#fcebeb;border-color:#a32d2d;color:#a32d2d;}
+.opt:disabled{cursor:default;}
+
+/* END */
+.end-wrap{text-align:center;padding:28px 0;}
+.end-sc{font-family:'Playfair Display',serif;font-size:58px;font-weight:700;}
+.end-lbl{font-size:13px;color:var(--muted);font-family:'Tajawal',sans-serif;margin-bottom:6px;}
+.end-ttl{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px;}
+.end-desc{font-family:'Tajawal',sans-serif;font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.end-btns{display:flex;flex-direction:column;gap:8px;}
+
+/* BOTTOM */
+.bbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:rgba(247,245,240,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;padding:8px 4px 14px;z-index:50;}
+.bi{flex:1;border:none;background:none;cursor:pointer;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bi-icon{font-size:20px;line-height:1;}
+.bi-lbl{font-size:10px;color:var(--muted);font-family:'Tajawal',sans-serif;}
+.bi.on .bi-lbl{color:var(--ink);font-weight:700;}
+.bi-dot{width:4px;height:4px;border-radius:50%;background:transparent;transition:background .2s;}
+.bi.on .bi-dot{background:var(--ink);}
+
+/* CELEBRATE */
+.cel-ov{position:fixed;inset:0;background:rgba(15,15,20,.55);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
+.cel-ov.show{display:flex;}
+.cel-box{background:var(--white);border-radius:20px;padding:28px 24px;text-align:center;max-width:300px;width:90%;animation:rise .4s cubic-bezier(.34,1.56,.64,1) both;}
+.cel-ico{font-size:52px;display:block;animation:float 2s ease-in-out infinite;margin-bottom:12px;}
+.cel-ttl{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:5px;}
+.cel-sub{font-family:'Tajawal',sans-serif;font-size:13px;color:var(--muted);margin-bottom:14px;}
+.cel-btn{display:block;width:100%;padding:12px;background:var(--ink);color:var(--paper);border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* BROWSE */
+.phase-tabs{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:3px;}
+.ptab{border:1px solid var(--border);background:var(--white);border-radius:20px;padding:5px 13px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:'Tajawal',sans-serif;color:var(--ink);flex-shrink:0;transition:all .15s;}
+.ptab.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+
+/* ════════════════════════════════════════
+   MASARSA PRO UPGRADE — SMART LEARNING SYSTEM
+   ════════════════════════════════════════ */
+.pro-panel{background:linear-gradient(135deg,#10121a,#26324a);color:#fff;border-radius:18px;padding:18px;margin:16px 0 18px;box-shadow:0 16px 40px rgba(15,15,20,.12);position:relative;overflow:hidden}
+.pro-panel:before{content:'';position:absolute;inset:-80px -50px auto auto;width:180px;height:180px;border-radius:50%;background:rgba(232,213,163,.18)}
+.pro-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold-light);margin-bottom:7px;text-transform:uppercase}
+.pro-title{font-family:'Tajawal',sans-serif;font-size:20px;font-weight:900;margin-bottom:6px}
+.pro-sub{font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.7;color:rgba(255,255,255,.76)}
+.pro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.pro-mini{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:10px;text-align:center;backdrop-filter:blur(8px)}
+.pro-num{font-family:'Playfair Display',serif;font-size:22px;color:#fff}.pro-lbl{font-family:'Tajawal',sans-serif;font-size:10px;color:rgba(255,255,255,.68)}
+.pro-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.pro-btn{border:none;border-radius:12px;padding:12px 10px;font-family:'Tajawal',sans-serif;font-weight:800;cursor:pointer}.pro-btn.primary{background:var(--gold-light);color:#17120b}.pro-btn.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.16)}
+.mastery-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0}.mastery-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.mastery-title{font-family:'Tajawal',sans-serif;font-weight:900}.mastery-pct{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)}.mastery-track{height:7px;background:var(--cream);border-radius:99px;overflow:hidden}.mastery-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),#111)}
+.d-status{display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;font-family:'Tajawal',sans-serif;font-size:12px;background:var(--gold-pale);color:#7a5510;border:1px solid var(--gold-light);border-radius:999px;padding:5px 10px}.learn-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.learn-actions .nb{font-family:'Tajawal',sans-serif}.learn-actions .hard{background:#fff!important;color:#a32d2d;border:1px solid #f1c7c7}.learn-actions .easy{background:#153b2a!important;color:#fff}
+.review-hero{background:linear-gradient(135deg,#fff,#faf6ed);border:1px solid var(--gold-light);border-radius:18px;padding:20px;text-align:center;margin-bottom:14px}.review-word{font-family:'Playfair Display',serif;font-size:44px;direction:ltr;font-weight:800;margin:8px 0;color:var(--ink)}.review-input{width:100%;border:1px solid var(--border);border-radius:12px;background:#fff;padding:13px 14px;font-family:'DM Sans',sans-serif;font-size:16px;direction:ltr;text-align:left;outline:none;margin:10px 0}.review-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.12)}.review-feedback{font-family:'Tajawal',sans-serif;border-radius:12px;padding:12px;margin-top:10px;display:none}.review-feedback.ok{display:block;background:#eaf3de;color:#1a6b45;border:1px solid #c5dfb2}.review-feedback.no{display:block;background:#fcebeb;color:#a32d2d;border:1px solid #f0bcbc}.due-empty{text-align:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:30px 18px;font-family:'Tajawal',sans-serif;color:var(--muted);line-height:1.8}.badge-new{font-family:'IBM Plex Mono',monospace;font-size:9px;border-radius:99px;padding:3px 7px;background:#f1efe8;color:#777}.badge-due{background:#fff1d0;color:#8a5c00}.badge-mastered{background:#eaf3de;color:#1a6b45}
+@media(max-width:380px){.h-title{font-size:34px}.pro-grid{gap:6px}.pro-num{font-size:19px}.d-word,.review-word{font-size:39px}}
+
+
+
+/* AUTH / FIREBASE */
+body.locked .app, body.locked .bbar{display:none}
+.auth-wrap{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f0f14,#1d2433);display:flex;align-items:center;justify-content:center;padding:18px;font-family:'Tajawal',sans-serif}
+body:not(.locked) .auth-wrap{display:none}
+.auth-card{width:100%;max-width:430px;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.25);border-radius:24px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.30);text-align:right}
+.auth-logo{width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,#b8860b,#e8d5a3);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px}
+.auth-title{font-size:26px;font-weight:900;color:#0f0f14;margin-bottom:4px}.auth-sub{font-size:14px;line-height:1.7;color:#6d6870;margin-bottom:18px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f0eee8;padding:5px;border-radius:14px;margin-bottom:14px}.auth-tab{border:0;border-radius:10px;background:transparent;padding:10px;font-weight:800;cursor:pointer;color:#6d6870;font-family:'Tajawal',sans-serif}.auth-tab.on{background:#0f0f14;color:#fff}
+.auth-field{margin-bottom:10px}.auth-field label{display:block;font-size:12px;color:#6d6870;margin:0 4px 5px}.auth-field input{width:100%;border:1px solid rgba(15,15,20,.13);border-radius:12px;padding:12px 13px;font-size:15px;outline:none;direction:ltr;text-align:left;background:#fff}.auth-field input:focus{border-color:#b8860b;box-shadow:0 0 0 3px rgba(184,134,11,.12)}
+.auth-btn{width:100%;border:0;border-radius:14px;background:#0f0f14;color:#fff;padding:13px 15px;font-weight:900;font-size:15px;cursor:pointer;font-family:'Tajawal',sans-serif;margin-top:6px}.auth-msg{font-size:13px;line-height:1.6;margin-top:12px;color:#8a261f;min-height:20px}
+.user-pill{position:fixed;top:12px;left:12px;z-index:80;background:rgba(15,15,20,.88);color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 10px;font-family:'Tajawal',sans-serif;font-size:12px;display:none;gap:8px;align-items:center;max-width:250px}body:not(.locked) .user-pill{display:flex}.user-pill button{border:0;background:#fff;color:#0f0f14;border-radius:999px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'Tajawal',sans-serif}
+.sync-toast{position:fixed;top:55px;left:12px;z-index:90;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px 12px;font-family:'Tajawal',sans-serif;font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);display:none}
+
+</style>
+</head>
+<body class="locked">
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-card">
+    <div class="auth-logo">🦅</div><div class="auth-title">إنجليزي الشغل</div>
+    <div class="auth-sub">سجّل دخولك حتى يتم حفظ تقدمك ونقاطك ومراجعاتك اليومية على حسابك.</div>
+    <div class="auth-tabs"><button class="auth-tab on" id="loginTab" onclick="setAuthMode('login')">تسجيل دخول</button><button class="auth-tab" id="signupTab" onclick="setAuthMode('signup')">حساب جديد</button></div>
+    <div class="auth-field" id="nameField" style="display:none"><label>الاسم</label><input id="authName" autocomplete="name" placeholder="Ali"></div>
+    <div class="auth-field"><label>الإيميل</label><input id="authEmail" type="email" autocomplete="email" placeholder="name@email.com"></div>
+    <div class="auth-field"><label>كلمة المرور</label><input id="authPass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+    <button class="auth-btn" id="authBtn" onclick="submitAuth()">دخول</button><div class="auth-msg" id="authMsg"></div>
+  </div>
+</div>
+<div class="user-pill" id="userPill"><span id="userEmailTxt">...</span><button onclick="logoutUser()">خروج</button></div><div class="sync-toast" id="syncToast">تم حفظ التقدم</div>
+
+<div class="app">
+
+<!-- HOME -->
+<div id="pg-home" class="screen on">
+  <div class="tnav"><button class="tnav-back hide">←</button><div class="tnav-title">إنجليزي الشغل</div><div class="tnav-pill" id="starsEl">★ 0</div></div>
+  <div class="home-hero">
+    <div class="h-badge">500 كلمة · نظام مراجعة ذكي · Professional English</div>
+    <div class="h-title">لغة العمل بثقة</div>
+    <div class="h-sub">تعلم كلمات العمل والهندسة والإدارة بنظام احترافي يحفظ تقدمك ويُراجع معك الكلمات في وقتها.</div>
+  </div>
+  <div class="stats-row">
+    <div class="sr-stat"><div class="sr-n">500</div><div class="sr-l">كلمة</div></div>
+    <div class="sr-stat"><div class="sr-n">25</div><div class="sr-l">مجال</div></div>
+    <div class="sr-stat"><div class="sr-n" id="seenEl">0</div><div class="sr-l">تعلمتها</div></div>
+  </div>
+  <div id="proPanel"></div>
+  <div class="phases-list" id="phasesDiv"></div>
+</div>
+
+<!-- LIST -->
+<div id="pg-list" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goHome()">←</button><div class="tnav-title" id="listTitle"></div><button style="background:var(--ink);color:var(--paper);border:none;border-radius:8px;padding:6px 13px;font-size:12px;cursor:pointer;font-family:inherit;" id="listQBtn" onclick="startQuiz()">اختبار</button></div>
+  <div class="search-box"><span style="font-size:15px;color:var(--muted)">🔍</span><input class="s-inp" id="sInp" placeholder="ابحث..." oninput="filterList()"></div>
+  <div class="chips" id="listChips"></div>
+  <div class="wlist" id="wlistDiv"></div>
+</div>
+
+<!-- DETAIL -->
+<div id="pg-detail" class="screen">
+  <div class="tnav"><button class="tnav-back" id="dBack">←</button><div class="tnav-title" id="dCat"></div><div class="tnav-pill" id="dProg"></div></div>
+  <div id="dContent"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="pg-quiz" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goList()">←</button><div class="tnav-title" id="qTitle"></div><div class="tnav-pill" id="qScorePill">0 ✓</div></div>
+  <div id="qContent"></div>
+</div>
+
+<!-- END -->
+<div id="pg-end" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goList()">←</button><div class="tnav-title">النتيجة</div><div class="tnav-pill">مكتمل</div></div>
+  <div id="endDiv"></div>
+</div>
+
+<!-- SMART REVIEW -->
+<div id="pg-review" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goHome()">←</button><div class="tnav-title">المراجعة الذكية</div><div class="tnav-pill" id="reviewPill">0</div></div>
+  <div id="reviewDiv"></div>
+</div>
+
+<!-- BROWSE -->
+<div id="pg-browse" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goHome()">←</button><div class="tnav-title">كل الكلمات</div><div class="tnav-pill" id="browsePill">500</div></div>
+  <div class="search-box"><span style="font-size:15px;color:var(--muted)">🔍</span><input class="s-inp" id="bInp" placeholder="ابحث في 500 كلمة..." oninput="filterBrowse()"></div>
+  <div class="phase-tabs" id="pTabs"></div>
+  <div class="wlist" id="bList"></div>
+</div>
+
+<!-- MEETING SIMULATION -->
+<div id="pg-meeting" class="screen">
+  <div class="tnav"><button class="tnav-back" onclick="goHome()">←</button><div class="tnav-title">محاكاة الاجتماعات</div><div class="tnav-pill" id="meetingPill">AI Level</div></div>
+  <div id="meetingDiv"></div>
+</div>
+
+
+<!-- MOSTADAM PRESENTATION TRAINING -->
+<div id="pg-mostadam" class="screen">
+  <div class="tnav">
+    <button class="tnav-back" onclick="goHome()">←</button>
+    <div class="tnav-title">مستدام</div>
+    <div class="tnav-pill" id="mostadamPill">PRO</div>
+  </div>
+  <div id="mostadamDiv"></div>
+</div>
+
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bbar">
+  <button class="bi on" id="bb-home" onclick="navTo('home')"><span class="bi-icon">🏠</span><span class="bi-lbl">الرئيسية</span><div class="bi-dot"></div></button>
+  <button class="bi" id="bb-browse" onclick="navTo('browse')"><span class="bi-icon">📖</span><span class="bi-lbl">الكلمات</span><div class="bi-dot"></div></button>
+  <button class="bi" id="bb-review" onclick="navTo('review')"><span class="bi-icon">🧠</span><span class="bi-lbl">مراجعة</span><div class="bi-dot"></div></button>
+  <button class="bi" id="bb-meeting" onclick="navTo('meeting')"><span class="bi-icon">🗣️</span><span class="bi-lbl">اجتماعات</span><div class="bi-dot"></div></button>
+  <button class="bi" id="bb-mostadam" onclick="navTo('mostadam')"><span class="bi-icon">🌿</span><span class="bi-lbl">مستدام</span><div class="bi-dot"></div></button>
+</div>
+
+<!-- CELEBRATE -->
+<div class="cel-ov" id="celOv">
+  <div class="cel-box">
+    <span class="cel-ico" id="celIco">🏆</span>
+    <div class="cel-ttl" id="celTtl">ممتاز!</div>
+    <div class="cel-sub" id="celSub">أحسنت!</div>
+    <button class="cel-btn" id="celBtn">متابعة</button>
+  </div>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = { apiKey:"AIzaSyCAYGmzIUxSmmeNJTlnbVTJXExeMOHasjs", authDomain:"englishforworksa.firebaseapp.com", projectId:"englishforworksa", storageBucket:"englishforworksa.firebasestorage.app", messagingSenderId:"786006197614", appId:"1:786006197614:web:c3aba87088a3d7dc34ed7f", measurementId:"G-PD1NG98DEB" };
+firebase.initializeApp(firebaseConfig); const auth=firebase.auth(); const db=firebase.firestore(); let authMode='login', currentUser=null, cloudTimer=null;
+function setAuthMode(m){authMode=m;document.getElementById('loginTab').classList.toggle('on',m==='login');document.getElementById('signupTab').classList.toggle('on',m==='signup');document.getElementById('nameField').style.display=m==='signup'?'block':'none';document.getElementById('authBtn').textContent=m==='signup'?'إنشاء حساب':'دخول';document.getElementById('authMsg').textContent='';}
+function arAuthError(e){const c=e&&e.code||'';if(c.includes('email-already-in-use'))return 'هذا الإيميل مسجل مسبقاً.';if(c.includes('invalid-email'))return 'صيغة الإيميل غير صحيحة.';if(c.includes('weak-password'))return 'كلمة المرور ضعيفة؛ استخدم 6 أحرف أو أكثر.';if(c.includes('user-not-found')||c.includes('wrong-password')||c.includes('invalid-credential'))return 'الإيميل أو كلمة المرور غير صحيحة.';return 'حدث خطأ: '+(e.message||c);}
+async function submitAuth(){const email=document.getElementById('authEmail').value.trim();const pass=document.getElementById('authPass').value;const name=document.getElementById('authName').value.trim();const msg=document.getElementById('authMsg');msg.textContent='';try{document.getElementById('authBtn').disabled=true;if(authMode==='signup'){const cred=await auth.createUserWithEmailAndPassword(email,pass);if(name)await cred.user.updateProfile({displayName:name});}else{await auth.signInWithEmailAndPassword(email,pass);}}catch(e){msg.textContent=arAuthError(e);}finally{document.getElementById('authBtn').disabled=false;}}
+function logoutUser(){auth.signOut();} function showToast(t){const el=document.getElementById('syncToast');if(!el)return;el.textContent=t;el.style.display='block';clearTimeout(window.__toastT);window.__toastT=setTimeout(()=>el.style.display='none',1600);} function userDoc(){return currentUser?db.collection('users').doc(currentUser.uid):null;}
+function cloudSaveProgress(){if(!currentUser)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(async()=>{try{await userDoc().set({email:currentUser.email,name:currentUser.displayName||'',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),S:window.S||{},P:(window.masarsaPro&&window.masarsaPro.P)||{}},{merge:true});showToast('تم حفظ التقدم');}catch(e){console.warn('Cloud save failed',e);showToast('تعذر الحفظ السحابي');}},700);}
+async function cloudLoadProgress(){if(!currentUser)return;if(!window.masarsaPro){setTimeout(cloudLoadProgress,500);return;}try{const snap=await userDoc().get();if(snap.exists){const d=snap.data()||{};if(d.S){window.S=Object.assign(window.S||{},d.S);try{localStorage.setItem('masarsa2',JSON.stringify(window.S));}catch(e){}}if(d.P){Object.assign(window.masarsaPro.P,d.P);try{localStorage.setItem('masarsa_pro_v1',JSON.stringify(window.masarsaPro.P));}catch(e){}}if(window.renderHome)renderHome();if(window.updateUI)updateUI();showToast('تم تحميل تقدمك');}else{cloudSaveProgress();}}catch(e){console.warn('Cloud load failed',e);showToast('تعذر تحميل السحابة');}}
+auth.onAuthStateChanged(u=>{currentUser=u;if(u){document.body.classList.remove('locked');document.getElementById('userEmailTxt').textContent=u.displayName||u.email;cloudLoadProgress();}else{document.body.classList.add('locked');document.getElementById('userEmailTxt').textContent='';}}); window.cloudSaveProgress=cloudSaveProgress;
+</script>
+
+<script>
+// ════════════════════════════════════════
+// DATA — 500 WORDS / 5 PHASES
+// ════════════════════════════════════════
+const PHASES=[
+
+// ══ PHASE 1: مبتدئ-متوسط ══
+{id:'p1',title:'المرحلة الأولى',level:'مبتدئ — متوسط',color:'#1a3a6b',
+desc:'إدارة مشاريع · اجتماعات · تواصل · تقنية · قيادة',
+fields:['إدارة مشاريع','الاجتماعات','التواصل المهني','التقنية','القيادة'],
+words:[
+{w:'Milestone',f:'إدارة مشاريع',ar:'معلم رئيسي في المشروع',def:'نقطة تحول أو إنجاز محدد يُقاس به تقدم المشروع',ex:'We hit a major milestone — the prototype is ready.',exAr:'وصلنا لنقطة مهمة — النموذج الأولي جاهز.',tip:'مش نفس الـ deadline — هو إنجاز ملموس'},
+{w:'Deliverable',f:'إدارة مشاريع',ar:'مُخرَج قابل للتسليم',def:'ناتج ملموس يُسلَّم للعميل أو للإدارة في نهاية مرحلة',ex:'The final deliverable is due by end of quarter.',exAr:'المُخرَج النهائي مطلوب بنهاية الربع.',tip:'يكون محدداً وقابلاً للقياس'},
+{w:'Stakeholder',f:'إدارة مشاريع',ar:'صاحب مصلحة',def:'أي شخص أو جهة تتأثر بالمشروع أو تؤثر فيه',ex:'We need stakeholder buy-in before we proceed.',exAr:'نحتاج موافقة أصحاب المصلحة قبل المتابعة.',tip:'أوسع من العميل — يشمل الإدارة والمستخدمين'},
+{w:'Scope creep',f:'إدارة مشاريع',ar:'توسع النطاق غير المخطط',def:'إضافة متطلبات جديدة لم تكن في الخطة دون تعديل الوقت أو الميزانية',ex:'Scope creep is killing our timeline.',exAr:'توسع النطاق يدمر جدولنا الزمني.',tip:'وثّق كل تغيير — حتى الصغير'},
+{w:'Bottleneck',f:'إدارة مشاريع',ar:'عنق الزجاجة',def:'عائق يبطّئ سير العمل بأكمله',ex:'The approval process is our main bottleneck.',exAr:'عملية الموافقة هي العائق الرئيسي.',tip:'حدده مبكراً — واحد يكفي ليعطّل كل شيء'},
+{w:'Kickoff',f:'إدارة مشاريع',ar:'اجتماع انطلاق المشروع',def:'الاجتماع الرسمي الأول الذي يُعلن بدء المشروع',ex:'The project kickoff is scheduled for Monday.',exAr:'انطلاق المشروع مجدول يوم الاثنين.',tip:'يحدد التوقعات والأدوار من البداية'},
+{w:'Handover',f:'إدارة مشاريع',ar:'تسليم رسمي',def:'نقل المسؤولية الرسمية عن المشروع من طرف لآخر',ex:'We need a smooth handover to operations.',exAr:'نحتاج تسليماً سلساً لفريق التشغيل.',tip:'يتطلب توثيقاً كاملاً قبله'},
+{w:'Contingency',f:'إدارة مشاريع',ar:'خطة طوارئ',def:'موارد أو خطط احتياطية للمخاطر غير المتوقعة',ex:'We have a 15% contingency budget.',exAr:'عندنا ميزانية احتياطية 15%.',tip:'احسبها دائماً — المشاريع تتجاوز التوقعات'},
+{w:'Roadmap',f:'إدارة مشاريع',ar:'خارطة الطريق',def:'خطة استراتيجية بصرية توضح الأهداف والمراحل الزمنية',ex:'The product roadmap outlines our next 12 months.',exAr:'خارطة المنتج تحدد الـ 12 شهراً القادمة.',tip:'أداة تواصل قوية مع الإدارة والعملاء'},
+{w:'KPI',f:'إدارة مشاريع',ar:'مؤشر الأداء الرئيسي',def:'مقياس كمي لتقييم مدى تحقيق الهدف',ex:'Our KPI is customer satisfaction above 90%.',exAr:'مؤشرنا هو رضا العملاء فوق 90%.',tip:'Key Performance Indicator — يجب أن يكون قابلاً للقياس'},
+{w:'Rollout',f:'إدارة مشاريع',ar:'إطلاق تدريجي',def:'تطبيق نظام أو منتج جديد على مراحل',ex:'The system rollout will be in three phases.',exAr:'إطلاق النظام سيكون على ثلاث مراحل.',tip:'يقلل المخاطر مقارنة بالإطلاق المفاجئ'},
+{w:'Sprint',f:'إدارة مشاريع',ar:'دورة عمل قصيرة',def:'فترة زمنية محددة لإنجاز مهام محددة في Agile',ex:'We complete two sprints per month.',exAr:'ننجز دورتي عمل شهرياً.',tip:'أساس منهجية Agile و Scrum'},
+{w:'Backlog',f:'إدارة مشاريع',ar:'قائمة المهام المتراكمة',def:'قائمة مرتبة بكل المهام والمتطلبات المعلقة',ex:'Let\'s prioritize the backlog before the next sprint.',exAr:'لنرتب أولويات المهام قبل الدورة القادمة.',tip:'يجب مراجعته وتنظيمه بانتظام'},
+{w:'Dependency',f:'إدارة مشاريع',ar:'تبعية بين المهام',def:'علاقة يكون فيها إنجاز مهمة شرطاً لبدء أخرى',ex:'Identify all dependencies before finalizing the schedule.',exAr:'حدد كل التبعيات قبل إنهاء الجدول.',tip:'تجاهلها يؤدي لتأخيرات متسلسلة'},
+{w:'Escalate',f:'إدارة مشاريع',ar:'رفع الأمر لمستوى أعلى',def:'نقل مشكلة أو قرار لمستوى أعلى من الإدارة',ex:'If unresolved by tomorrow, we escalate.',exAr:'إن لم تُحل غداً، نرفعها للإدارة.',tip:'مش ضعف — قرار مهني صحيح'},
+{w:'Benchmark',f:'إدارة مشاريع',ar:'معيار القياس المرجعي',def:'نقطة مرجعية للمقارنة وقياس الأداء',ex:'Let\'s benchmark against industry standards.',exAr:'لنقارن بمعايير الصناعة.',tip:'يساعد في تحديد الأهداف الواقعية'},
+{w:'Risk mitigation',f:'إدارة مشاريع',ar:'تخفيف المخاطر',def:'إجراءات لتقليل احتمالية المخاطر أو تأثيرها',ex:'Our risk mitigation plan covers three scenarios.',exAr:'خطة المخاطر تغطي ثلاثة سيناريوهات.',tip:'مش إلغاء المخاطر — تقليل أثرها'},
+{w:'Feasibility',f:'إدارة مشاريع',ar:'دراسة الجدوى',def:'تقييم قابلية تنفيذ المشروع تقنياً ومالياً وزمنياً',ex:'We need a feasibility study first.',exAr:'نحتاج دراسة جدوى أولاً.',tip:'يسبق أي قرار بدء مشروع كبير'},
+{w:'Accountability',f:'إدارة مشاريع',ar:'المساءلة',def:'الاستعداد لتحمل المسؤولية عن النتائج',ex:'We need clear accountability for each deliverable.',exAr:'نحتاج مساءلة واضحة لكل مُخرَج.',tip:'أقوى من responsibility'},
+{w:'Sign-off',f:'إدارة مشاريع',ar:'موافقة رسمية نهائية',def:'الإقرار الرسمي من صاحب الصلاحية بالموافقة',ex:'We need client sign-off before we proceed.',exAr:'نحتاج موافقة العميل قبل المتابعة.',tip:'وثّقها دائماً — شفهياً لا يكفي'},
+{w:'Agenda',f:'الاجتماعات',ar:'جدول أعمال الاجتماع',def:'قائمة المواضيع المرتبة للنقاش',ex:'Please review the agenda before the meeting.',exAr:'يرجى مراجعة جدول الأعمال مسبقاً.',tip:'يُرسل قبل الاجتماع — يوفر الوقت'},
+{w:'Minutes',f:'الاجتماعات',ar:'محضر الاجتماع',def:'توثيق رسمي للقرارات والمهام',ex:'Who\'s taking minutes today?',exAr:'من سيكتب محضر الاجتماع اليوم؟',tip:'يُوزَّع خلال 24 ساعة من الاجتماع'},
+{w:'Action items',f:'الاجتماعات',ar:'مهام محددة بأصحابها',def:'مهام واضحة تنتج عن الاجتماع مع المسؤول والموعد',ex:'Let\'s review action items from last week.',exAr:'لنراجع المهام من الأسبوع الماضي.',tip:'كل action item: مهمة + شخص + موعد'},
+{w:'Pushback',f:'الاجتماعات',ar:'اعتراض مدروس',def:'الرفض أو الاعتراض على فكرة بحجج منطقية',ex:'I\'m getting pushback from the team.',exAr:'أتلقى اعتراضات من الفريق.',tip:'مش رفض عشوائي — اعتراض مبني على أدلة'},
+{w:'Consensus',f:'الاجتماعات',ar:'إجماع / توافق',def:'اتفاق الجميع على قرار وإن لم يكن المفضل لكل فرد',ex:'We need consensus before proceeding.',exAr:'نحتاج توافقاً قبل المتابعة.',tip:'أقوى من majority — الكل يقبل'},
+{w:'Alignment',f:'الاجتماعات',ar:'توافق الآراء',def:'حالة يكون فيها الجميع متفقين على الفهم والأهداف',ex:'We need alignment across all departments.',exAr:'نحتاج توافقاً عبر جميع الأقسام.',tip:'Are we aligned? — سؤال مهم في كل اجتماع'},
+{w:'Buy-in',f:'الاجتماعات',ar:'الحصول على تأييد',def:'استحصال قبول الأطراف المعنية لفكرة أو قرار',ex:'We need executive buy-in before launching.',exAr:'نحتاج تأييد الإدارة العليا قبل الإطلاق.',tip:'الفشل في الحصول عليه = فشل المشروع'},
+{w:'Follow-up',f:'الاجتماعات',ar:'المتابعة',def:'الإجراءات بعد الاجتماع للتأكد من التنفيذ',ex:'I\'ll send a follow-up email with all details.',exAr:'سأرسل إيميل متابعة بكل التفاصيل.',tip:'بدون follow-up الاجتماعات بلا قيمة'},
+{w:'Table it',f:'الاجتماعات',ar:'تأجيل النقطة',def:'تأجيل مناقشة موضوع لوقت لاحق',ex:'Let\'s table this and move on.',exAr:'لنؤجل هذا ونكمل.',tip:'في بريطانيا تعني العكس — ناقشه الآن!'},
+{w:'Facilitate',f:'الاجتماعات',ar:'يُيسّر النقاش',def:'توجيه النقاش وضمان مشاركة الجميع',ex:'Sarah will facilitate today\'s workshop.',exAr:'سارة ستدير ورشة العمل اليوم.',tip:'المُيسِّر لا يشارك برأيه — يُدير النقاش'},
+{w:'Loop in',f:'الاجتماعات',ar:'إشراك شخص',def:'إضافة شخص لمحادثة لم يكن جزءاً منها',ex:'Can you loop in the legal team?',exAr:'هل يمكنك إشراك الفريق القانوني؟',tip:'شائع جداً في الإيميل'},
+{w:'Takeaway',f:'الاجتماعات',ar:'خلاصة / درس مستفاد',def:'النقطة الأهم التي يحملها الشخص من الاجتماع',ex:'The key takeaway is the budget constraint.',exAr:'الخلاصة الأهم هي قيد الميزانية.',tip:'What\'s your takeaway? — يُثري النقاش'},
+{w:'Adjourn',f:'الاجتماعات',ar:'رفع الاجتماع رسمياً',def:'إنهاء الاجتماع رسمياً',ex:'I motion to adjourn — we\'ll continue next week.',exAr:'أقترح رفع الجلسة — سنكمل الأسبوع القادم.',tip:'أرسمي من "خلصنا" — يُدوَّن في المحضر'},
+{w:'Defer',f:'الاجتماعات',ar:'تأجيل القرار',def:'تأجيل اتخاذ قرار أو تفويضه لشخص آخر',ex:'We\'ll defer to the steering committee.',exAr:'سنؤجل للجنة التوجيهية.',tip:'قرار مدروس — مش تهرب من المسؤولية'},
+{w:'Recap',f:'الاجتماعات',ar:'ملخص سريع',def:'استعراض موجز لأهم ما تمت مناقشته',ex:'Let me recap what we agreed on.',exAr:'دعني أُلخص ما اتفقنا عليه.',tip:'مهم جداً في نهاية كل اجتماع'},
+{w:'Proactive',f:'التواصل المهني',ar:'مبادر',def:'التصرف بمبادرة ذاتية قبل أن تُطلب',ex:'Be proactive about flagging risks early.',exAr:'كن مبادراً في الإشارة للمخاطر مبكراً.',tip:'عكسها reactive — المبادر يُقدِّر ولا ينتظر'},
+{w:'Leverage',f:'التواصل المهني',ar:'استثمار الموارد',def:'استخدام شيء متاح لتحقيق نتيجة أفضل',ex:'We can leverage our existing partnerships.',exAr:'نستطيع الاستفادة من شراكاتنا.',tip:'يُستخدم مجازاً في الأعمال باستمرار'},
+{w:'Streamline',f:'التواصل المهني',ar:'تبسيط العملية',def:'تحسين كفاءة عملية بإزالة الخطوات غير الضرورية',ex:'We need to streamline the approval process.',exAr:'نحتاج تبسيط عملية الموافقة.',tip:'هدفه: أقل خطوات + نفس النتيجة'},
+{w:'Articulate',f:'التواصل المهني',ar:'يعبّر بوضوح',def:'القدرة على التعبير عن الأفكار بوضوح ودقة',ex:'She articulated the problem very clearly.',exAr:'عبّرت عن المشكلة بوضوح شديد.',tip:'صفة مُثنى عليها في بيئة العمل'},
+{w:'Assertive',f:'التواصل المهني',ar:'حازم وواثق',def:'التعبير عن الرأي بثقة واحترام دون عدوانية',ex:'Be assertive — don\'t let them overlook your input.',exAr:'كن حازماً — لا تدع رأيك يُهمَل.',tip:'ما بين aggressive و passive'},
+{w:'Concise',f:'التواصل المهني',ar:'موجز ومباشر',def:'التعبير عن فكرة كاملة بأقل الكلمات الممكنة',ex:'Keep your emails concise.',exAr:'اجعل إيميلاتك موجزة.',tip:'في التواصل المهني: less is more'},
+{w:'Transparent',f:'التواصل المهني',ar:'شفاف',def:'الانفتاح والوضوح في مشاركة المعلومات',ex:'Be transparent about the project risks.',exAr:'كن شفافاً حول مخاطر المشروع.',tip:'يبني الثقة على المدى البعيد'},
+{w:'Delegate',f:'التواصل المهني',ar:'يفوّض',def:'تكليف شخص آخر بمهمة مع منحه الصلاحية',ex:'A good leader knows when to delegate.',exAr:'القائد الجيد يعرف متى يُفوِّض.',tip:'التفويض مهارة — مش تخلٍّ عن المسؤولية'},
+{w:'Prioritize',f:'التواصل المهني',ar:'يرتب الأولويات',def:'تحديد الأهم ضمن قائمة المهام',ex:'We need to prioritize — we can\'t do everything.',exAr:'نحتاج ترتيب الأولويات.',tip:'مهارة جوهرية في إدارة الوقت'},
+{w:'Acknowledge',f:'التواصل المهني',ar:'يُقرّ ويعترف',def:'الاعتراف الرسمي بشيء أو بجهد شخص',ex:'I acknowledge the delay and take full responsibility.',exAr:'أُقرّ بالتأخير وأتحمل المسؤولية.',tip:'أفيد من الإنكار — يبني الثقة'},
+{w:'Bandwidth',f:'التواصل المهني',ar:'الطاقة المتاحة',def:'الوقت والقدرة المتاحة للشخص لمهام إضافية',ex:'I don\'t have the bandwidth for this right now.',exAr:'لا توجد لديّ طاقة لهذا الآن.',tip:'مصطلح تقني أصبح يومياً'},
+{w:'Coordinate',f:'التواصل المهني',ar:'ينسّق',def:'تنظيم العمل المشترك بين أشخاص أو أقسام',ex:'I\'ll coordinate with the finance team.',exAr:'سأنسق مع فريق المالية.',tip:'يختلف عن manage — تنسيق لا إدارة'},
+{w:'Justify',f:'التواصل المهني',ar:'يبرر',def:'تقديم أسباب ومنطق كافٍ لدعم قرار',ex:'Justify your budget request with data.',exAr:'برر طلب الميزانية بالبيانات.',tip:'الأرقام أقوى حجة في بيئة العمل'},
+{w:'Summarize',f:'التواصل المهني',ar:'يُلخص',def:'تقديم النقاط الرئيسية بشكل موجز',ex:'Can you summarize the key decisions?',exAr:'هل يمكنك تلخيص القرارات الرئيسية؟',tip:'مهارة ذهبية في الاجتماعات والعروض'},
+{w:'Algorithm',f:'التقنية',ar:'خوارزمية',def:'مجموعة من الخطوات المنظمة لحل مشكلة معينة',ex:'The algorithm processes data in real time.',exAr:'الخوارزمية تعالج البيانات في الوقت الفعلي.',tip:'أساس كل برمجة وذكاء اصطناعي'},
+{w:'Redundancy',f:'التقنية',ar:'الاحتياطية',def:'وجود أنظمة احتياطية تعمل عند فشل الأساسية',ex:'We built redundancy into the system.',exAr:'بنينا احتياطية في النظام.',tip:'في IT هي ميزة — تمنع نقطة الفشل الواحدة'},
+{w:'Prototype',f:'التقنية',ar:'نموذج أولي',def:'نسخة أولية تُستخدم للاختبار والتحقق',ex:'We\'ll build a prototype before full deployment.',exAr:'سنبني نموذجاً أولياً قبل النشر الكامل.',tip:'Fail fast — اكتشف المشاكل مبكراً'},
+{w:'Validation',f:'التقنية',ar:'التحقق من الصحة',def:'التأكد من أن النظام يُحقق النتائج المطلوبة',ex:'Validation testing is scheduled for next week.',exAr:'اختبار التحقق مجدول الأسبوع القادم.',tip:'Validation = built the right thing'},
+{w:'Troubleshoot',f:'التقنية',ar:'تشخيص وحل المشاكل',def:'منهجية تحديد سبب عطل وإيجاد الحل',ex:'Can you troubleshoot the connectivity issue?',exAr:'هل يمكنك تشخيص مشكلة الاتصال؟',tip:'مهارة أساسية لكل مهندس'},
+{w:'Scalability',f:'التقنية',ar:'قابلية التوسع',def:'قدرة النظام على التعامل مع نمو الحمل',ex:'The architecture must support scalability.',exAr:'يجب أن تدعم البنية قابلية التوسع.',tip:'فكّر فيها من البداية'},
+{w:'Integration',f:'التقنية',ar:'دمج الأنظمة',def:'ربط أنظمة مختلفة لتعمل معاً',ex:'The integration between the two systems failed.',exAr:'فشل التكامل بين النظامين.',tip:'API integration — أكثر التحديات شيوعاً'},
+{w:'Deployment',f:'التقنية',ar:'النشر والتطبيق',def:'تثبيت وتشغيل النظام في البيئة الإنتاجية',ex:'The deployment will happen during maintenance.',exAr:'سيتم النشر خلال نافذة الصيانة.',tip:'يتطلب خطة rollback'},
+{w:'Compliance',f:'التقنية',ar:'الامتثال للمعايير',def:'الالتزام بالمعايير والقوانين واللوائح',ex:'This system must be ISO compliant.',exAr:'يجب أن يكون النظام متوافقاً مع ISO.',tip:'مهم في المشاريع الحكومية والصحية'},
+{w:'Infrastructure',f:'التقنية',ar:'البنية التحتية',def:'المكونات الأساسية التي يعتمد عليها النظام',ex:'We need to upgrade our cloud infrastructure.',exAr:'نحتاج ترقية بنيتنا السحابية.',tip:'تكلفتها العالية تجعلها قراراً استراتيجياً'},
+{w:'Empower',f:'القيادة',ar:'تمكين الفريق',def:'منح الفريق الاستقلالية والثقة لاتخاذ القرار',ex:'Empower your team — don\'t micromanage.',exAr:'مكّن فريقك — لا تُدِر بالتفاصيل الصغيرة.',tip:'القائد الحقيقي يُكبِّر الآخرين'},
+{w:'Resilience',f:'القيادة',ar:'القدرة على التعافي',def:'القدرة على التكيف والتعافي من الصعوبات',ex:'The team showed remarkable resilience.',exAr:'أظهر الفريق مرونة استثنائية.',tip:'صفة يبحث عنها القادة في المرشحين'},
+{w:'Influence',f:'القيادة',ar:'التأثير',def:'تغيير آراء الآخرين وسلوكياتهم دون سلطة مباشرة',ex:'Real leadership is about influence, not authority.',exAr:'القيادة الحقيقية تقوم على التأثير.',tip:'أقوى وأبقى من السلطة الرسمية'},
+{w:'Initiative',f:'القيادة',ar:'المبادرة الذاتية',def:'اتخاذ الإجراء المناسب بشكل مستقل دون انتظار',ex:'Take initiative — don\'t wait to be told.',exAr:'خذ المبادرة — لا تنتظر.',tip:'صفة تميز المتوسط عن المتميز'},
+{w:'Integrity',f:'القيادة',ar:'النزاهة',def:'الالتزام بالقيم الأخلاقية في جميع الظروف',ex:'Integrity is non-negotiable in leadership.',exAr:'النزاهة غير قابلة للتفاوض في القيادة.',tip:'تُبنى بسنوات وتُهدم بدقائق'},
+{w:'Ownership',f:'القيادة',ar:'تحمل المسؤولية الكاملة',def:'تبني المسؤولية الكاملة عن مهمة من بدايتها لنهايتها',ex:'Take full ownership of this project.',exAr:'تحمّل المسؤولية الكاملة لهذا المشروع.',tip:'Owner يعمل كأن المشروع مشروعه الخاص'},
+{w:'Mentor',f:'القيادة',ar:'مرشد ومُوجِّه',def:'شخص ذو خبرة يوجه نمو شخص آخر مهنياً',ex:'Find a mentor in your industry.',exAr:'ابحث عن مرشد في مجالك.',tip:'Mentor يختلف عن Manager — علاقة طوعية'},
+{w:'Vision',f:'القيادة',ar:'الرؤية المستقبلية',def:'الصورة الواضحة للمستقبل المنشود',ex:'Great leaders articulate a clear vision.',exAr:'القادة العظماء يُعبّرون عن رؤية واضحة.',tip:'بدون رؤية الفريق يعمل بلا بوصلة'},
+{w:'Accountability',f:'القيادة',ar:'المساءلة',def:'الاستعداد الحقيقي لتحمل المسؤولية عن القرارات',ex:'Build a culture of accountability.',exAr:'ابنِ ثقافة المساءلة.',tip:'أقوى من responsibility'},
+{w:'Engagement',f:'القيادة',ar:'الانخراط الوظيفي',def:'درجة الارتباط العاطفي للموظف بعمله',ex:'Employee engagement dropped after restructuring.',exAr:'انخفض انخراط الموظفين بعد إعادة الهيكلة.',tip:'الأعلى ارتباطاً هم الأكثر إنتاجية'},
+{w:'Innovation',f:'القيادة',ar:'الابتكار',def:'تطبيق أفكار جديدة لتحقيق قيمة مضافة',ex:'Foster a culture of innovation.',exAr:'عزّز ثقافة الابتكار.',tip:'يتطلب قبول الفشل كجزء من العملية'},
+{w:'Adaptability',f:'القيادة',ar:'القدرة على التكيف',def:'القدرة على التأقلم مع التغييرات بفاعلية',ex:'Adaptability is the most valued skill today.',exAr:'التكيف أكثر المهارات قيمة اليوم.',tip:'في عالم متغير — من لا يتكيف يتأخر'},
+{w:'Collaboration',f:'القيادة',ar:'التعاون الجماعي',def:'العمل المشترك بين أفراد لتحقيق هدف مشترك',ex:'Cross-functional collaboration is key.',exAr:'التعاون بين الوظائف مفتاح النجاح.',tip:'أعمق من cooperation — تكامل حقيقي'},
+]},
+
+// ══ PHASE 2: متوسط ══
+{id:'p2',title:'المرحلة الثانية',level:'متوسط',color:'#1a6b45',
+desc:'مالية · تفاوض · هندسة · موارد بشرية · استراتيجية',
+fields:['المالية','التفاوض','الهندسة','الموارد البشرية','الاستراتيجية'],
+words:[
+{w:'Amortization',f:'المالية',ar:'الإطفاء التدريجي',def:'توزيع تكلفة أصل على مدة حياته الإنتاجية',ex:'Amortization reduces the book value over time.',exAr:'الإطفاء يُقلل القيمة الدفترية مع الوقت.',tip:'a-mor-ti-ZAY-shun — النبرة على الرابع'},
+{w:'Liquidity',f:'المالية',ar:'السيولة النقدية',def:'قدرة الشركة على تحويل أصولها لنقد بسرعة',ex:'We need to improve our liquidity position.',exAr:'نحتاج تحسين وضع السيولة لدينا.',tip:'Cash is king — السيولة تمنع الإفلاس'},
+{w:'Collateral',f:'المالية',ar:'الضمان / التأمين',def:'الأصل المُقدَّم ضماناً للحصول على قرض',ex:'The property serves as collateral for the loan.',exAr:'العقار يُستخدم ضماناً للقرض.',tip:'بدونه قد يرفض البنك التمويل'},
+{w:'Depreciation',f:'المالية',ar:'الإهلاك',def:'انخفاض قيمة الأصل مع مرور الوقت والاستخدام',ex:'Depreciation is a non-cash expense.',exAr:'الإهلاك مصروف غير نقدي.',tip:'يخفض الضريبة — أداة محاسبية مهمة'},
+{w:'Arbitrage',f:'المالية',ar:'المراجحة السعرية',def:'الاستفادة من فارق السعر لنفس الأصل في سوقين مختلفتين',ex:'Arbitrage opportunities are rare in efficient markets.',exAr:'فرص المراجحة نادرة في الأسواق الكفوءة.',tip:'AR-bi-trazh — نهايتها مثل beige'},
+{w:'Volatility',f:'المالية',ar:'التقلب السعري',def:'درجة تذبذب سعر أصل ما في فترة زمنية',ex:'High volatility increases investment risk.',exAr:'التقلب العالي يزيد مخاطر الاستثمار.',tip:'vol-a-TIL-i-tee — النبرة على الثالث'},
+{w:'Solvency',f:'المالية',ar:'الملاءة المالية',def:'قدرة الشركة على سداد التزاماتها طويلة الأجل',ex:'The company\'s solvency is at risk.',exAr:'الملاءة المالية للشركة في خطر.',tip:'عكسها insolvency — الإعسار المالي'},
+{w:'Accrual',f:'المالية',ar:'الاستحقاق المحاسبي',def:'تسجيل الإيرادات والمصروفات عند تحققها لا عند الدفع',ex:'Accrual accounting gives a more accurate picture.',exAr:'المحاسبة على أساس الاستحقاق تعطي صورة أدق.',tip:'مختلفة عن cash accounting'},
+{w:'Equity',f:'المالية',ar:'حقوق الملكية',def:'قيمة ما يملكه المساهمون بعد خصم الالتزامات',ex:'The equity stake is worth $2 million.',exAr:'حصة الملكية تساوي 2 مليون دولار.',tip:'Assets - Liabilities = Equity'},
+{w:'Revenue',f:'المالية',ar:'الإيرادات / المبيعات',def:'إجمالي الدخل الناتج عن النشاط التجاري',ex:'Revenue grew by 23% year over year.',exAr:'نمت الإيرادات بـ 23% مقارنة بالعام الماضي.',tip:'مختلفة عن profit — قبل خصم التكاليف'},
+{w:'Indemnity',f:'المالية',ar:'التعويض',def:'الالتزام بتعويض طرف عن خسائر أو أضرار',ex:'The contract includes an indemnity clause.',exAr:'العقد يتضمن بنداً تعويضياً.',tip:'أساسي في عقود التأمين والمشاريع'},
+{w:'Liability',f:'المالية',ar:'الالتزام / المسؤولية المالية',def:'الديون والالتزامات المالية على الشركة',ex:'Current liabilities must be settled within a year.',exAr:'الالتزامات المتداولة تُسدَّد خلال عام.',tip:'Current vs Long-term liabilities'},
+{w:'Portfolio',f:'المالية',ar:'محفظة الاستثمارات',def:'مجموعة الاستثمارات أو المشاريع التي يديرها شخص أو مؤسسة',ex:'Diversify your portfolio to reduce risk.',exAr:'نوّع محفظتك لتقليل المخاطر.',tip:'ينطبق على المشاريع كما ينطبق على الأسهم'},
+{w:'Overhead',f:'المالية',ar:'المصاريف الثابتة',def:'التكاليف الإدارية والتشغيلية غير المرتبطة بالإنتاج المباشر',ex:'We need to reduce our overhead costs.',exAr:'نحتاج تقليل مصاريفنا الثابتة.',tip:'Rent + Salaries + Utilities = Overhead'},
+{w:'Write-off',f:'المالية',ar:'شطب الديون',def:'إزالة أصل أو دين من الدفاتر لعدم قابلية استردادها',ex:'We had to write off $500K in bad debt.',exAr:'اضطررنا لشطب 500 ألف دولار ديون معدومة.',tip:'يُستخدم أيضاً لتخفيض الضريبة'},
+{w:'BATNA',f:'التفاوض',ar:'أفضل بديل عند فشل الاتفاق',def:'Best Alternative To a Negotiated Agreement — خيارك إن فشل التفاوض',ex:'Know your BATNA before entering any negotiation.',exAr:'اعرف بديلك الأفضل قبل أي تفاوض.',tip:'كلما كان BATNA أقوى كلما كانت مفاوضتك أقوى'},
+{w:'Leverage',f:'التفاوض',ar:'نقطة القوة التفاوضية',def:'الميزة أو القوة التي تستخدمها لتحسين شروط الاتفاق',ex:'Our leverage in this deal is our market share.',exAr:'نقطة قوتنا في هذه الصفقة هي حصتنا السوقية.',tip:'حدد leverage المقابل قبل تحديد موقفك'},
+{w:'Concession',f:'التفاوض',ar:'تنازل تفاوضي',def:'التخلي عن مطلب أو تقديم تسهيل في إطار التفاوض',ex:'We made a concession on delivery time.',exAr:'قدمنا تنازلاً في موعد التسليم.',tip:'كل concession يجب أن يُقابَل بمكسب'},
+{w:'Counter-offer',f:'التفاوض',ar:'عرض مضاد',def:'الرد على عرض بعرض مختلف بدل القبول أو الرفض',ex:'They rejected our offer and made a counter-offer.',exAr:'رفضوا عرضنا وقدموا عرضاً مضاداً.',tip:'Counter-offer = رفض غير مباشر + فرصة جديدة'},
+{w:'Win-win',f:'التفاوض',ar:'مكسب للطرفين',def:'نتيجة تفاوضية يستفيد منها الطرفان',ex:'Let\'s find a win-win solution.',exAr:'لنجد حلاً يُرضي الطرفين.',tip:'الهدف المثالي لأي تفاوض طويل الأمد'},
+{w:'Tolerance',f:'الهندسة',ar:'هامش الخطأ المسموح',def:'النطاق المقبول للانحراف عن القيمة المثلى',ex:'The tolerance is ±0.5mm on all components.',exAr:'هامش الخطأ ±0.5مم على جميع المكونات.',tip:'حرجة في التصنيع الدقيق والهندسة الميكانيكية'},
+{w:'Specification',f:'الهندسة',ar:'المواصفة التقنية',def:'وثيقة تحدد المتطلبات والمعايير التقنية الدقيقة',ex:'Review the spec before starting development.',exAr:'راجع المواصفة قبل بدء التطوير.',tip:'Spec sheet — أساس كل مشروع هندسي'},
+{w:'Calibration',f:'الهندسة',ar:'المعايرة',def:'ضبط أداء جهاز أو نظام وفق معيار محدد للدقة',ex:'The sensors need calibration every 6 months.',exAr:'المستشعرات تحتاج معايرة كل 6 أشهر.',tip:'حرجة في الهندسة الطبية والصناعية'},
+{w:'Iteration',f:'الهندسة',ar:'الدورة التكرارية',def:'دورة تطوير تُكرَّر مع تحسينات حتى الوصول للنتيجة',ex:'Each iteration brings us closer to the goal.',exAr:'كل دورة تقربنا أكثر من الهدف.',tip:'أساس التحسين المستمر'},
+{w:'Prototype',f:'الهندسة',ar:'النموذج الأولي',def:'نموذج أولي من المنتج للاختبار قبل الإنتاج الكامل',ex:'Build and test the prototype before scaling.',exAr:'ابنِ واختبر النموذج قبل التوسع.',tip:'Fail fast, learn faster'},
+{w:'Load test',f:'الهندسة',ar:'اختبار الحمل',def:'اختبار قدرة النظام على التعامل مع الحمل الأقصى',ex:'Run a load test before going live.',exAr:'قم باختبار الحمل قبل الإطلاق.',tip:'يكشف نقاط الضعف قبل العميل'},
+{w:'Redundancy',f:'الهندسة',ar:'التكرار الهندسي',def:'تصميم مكونات احتياطية تعمل عند فشل الرئيسية',ex:'Redundancy prevents single point of failure.',exAr:'التكرار يمنع نقطة الفشل الواحدة.',tip:'هندسة موثوقة = هندسة مكررة'},
+{w:'Commissioning',f:'الهندسة',ar:'التشغيل الأولي والتسليم',def:'عملية التحقق من أن النظام يعمل وفق المواصفات قبل التسليم',ex:'Commissioning will take two weeks.',exAr:'التشغيل الأولي سيأخذ أسبوعين.',tip:'خطوة حرجة بين الإنشاء والتشغيل الفعلي'},
+{w:'Retrofit',f:'الهندسة',ar:'الترقية على منظومة قائمة',def:'إضافة تقنية أو مكونات حديثة لنظام أو منشأة قائمة',ex:'We\'re retrofitting the old HVAC system.',exAr:'نُرقّي نظام التكييف القديم.',tip:'أرخص من الاستبدال الكامل في كثير من الحالات'},
+{w:'Throughput',f:'الهندسة',ar:'معدل الإنتاجية',def:'كمية المخرجات التي يُنتجها نظام في وحدة زمن',ex:'We need to increase throughput by 30%.',exAr:'نحتاج زيادة معدل الإنتاجية بـ 30%.',tip:'يرتبط مباشرة بالـ bottleneck'},
+{w:'Attrition',f:'الموارد البشرية',ar:'استنزاف القوى البشرية',def:'معدل مغادرة الموظفين للمنظمة',ex:'High attrition is costing us significantly.',exAr:'معدل الاستنزاف المرتفع يُكلفنا كثيراً.',tip:'يُقاس بنسبة مئوية سنوية'},
+{w:'Onboarding',f:'الموارد البشرية',ar:'الاستقبال الوظيفي',def:'عملية دمج الموظف الجديد في المنظمة',ex:'Effective onboarding reduces early turnover.',exAr:'الاستقبال الفعّال يُقلل التسرب المبكر.',tip:'أول 90 يوم هي الأحرج للموظف الجديد'},
+{w:'Remuneration',f:'الموارد البشرية',ar:'المكافأة الإجمالية',def:'إجمالي ما يتلقاه الموظف مالياً وغير مالياً',ex:'We offer competitive remuneration packages.',exAr:'نقدم حزم مكافأة تنافسية.',tip:'أوسع من راتب — يشمل كل المزايا'},
+{w:'Performance review',f:'الموارد البشرية',ar:'تقييم الأداء',def:'تقييم دوري منظم لأداء الموظف',ex:'Performance reviews are held twice yearly.',exAr:'تقييمات الأداء تُعقد مرتين سنوياً.',tip:'يجب أن يكون مبنياً على بيانات لا انطباعات'},
+{w:'Succession planning',f:'الموارد البشرية',ar:'التخطيط للخلافة',def:'تحديد وتطوير من سيتولى الأدوار القيادية مستقبلاً',ex:'Succession planning is a board priority.',exAr:'التخطيط للخلافة أولوية على مستوى مجلس الإدارة.',tip:'المنظمة الناضجة لا تعتمد على شخص بعينه'},
+{w:'Competency',f:'الموارد البشرية',ar:'الكفاءة المهنية',def:'مجموعة المعارف والمهارات اللازمة للأداء المتميز',ex:'Communication is a core competency.',exAr:'التواصل كفاءة أساسية.',tip:'تُحدَّد في إطار الكفاءات frameworks'},
+{w:'Benchmark',f:'الموارد البشرية',ar:'معيار المقارنة',def:'مقارنة الرواتب والممارسات بالسوق',ex:'We benchmark salaries against industry data.',exAr:'نقارن الرواتب ببيانات الصناعة.',tip:'ضروري للحفاظ على التنافسية'},
+{w:'Engagement survey',f:'الموارد البشرية',ar:'استبيان الانخراط',def:'أداة قياس مدى ارتباط الموظفين بالمنظمة',ex:'The engagement survey results were concerning.',exAr:'نتائج استبيان الانخراط كانت مقلقة.',tip:'يُجرى سنوياً على الأقل'},
+{w:'SMART goals',f:'الموارد البشرية',ar:'الأهداف الذكية',def:'أهداف محددة وقابلة للقياس وقابلة للتحقق وذات صلة وزمنية',ex:'Set SMART goals for every team member.',exAr:'حدد أهدافاً ذكية لكل فرد في الفريق.',tip:'Specific Measurable Achievable Relevant Time-bound'},
+{w:'Exit interview',f:'الموارد البشرية',ar:'مقابلة الخروج',def:'مقابلة مع الموظف المغادر لفهم أسباب المغادرة',ex:'Exit interviews reveal systemic issues.',exAr:'مقابلات الخروج تكشف المشاكل الهيكلية.',tip:'معلومات ذهبية إن أخذت بجدية'},
+{w:'Synergy',f:'الاستراتيجية',ar:'التآزر',def:'الحالة التي يكون فيها الناتج المشترك أكبر من مجموع الأجزاء',ex:'The merger created significant synergies.',exAr:'الاندماج خلق تآزراً ملحوظاً.',tip:'SIN-er-jee — يُستخدم كثيراً في استراتيجية الأعمال'},
+{w:'Competitive advantage',f:'الاستراتيجية',ar:'الميزة التنافسية',def:'ما يجعل الشركة أفضل من منافسيها بشكل مستدام',ex:'Our data is our competitive advantage.',exAr:'بياناتنا هي ميزتنا التنافسية.',tip:'يجب أن تكون مستدامة وصعبة التقليد'},
+{w:'Market share',f:'الاستراتيجية',ar:'الحصة السوقية',def:'نسبة مبيعات الشركة من إجمالي السوق',ex:'We gained 5% market share this year.',exAr:'اكتسبنا 5% حصة سوقية هذا العام.',tip:'مؤشر أداء استراتيجي مهم'},
+{w:'Value proposition',f:'الاستراتيجية',ar:'عرض القيمة',def:'الفائدة الفريدة التي تُقدمها الشركة للعميل',ex:'Our value proposition is speed and reliability.',exAr:'عرض قيمتنا هو السرعة والموثوقية.',tip:'أساس كل عرض تجاري ناجح'},
+{w:'Core competency',f:'الاستراتيجية',ar:'الكفاءة الجوهرية',def:'المهارة أو القدرة الفريدة التي تتفوق بها الشركة',ex:'Manufacturing excellence is our core competency.',exAr:'التميز في التصنيع هو كفاءتنا الجوهرية.',tip:'ركّز عليها — وأخرِج ما سواها'},
+{w:'Scalable',f:'الاستراتيجية',ar:'قابل للتوسع',def:'قادر على النمو والتوسع دون أن تتناسب التكاليف مع الحجم',ex:'We need a scalable business model.',exAr:'نحتاج نموذج أعمال قابلاً للتوسع.',tip:'الـ startup الناجحة = فكرة scalable'},
+{w:'Disruption',f:'الاستراتيجية',ar:'التغيير الجذري للسوق',def:'تحول جذري يُغير قواعد اللعبة في صناعة ما',ex:'Digital disruption changed the banking sector.',exAr:'الاضطراب الرقمي غيّر قطاع البنوك.',tip:'كن disruptor قبل أن تُصبح disrupted'},
+{w:'Pivot',f:'الاستراتيجية',ar:'تحول استراتيجي',def:'تغيير جوهري في استراتيجية الأعمال مع الحفاظ على الهدف',ex:'We pivoted from B2C to B2B.',exAr:'تحولنا من B2C إلى B2B.',tip:'شائع في الـ startups — مرونة لا تخبط'},
+{w:'Go-to-market',f:'الاستراتيجية',ar:'استراتيجية الإطلاق',def:'الخطة المفصلة لتقديم منتج للسوق',ex:'Our go-to-market strategy focuses on enterprise.',exAr:'استراتيجية إطلاقنا تركز على المؤسسات.',tip:'تُحدد القناة والسعر والعميل المستهدف'},
+{w:'Due diligence',f:'الاستراتيجية',ar:'العناية الواجبة',def:'التحقق والتدقيق الشامل قبل اتخاذ قرار استثماري أو اندماج',ex:'We completed due diligence before the acquisition.',exAr:'أكملنا العناية الواجبة قبل الاستحواذ.',tip:'حرجة في M&A والاستثمارات الكبيرة'},
+]},
+
+// ══ PHASE 3: متوسط-متقدم ══
+{id:'p3',title:'المرحلة الثالثة',level:'متوسط — متقدم',color:'#6b3a1a',
+desc:'قانوني · تحليل · إدارة مخاطر · عمليات · ابتكار',
+fields:['القانوني','التحليل','إدارة المخاطر','العمليات','الابتكار'],
+words:[
+{w:'Indemnification',f:'القانوني',ar:'التعويض القانوني',def:'الالتزام بتعويض طرف عن أي خسائر أو مطالبات قانونية',ex:'The contract includes full indemnification.',exAr:'العقد يتضمن تعويضاً كاملاً.',tip:'in-dem-ni-fi-KAY-shun — النبرة على الخامس'},
+{w:'Arbitration',f:'القانوني',ar:'التحكيم',def:'حل النزاعات عبر محكّم محايد بدلاً من المحكمة',ex:'All disputes shall be resolved through arbitration.',exAr:'تُحل جميع النزاعات عبر التحكيم.',tip:'أسرع وأقل تكلفة من التقاضي التقليدي'},
+{w:'Subpoena',f:'القانوني',ar:'أمر الاستدعاء القضائي',def:'أمر قانوني رسمي بالمثول أمام المحكمة أو تقديم وثائق',ex:'The company received a subpoena for its records.',exAr:'الشركة تلقت أمر استدعاء للاطلاع على سجلاتها.',tip:'sa-PEE-na — الـ b صامتة تماماً'},
+{w:'Liability clause',f:'القانوني',ar:'بند المسؤولية',def:'نص في العقد يُحدد مسؤولية كل طرف عن الأضرار',ex:'Review the liability clause carefully.',exAr:'راجع بند المسؤولية بعناية.',tip:'يُحدد سقف المسؤولية المالية'},
+{w:'Force majeure',f:'القانوني',ar:'القوة القاهرة',def:'ظروف خارجة عن الإرادة تُعفي من تنفيذ الالتزامات',ex:'COVID-19 triggered force majeure clauses.',exAr:'كوفيد-19 فعّل بنود القوة القاهرة.',tip:'fors ma-ZHUR — نطقها فرنسي'},
+{w:'Non-disclosure',f:'القانوني',ar:'اتفاقية عدم الإفصاح',def:'عقد يمنع الأطراف من مشاركة معلومات سرية',ex:'Sign the NDA before the briefing.',exAr:'وقّع على اتفاقية عدم الإفصاح قبل الإحاطة.',tip:'NDA = Non-Disclosure Agreement'},
+{w:'Intellectual property',f:'القانوني',ar:'الملكية الفكرية',def:'الحقوق القانونية على الإبداعات الذهنية',ex:'Protect your intellectual property from day one.',exAr:'احمِ ملكيتك الفكرية منذ اليوم الأول.',tip:'Patents + Trademarks + Copyrights = IP'},
+{w:'Breach of contract',f:'القانوني',ar:'الإخلال بالعقد',def:'عدم الوفاء بالتزامات العقد من قبل أحد الأطراف',ex:'Late delivery constitutes breach of contract.',exAr:'التسليم المتأخر يُشكّل إخلالاً بالعقد.',tip:'يُخوّل الطرف المتضرر المطالبة بالتعويض'},
+{w:'Compliance',f:'القانوني',ar:'الامتثال',def:'الالتزام بالقوانين واللوائح والمعايير',ex:'Ensure full regulatory compliance.',exAr:'تأكد من الامتثال التنظيمي الكامل.',tip:'Compliance officer — وظيفة حرجة في البنوك والمستشفيات'},
+{w:'Jurisdiction',f:'القانوني',ar:'الاختصاص القضائي',def:'النطاق الجغرافي أو الموضوعي لصلاحيات المحكمة',ex:'This contract falls under Saudi jurisdiction.',exAr:'هذا العقد يخضع للاختصاص القضائي السعودي.',tip:'يحدد القانون المُطبَّق في النزاعات'},
+{w:'Precedent',f:'القانوني',ar:'السابقة القانونية',def:'قرار قضائي سابق يُستشهد به في القضايا المشابهة',ex:'This case sets a legal precedent.',exAr:'هذه القضية تُرسي سابقة قانونية.',tip:'PRES-e-dent — أساس القانون العرفي'},
+{w:'Arbitral award',f:'القانوني',ar:'قرار التحكيم',def:'القرار النهائي الملزم الصادر عن هيئة التحكيم',ex:'The arbitral award was in our favor.',exAr:'قرار التحكيم جاء لصالحنا.',tip:'مُلزِم للطرفين كالحكم القضائي'},
+{w:'Indemnity',f:'القانوني',ar:'ضمان التعويض',def:'الاتفاق على تحمل أحد الأطراف خسائر الطرف الآخر',ex:'The indemnity covers all third-party claims.',exAr:'الضمان يغطي جميع المطالبات من الأطراف الثالثة.',tip:'شائع في عقود البناء والاستشارات'},
+{w:'Waiver',f:'القانوني',ar:'التنازل عن حق',def:'التخلي الطوعي عن حق قانوني مكتسب',ex:'Signing the waiver releases all liability.',exAr:'توقيع التنازل يُسقط كل المسؤولية.',tip:'لا يُوقَّع دون مراجعة قانونية'},
+{w:'Litigation',f:'القانوني',ar:'التقاضي',def:'عملية حل النزاعات عبر المحاكم',ex:'We want to avoid litigation at all costs.',exAr:'نريد تجنب التقاضي بأي ثمن.',tip:'طويل ومكلف — آخر الخيارات'},
+{w:'Regression analysis',f:'التحليل',ar:'تحليل الانحدار',def:'أسلوب إحصائي لفهم العلاقة بين المتغيرات',ex:'Regression analysis revealed key cost drivers.',exAr:'تحليل الانحدار كشف محركات التكلفة الرئيسية.',tip:'أساس التحليل الكمي في الأعمال'},
+{w:'Variance',f:'التحليل',ar:'الانحراف / التباين',def:'الفرق بين القيم الفعلية والمخططة أو المتوسط',ex:'Explain the variance in this month\'s sales.',exAr:'اشرح الانحراف في مبيعات هذا الشهر.',tip:'Favorable vs Unfavorable variance'},
+{w:'Correlation',f:'التحليل',ar:'الارتباط الإحصائي',def:'مدى ارتباط متغيرين ببعضهما',ex:'There\'s a strong correlation between price and demand.',exAr:'هناك ارتباط قوي بين السعر والطلب.',tip:'Correlation ≠ Causation — لا تخلط بينهما'},
+{w:'Pivot table',f:'التحليل',ar:'جدول محوري',def:'أداة تحليلية لتلخيص وتصنيف البيانات بمرونة',ex:'Use a pivot table to summarize the data.',exAr:'استخدم الجدول المحوري لتلخيص البيانات.',tip:'مهارة Excel أساسية لكل محلل'},
+{w:'Trend analysis',f:'التحليل',ar:'تحليل الاتجاهات',def:'دراسة البيانات عبر الزمن لتحديد الأنماط والاتجاهات',ex:'Trend analysis shows consistent growth.',exAr:'تحليل الاتجاهات يُظهر نمواً ثابتاً.',tip:'الأساس لأي قرار مبني على البيانات'},
+{w:'Predictive modeling',f:'التحليل',ar:'النمذجة التنبؤية',def:'استخدام البيانات والخوارزميات للتنبؤ بالنتائج المستقبلية',ex:'Predictive modeling reduced our churn rate.',exAr:'النمذجة التنبؤية قللت معدل الخسارة.',tip:'من أقوى أدوات تحليل البيانات'},
+{w:'Data-driven',f:'التحليل',ar:'مبني على البيانات',def:'اتخاذ القرارات استناداً للبيانات لا الحدس',ex:'We need a data-driven approach to marketing.',exAr:'نحتاج نهجاً مبنياً على البيانات في التسويق.',tip:'عكسه gut-feeling — صحيح أحياناً لكن خطير'},
+{w:'Hypothesis',f:'التحليل',ar:'الفرضية',def:'افتراض قابل للاختبار يُصاغ قبل التحليل',ex:'Test your hypothesis before scaling.',exAr:'اختبر فرضيتك قبل التوسع.',tip:'Define → Test → Validate → Scale'},
+{w:'Root cause analysis',f:'التحليل',ar:'تحليل السبب الجذري',def:'منهجية لتحديد السبب الأصلي للمشكلة لا الأعراض',ex:'RCA revealed a flaw in the process.',exAr:'تحليل السبب الجذري كشف خللاً في العملية.',tip:'5 Whys — أبسط أدوات RCA'},
+{w:'Risk register',f:'إدارة المخاطر',ar:'سجل المخاطر',def:'وثيقة توثّق المخاطر المُحددة وتقييمها وخطط التعامل معها',ex:'Update the risk register after each sprint.',exAr:'حدّث سجل المخاطر بعد كل دورة.',tip:'أداة حية تُحدَّث باستمرار'},
+{w:'Risk appetite',f:'إدارة المخاطر',ar:'الشهية للمخاطر',def:'مستوى المخاطر الذي ترغب المنظمة في تحمله لتحقيق أهدافها',ex:'Our risk appetite is conservative.',exAr:'شهيتنا للمخاطر محافظة.',tip:'تحدده الإدارة العليا ومجلس الإدارة'},
+{w:'Probability matrix',f:'إدارة المخاطر',ar:'مصفوفة الاحتمالية والأثر',def:'أداة لتقييم المخاطر بناءً على احتمالية حدوثها وأثرها',ex:'Plot each risk on the probability matrix.',exAr:'ضع كل مخاطرة على مصفوفة الاحتمالية.',tip:'High probability + High impact = أولوية قصوى'},
+{w:'Hedging',f:'إدارة المخاطر',ar:'التحوط',def:'استراتيجية لتقليل الخسائر المحتملة من تقلبات السوق',ex:'We\'re hedging our currency exposure.',exAr:'نتحوط من تعرضنا لتذبذب العملات.',tip:'يُستخدم في المالية والسلع والعمليات'},
+{w:'Exposure',f:'إدارة المخاطر',ar:'التعرض للمخاطر',def:'مدى تعرض المنظمة لخطر محدد',ex:'Reduce our exposure to regulatory changes.',exAr:'قلل تعرضنا للتغييرات التنظيمية.',tip:'Risk exposure = Probability × Impact'},
+{w:'Scenario planning',f:'إدارة المخاطر',ar:'التخطيط بالسيناريوهات',def:'تحليل سيناريوهات مستقبلية محتملة للتحضير لها',ex:'Scenario planning revealed three critical risks.',exAr:'التخطيط بالسيناريوهات كشف ثلاثة مخاطر حرجة.',tip:'Best case + Worst case + Most likely'},
+{w:'Business continuity',f:'إدارة المخاطر',ar:'استمرارية الأعمال',def:'الخطط والإجراءات لضمان استمرار العمليات عند الأزمات',ex:'Our business continuity plan was tested.',exAr:'تم اختبار خطة استمرارية أعمالنا.',tip:'BCP — يُراجَع ويُختبر سنوياً'},
+{w:'Lean',f:'العمليات',ar:'الإنتاج الرشيق',def:'منهجية تُركز على تقليل الهدر وزيادة القيمة',ex:'We applied lean principles to reduce waste.',exAr:'طبقنا مبادئ الرشاقة لتقليل الهدر.',tip:'من Toyota Production System — الأصل'},
+{w:'Six Sigma',f:'العمليات',ar:'ستة سيغما',def:'منهجية لتحسين الجودة وتقليل العيوب',ex:'We\'re targeting Six Sigma quality levels.',exAr:'نستهدف مستويات جودة ستة سيغما.',tip:'3.4 عيب لكل مليون وحدة — قريب من الكمال'},
+{w:'Bottleneck analysis',f:'العمليات',ar:'تحليل نقاط الاختناق',def:'تحديد العوامل التي تُعيق تدفق العمل وإيجاد حلول لها',ex:'Bottleneck analysis revealed the QA step.',exAr:'كشف التحليل أن خطوة ضمان الجودة هي العائق.',tip:'حل الـ bottleneck يُحسّن الـ throughput كله'},
+{w:'Capacity planning',f:'العمليات',ar:'تخطيط الطاقة الإنتاجية',def:'تحديد الموارد المطلوبة لتلبية الطلب المتوقع',ex:'Capacity planning prevents resource bottlenecks.',exAr:'تخطيط الطاقة يمنع اختناقات الموارد.',tip:'يُوازن بين العرض والطلب على الموارد'},
+{w:'Process optimization',f:'العمليات',ar:'تحسين العمليات',def:'إعادة تصميم الأعمال لتحقيق أعلى كفاءة ممكنة',ex:'Process optimization cut our costs by 18%.',exAr:'تحسين العمليات خفض تكاليفنا بـ 18%.',tip:'Map → Analyze → Redesign → Implement'},
+{w:'SLA',f:'العمليات',ar:'اتفاقية مستوى الخدمة',def:'Service Level Agreement — اتفاق يُحدد مستوى الخدمة المطلوب',ex:'We must meet the 99.9% uptime SLA.',exAr:'يجب أن نحقق اتفاقية التشغيل البالغة 99.9%.',tip:'يُحدد العقوبات عند الإخلال'},
+{w:'Design thinking',f:'الابتكار',ar:'التفكير التصميمي',def:'منهجية مبنية على التعاطف مع المستخدم لحل المشاكل',ex:'We used design thinking for the new app.',exAr:'استخدمنا التفكير التصميمي للتطبيق الجديد.',tip:'Empathize → Define → Ideate → Prototype → Test'},
+{w:'MVP',f:'الابتكار',ar:'الحد الأدنى من المنتج القابل للطرح',def:'Minimum Viable Product — أبسط نسخة من المنتج تختبر الفكرة',ex:'Launch the MVP before investing more.',exAr:'أطلق الـ MVP قبل الاستثمار أكثر.',tip:'Fail fast, learn faster, iterate'},
+{w:'Agile',f:'الابتكار',ar:'منهجية الرشاقة',def:'نهج تطوير تكراري يركز على التسليم المستمر والتكيف',ex:'We switched to Agile development.',exAr:'تحولنا لمنهجية Agile في التطوير.',tip:'AJ-ile — النبرة على الأول'},
+{w:'Disruptive innovation',f:'الابتكار',ar:'الابتكار التحويلي',def:'ابتكار يُغير قواعد اللعبة ويُعيد تشكيل السوق',ex:'Uber was a disruptive innovation in transport.',exAr:'Uber كان ابتكاراً تحويلياً في النقل.',tip:'مفهوم Clayton Christensen الشهير'},
+{w:'Hackathon',f:'الابتكار',ar:'مسابقة الابتكار المكثف',def:'فعالية تنافسية مكثفة لإيجاد حلول مبتكرة في وقت قصير',ex:'Our hackathon produced three viable prototypes.',exAr:'مسابقتنا أنتجت ثلاثة نماذج قابلة للتطبيق.',tip:'أداة ممتازة لثقافة الابتكار الداخلي'},
+{w:'Open innovation',f:'الابتكار',ar:'الابتكار المفتوح',def:'الاستفادة من أفكار خارجية في تطوير المنتجات والحلول',ex:'Open innovation accelerates our R&D.',exAr:'الابتكار المفتوح يُسرّع البحث والتطوير.',tip:'عكسه closed innovation — داخلي فقط'},
+{w:'Ideation',f:'الابتكار',ar:'توليد الأفكار',def:'عملية إنتاج وتطوير أفكار جديدة',ex:'The ideation session generated 50 ideas.',exAr:'جلسة توليد الأفكار أنتجت 50 فكرة.',tip:'الكم قبل الجودة في مرحلة الـ ideation'},
+{w:'R&D',f:'الابتكار',ar:'البحث والتطوير',def:'Research and Development — الاستثمار في الأبحاث لتطوير منتجات ومعارف جديدة',ex:'We invest 8% of revenue in R&D.',exAr:'نستثمر 8% من الإيرادات في البحث والتطوير.',tip:'الشركات الرائدة تحمي ميزانية R&D'},
+{w:'Patent',f:'الابتكار',ar:'براءة الاختراع',def:'حق قانوني حصري على الاختراع لمدة محددة',ex:'File a patent before disclosing the invention.',exAr:'سجّل براءة الاختراع قبل الكشف عنها.',tip:'يمنح حماية 20 عاماً في معظم الدول'},
+]},
+
+// ══ PHASE 4: متقدم ══
+{id:'p4',title:'المرحلة الرابعة',level:'متقدم',color:'#4a1a6b',
+desc:'اقتصاد · حوكمة · سلاسل توريد · تحول رقمي · إدارة أزمات',
+fields:['الاقتصاد','الحوكمة','سلاسل التوريد','التحول الرقمي','إدارة الأزمات'],
+words:[
+{w:'Macroeconomics',f:'الاقتصاد',ar:'الاقتصاد الكلي',def:'دراسة الاقتصاد على مستوى الدول والقطاعات',ex:'Macroeconomic factors affect all businesses.',exAr:'العوامل الاقتصادية الكلية تؤثر على جميع الأعمال.',tip:'GDP + Inflation + Interest rates = Macroeconomics'},
+{w:'Fiscal policy',f:'الاقتصاد',ar:'السياسة المالية',def:'استخدام الحكومة للإنفاق والضرائب لإدارة الاقتصاد',ex:'Fiscal policy stimulus boosted demand.',exAr:'التحفيز المالي الحكومي عزّز الطلب.',tip:'يقابلها Monetary policy للبنك المركزي'},
+{w:'Monetary policy',f:'الاقتصاد',ar:'السياسة النقدية',def:'إدارة البنك المركزي لعرض النقد وأسعار الفائدة',ex:'Tight monetary policy slows inflation.',exAr:'السياسة النقدية المتشددة تُبطئ التضخم.',tip:'Fed في أمريكا + البنك المركزي السعودي'},
+{w:'Inflation',f:'الاقتصاد',ar:'التضخم',def:'الارتفاع المستمر في مستوى الأسعار وتراجع القوة الشرائية',ex:'High inflation erodes purchasing power.',exAr:'التضخم المرتفع يُآكل القوة الشرائية.',tip:'2% هدف معظم البنوك المركزية'},
+{w:'Recession',f:'الاقتصاد',ar:'الركود الاقتصادي',def:'انكماش اقتصادي مستمر لربعين متتاليين على الأقل',ex:'Companies must prepare for a possible recession.',exAr:'الشركات يجب أن تستعد لركود محتمل.',tip:'تعريف تقني: انكماش GDP لربعين متتاليين'},
+{w:'Supply and demand',f:'الاقتصاد',ar:'العرض والطلب',def:'القوى الأساسية التي تحدد أسعار السوق',ex:'Supply and demand determine the market price.',exAr:'العرض والطلب يحددان سعر السوق.',tip:'أساس كل تحليل سعري واستثماري'},
+{w:'GDP',f:'الاقتصاد',ar:'الناتج المحلي الإجمالي',def:'إجمالي قيمة السلع والخدمات المنتجة في دولة خلال فترة',ex:'GDP growth slowed to 2% this year.',exAr:'نمو الناتج المحلي تباطأ إلى 2% هذا العام.',tip:'Gross Domestic Product — مقياس حجم الاقتصاد'},
+{w:'Interest rate',f:'الاقتصاد',ar:'سعر الفائدة',def:'تكلفة الاقتراض أو عائد الإقراض',ex:'Rising interest rates increased our borrowing cost.',exAr:'ارتفاع أسعار الفائدة زاد تكلفة الاقتراض.',tip:'قرارات الفائدة تؤثر على كل قطاع'},
+{w:'Exchange rate',f:'الاقتصاد',ar:'سعر الصرف',def:'نسبة تحويل عملة لأخرى',ex:'Currency fluctuations affect our exports.',exAr:'تذبذب العملات يؤثر على صادراتنا.',tip:'يؤثر على الشركات متعددة الجنسيات بشكل مباشر'},
+{w:'Market capitalization',f:'الاقتصاد',ar:'القيمة السوقية',def:'إجمالي قيمة أسهم الشركة في السوق',ex:'Apple\'s market cap exceeds $3 trillion.',exAr:'القيمة السوقية لأبل تتجاوز 3 تريليون دولار.',tip:'Share Price × Total Shares = Market Cap'},
+{w:'Corporate governance',f:'الحوكمة',ar:'حوكمة الشركات',def:'نظام القواعد والممارسات التي تُدار بها الشركة',ex:'Strong corporate governance builds investor trust.',exAr:'الحوكمة القوية تبني ثقة المستثمرين.',tip:'Board + Transparency + Accountability = Governance'},
+{w:'Board of directors',f:'الحوكمة',ar:'مجلس الإدارة',def:'الهيئة العليا المُكلّفة بالإشراف على إدارة الشركة',ex:'The board approved the strategic plan.',exAr:'مجلس الإدارة وافق على الخطة الاستراتيجية.',tip:'يُمثّل مصالح المساهمين'},
+{w:'Fiduciary duty',f:'الحوكمة',ar:'الواجب الائتماني',def:'الالتزام القانوني بالتصرف بما يخدم مصالح الآخرين لا مصالحك',ex:'Directors have a fiduciary duty to shareholders.',exAr:'المديرون ملزمون بواجب ائتماني تجاه المساهمين.',tip:'fi-DYOO-shee-er-ee — أساس قانون الشركات'},
+{w:'Transparency',f:'الحوكمة',ar:'الشفافية',def:'الانفتاح في الإفصاح عن المعلومات المهمة للأطراف المعنية',ex:'ESG requires full financial transparency.',exAr:'معايير ESG تتطلب شفافية مالية كاملة.',tip:'الشفافية تحمي الشركة من المخاطر القانونية'},
+{w:'ESG',f:'الحوكمة',ar:'معايير البيئة والحوكمة الاجتماعية',def:'Environmental Social Governance — إطار لتقييم الاستدامة',ex:'Investors now demand ESG compliance.',exAr:'المستثمرون يطالبون بالامتثال لمعايير ESG.',tip:'أصبح معياراً أساسياً للاستثمار المؤسسي'},
+{w:'Supply chain',f:'سلاسل التوريد',ar:'سلسلة التوريد',def:'شبكة كاملة من الموردين والموزعين حتى المستهلك النهائي',ex:'Disruptions in the supply chain affect production.',exAr:'الاضطرابات في سلسلة التوريد تؤثر على الإنتاج.',tip:'COVID كشف هشاشة سلاسل التوريد العالمية'},
+{w:'Procurement',f:'سلاسل التوريد',ar:'المشتريات / التوريد',def:'عملية شراء السلع والخدمات المطلوبة للعمليات',ex:'Strategic procurement reduces costs by 20%.',exAr:'المشتريات الاستراتيجية تُقلل التكاليف بـ 20%.',tip:'pro-KYOOR-ment — النبرة على الثاني'},
+{w:'Vendor management',f:'سلاسل التوريد',ar:'إدارة الموردين',def:'إدارة العلاقة مع الموردين لتحقيق أعلى قيمة',ex:'Vendor management is critical for quality.',exAr:'إدارة الموردين حرجة لضمان الجودة.',tip:'يشمل التقييم والتطوير والتفاوض'},
+{w:'Just-in-time',f:'سلاسل التوريد',ar:'التوريد في الوقت المحدد',def:'استراتيجية تقليل المخزون بتوريد المواد عند الحاجة فقط',ex:'JIT reduces inventory costs significantly.',exAr:'JIT يُقلل تكاليف المخزون بشكل ملحوظ.',tip:'تعمل مع موردين موثوقين فقط'},
+{w:'Logistics',f:'سلاسل التوريد',ar:'اللوجستيات',def:'إدارة تدفق البضائع من المصدر للوجهة',ex:'Efficient logistics is our competitive edge.',exAr:'اللوجستيات الكفوءة هي ميزتنا التنافسية.',tip:'lo-JIS-tiks — الـ g تنطق j'},
+{w:'Digital transformation',f:'التحول الرقمي',ar:'التحول الرقمي',def:'دمج التقنيات الرقمية في جميع جوانب الأعمال',ex:'Digital transformation changed our business model.',exAr:'التحول الرقمي غيّر نموذج أعمالنا.',tip:'مش مجرد أتمتة — إعادة تفكير جذرية'},
+{w:'AI integration',f:'التحول الرقمي',ar:'دمج الذكاء الاصطناعي',def:'توظيف تقنيات الذكاء الاصطناعي في العمليات والمنتجات',ex:'AI integration reduced processing time by 60%.',exAr:'دمج الذكاء الاصطناعي قلل وقت المعالجة بـ 60%.',tip:'يبدأ بـ use case واضح ثم يُوسَّع'},
+{w:'Cloud migration',f:'التحول الرقمي',ar:'الترحيل للسحابة',def:'نقل البنية التحتية والبيانات من الخوادم المحلية للسحابة',ex:'Cloud migration cut IT costs by 40%.',exAr:'الترحيل للسحابة خفض تكاليف IT بـ 40%.',tip:'Lift & Shift vs Refactoring — استراتيجيتان مختلفتان'},
+{w:'Cybersecurity',f:'التحول الرقمي',ar:'الأمن السيبراني',def:'حماية الأنظمة والبيانات من الهجمات الرقمية',ex:'Cybersecurity is not optional anymore.',exAr:'الأمن السيبراني لم يعد اختيارياً.',tip:'التكلفة الوقائية دائماً أقل من تكلفة الاختراق'},
+{w:'Data governance',f:'التحول الرقمي',ar:'حوكمة البيانات',def:'إطار لإدارة البيانات وضمان جودتها وأمانها وامتثالها',ex:'Data governance is essential for AI projects.',exAr:'حوكمة البيانات ضرورية لمشاريع الذكاء الاصطناعي.',tip:'بدونها البيانات كنز لا يمكن استخدامه'},
+{w:'Crisis communication',f:'إدارة الأزمات',ar:'التواصل في الأزمات',def:'إدارة التواصل مع الأطراف المعنية خلال الأزمات',ex:'Crisis communication saved our reputation.',exAr:'التواصل في الأزمة حمى سمعتنا.',tip:'البطء في التواصل يُضاعف الضرر'},
+{w:'Damage control',f:'إدارة الأزمات',ar:'السيطرة على الأضرار',def:'الإجراءات السريعة للحد من أضرار أزمة ما',ex:'Immediate damage control limited the impact.',exAr:'السيطرة الفورية على الأضرار حدّت من التأثير.',tip:'كلما كان أسرع كلما كان أفعل'},
+{w:'Stakeholder management',f:'إدارة الأزمات',ar:'إدارة أصحاب المصلحة',def:'التعامل الاستراتيجي مع جميع الأطراف المعنية بالأزمة',ex:'Stakeholder management was key during the crisis.',exAr:'إدارة أصحاب المصلحة كانت مفتاح الأزمة.',tip:'حدد الأطراف وأولوياتهم مسبقاً'},
+{w:'Post-mortem',f:'إدارة الأزمات',ar:'تحليل ما بعد الأزمة',def:'مراجعة شاملة بعد حدث أو مشروع لاستخلاص الدروس',ex:'We conducted a thorough post-mortem.',exAr:'أجرينا مراجعة شاملة ما بعد الأزمة.',tip:'blame-free — هدفه التعلم لا العقاب'},
+{w:'Reputational risk',f:'إدارة الأزمات',ar:'مخاطر السمعة',def:'احتمالية تضرر سمعة الشركة وتأثيره على قيمتها',ex:'Reputational risk is harder to quantify than financial risk.',exAr:'مخاطر السمعة أصعب قياساً من المخاطر المالية.',tip:'السمعة تُبنى بسنوات وتُهدم بدقائق'},
+{w:'War room',f:'إدارة الأزمات',ar:'غرفة الأزمات',def:'مركز قيادة مؤقت يُفعَّل خلال الأزمات لتنسيق الاستجابة',ex:'The war room was activated within 2 hours.',exAr:'غرفة الأزمات فُعِّلت خلال ساعتين.',tip:'تضم قرارات + تنسيق + تواصل في مكان واحد'},
+]},
+
+// ══ PHASE 5: خبير ══
+{id:'p5',title:'المرحلة الخامسة',level:'خبير',color:'#6b1a1a',
+desc:'C-level · مجلس إدارة · M&A · استثمار · قيادة تحولية',
+fields:['C-Level','مجلس الإدارة','الاندماج والاستحواذ','الاستثمار','القيادة التحولية'],
+words:[
+{w:'P&L',f:'C-Level',ar:'الربح والخسارة',def:'Profit and Loss — قائمة الدخل التي توضح الأداء المالي',ex:'Every department head must own their P&L.',exAr:'كل رئيس قسم يجب أن يتملك P&L خاصته.',tip:'الفهم العميق للـ P&L يُميّز القائد الحقيقي'},
+{w:'EBITDA',f:'C-Level',ar:'الأرباح قبل الفوائد والضرائب والإهلاك',def:'Earnings Before Interest Tax Depreciation Amortization — مقياس الربحية التشغيلية',ex:'Our EBITDA margin improved to 22%.',exAr:'هامش EBITDA لدينا تحسن إلى 22%.',tip:'ee-BIT-dah — أكثر مقاييس التقييم استخداماً'},
+{w:'Return on investment',f:'C-Level',ar:'العائد على الاستثمار',def:'نسبة الربح إلى التكلفة الإجمالية للاستثمار',ex:'This project has an ROI of 180%.',exAr:'هذا المشروع لديه عائد استثمار 180%.',tip:'ROI = (Gain - Cost) / Cost × 100'},
+{w:'Strategic alignment',f:'C-Level',ar:'التوافق الاستراتيجي',def:'حالة تكون فيها جميع الموارد والقرارات متسقة مع الاستراتيجية',ex:'Ensure strategic alignment before resource allocation.',exAr:'تأكد من التوافق الاستراتيجي قبل توزيع الموارد.',tip:'الأكثر تأثيراً على أداء المنظمة على المدى البعيد'},
+{w:'Organizational agility',f:'C-Level',ar:'رشاقة المنظمة',def:'قدرة المنظمة على التكيف والاستجابة بسرعة للتغيير',ex:'Organizational agility is our top priority.',exAr:'رشاقة المنظمة هي أولويتنا القصوى.',tip:'تتطلب ثقافة + هيكل + عمليات مرنة'},
+{w:'Change management',f:'C-Level',ar:'إدارة التغيير',def:'منهجية منظمة لقيادة التحول في المنظمة',ex:'Change management reduces resistance and failure.',exAr:'إدارة التغيير تُقلل المقاومة والفشل.',tip:'Kotter\'s 8 Steps — الإطار الأشهر'},
+{w:'Disruption strategy',f:'C-Level',ar:'استراتيجية التحويل السوقي',def:'خطة لتغيير قواعد اللعبة في الصناعة بدلاً من اللحاق بها',ex:'Our disruption strategy targets the mid-market.',exAr:'استراتيجية التحويل لدينا تستهدف السوق المتوسط.',tip:'Disrupt or be disrupted — لا خيار ثالث'},
+{w:'Value creation',f:'C-Level',ar:'خلق القيمة',def:'الزيادة في ثروة المساهمين أو قيمة الشركة عبر الزمن',ex:'Every decision must drive value creation.',exAr:'كل قرار يجب أن يُحرّك خلق القيمة.',tip:'القائد الجيد يُعظّم قيمة كل ريال مستثمر'},
+{w:'Capital allocation',f:'C-Level',ar:'توزيع رأس المال',def:'قرار تخصيص الموارد المالية بين الفرص المختلفة',ex:'Capital allocation is the CEO\'s most important job.',exAr:'توزيع رأس المال هو أهم وظيفة للرئيس التنفيذي.',tip:'Warren Buffett: أهم مهارة للـ CEO'},
+{w:'Stakeholder value',f:'C-Level',ar:'قيمة أصحاب المصلحة',def:'الفائدة التي تُقدمها الشركة لجميع الأطراف المعنية',ex:'We moved beyond shareholder value to stakeholder value.',exAr:'تجاوزنا قيمة المساهمين نحو قيمة أصحاب المصلحة.',tip:'Business Roundtable 2019 — تحول جذري في فكر الأعمال'},
+{w:'Quorum',f:'مجلس الإدارة',ar:'النصاب القانوني',def:'العدد الأدنى من الأعضاء لصحة انعقاد الاجتماع',ex:'We don\'t have quorum — the meeting must be postponed.',exAr:'لا يوجد نصاب — يجب تأجيل الاجتماع.',tip:'KWOR-um — شرط قانوني في النظام الأساسي'},
+{w:'Resolution',f:'مجلس الإدارة',ar:'قرار رسمي للمجلس',def:'قرار رسمي مُتخَذ من مجلس الإدارة بعد التصويت',ex:'The resolution passed with 7 votes to 2.',exAr:'القرار مرّ بـ 7 أصوات مقابل 2.',tip:'يُوثَّق رسمياً في محضر المجلس'},
+{w:'Board resolution',f:'مجلس الإدارة',ar:'قرار مجلس الإدارة',def:'وثيقة رسمية تُسجَّل فيها قرارات مجلس الإدارة',ex:'A board resolution is needed to open the account.',exAr:'قرار مجلس الإدارة مطلوب لفتح الحساب.',tip:'مطلوب للبنوك والعقود الكبيرة'},
+{w:'Non-executive director',f:'مجلس الإدارة',ar:'عضو غير تنفيذي',def:'عضو في مجلس الإدارة لا يشارك في الإدارة اليومية',ex:'Non-executive directors provide independent oversight.',exAr:'الأعضاء غير التنفيذيون يُقدمون رقابة مستقلة.',tip:'يمثلون مصالح المساهمين ويُوازنون سلطة الإدارة'},
+{w:'Audit committee',f:'مجلس الإدارة',ar:'لجنة التدقيق',def:'لجنة فرعية تُشرف على التدقيق المالي والامتثال',ex:'The audit committee reviews quarterly reports.',exAr:'لجنة التدقيق تراجع التقارير الفصلية.',tip:'مستقلة عن الإدارة التنفيذية'},
+{w:'Merger',f:'الاندماج والاستحواذ',ar:'الاندماج',def:'دمج شركتين لتكوين كيان واحد',ex:'The merger created a $5B company.',exAr:'الاندماج أوجد شركة بقيمة 5 مليار.',tip:'يختلف عن Acquisition — هنا الطرفان متساويان نسبياً'},
+{w:'Acquisition',f:'الاندماج والاستحواذ',ar:'الاستحواذ',def:'شراء شركة أو السيطرة عليها من قبل شركة أخرى',ex:'The acquisition strengthened our market position.',exAr:'الاستحواذ عزّز موقعنا السوقي.',tip:'Friendly vs Hostile acquisition — تتباين جذرياً'},
+{w:'Due diligence',f:'الاندماج والاستحواذ',ar:'العناية الواجبة',def:'التحقيق الشامل في الشركة المستهدفة قبل الاستحواذ',ex:'Due diligence took three months.',exAr:'العناية الواجبة استغرقت ثلاثة أشهر.',tip:'Financial + Legal + Operational DD'},
+{w:'Valuation',f:'الاندماج والاستحواذ',ar:'التقييم',def:'تحديد القيمة السوقية العادلة للشركة',ex:'The valuation came in at $120M.',exAr:'جاء التقييم بـ 120 مليون دولار.',tip:'DCF + Comparables + Precedent transactions'},
+{w:'Earnout',f:'الاندماج والاستحواذ',ar:'الدفع المرتبط بالأداء',def:'جزء من ثمن الاستحواذ يُدفع لاحقاً مرتبطاً بأداء الشركة',ex:'The deal includes a $10M earnout over 3 years.',exAr:'الصفقة تتضمن 10 مليون دفعة مرتبطة بأداء لمدة 3 سنوات.',tip:'يُوازن مصالح البائع والمشتري'},
+{w:'Private equity',f:'الاستثمار',ar:'الأسهم الخاصة',def:'الاستثمار في شركات غير مدرجة في البورصة',ex:'Private equity firms look for undervalued assets.',exAr:'شركات الأسهم الخاصة تبحث عن أصول مُقيَّمة بأقل من قيمتها.',tip:'مختلف عن Venture Capital — يستهدف شركات ناضجة'},
+{w:'Venture capital',f:'الاستثمار',ar:'رأس المال المخاطر',def:'تمويل الشركات الناشئة عالية النمو مقابل حصة ملكية',ex:'We raised Series A from a VC firm.',exAr:'جمعنا الجولة A من شركة رأس مال مخاطر.',tip:'VC يتوقع 10x من كل استثمار للتعويض عن الخسائر'},
+{w:'IRR',f:'الاستثمار',ar:'معدل العائد الداخلي',def:'Internal Rate of Return — معدل الخصم الذي يجعل صافي القيمة الحالية صفراً',ex:'The project IRR is 23%, exceeding our hurdle rate.',exAr:'معدل العائد الداخلي 23% يتجاوز معدل العقبة لدينا.',tip:'أداة حرجة لمقارنة فرص الاستثمار'},
+{w:'NPV',f:'الاستثمار',ar:'صافي القيمة الحالية',def:'Net Present Value — قيمة التدفقات النقدية المستقبلية مُخصَّمة للحاضر',ex:'Positive NPV means the investment creates value.',exAr:'NPV الموجب يعني أن الاستثمار يخلق قيمة.',tip:'NPV > 0 = استثمر / NPV < 0 = تجنب'},
+{w:'Portfolio diversification',f:'الاستثمار',ar:'تنويع المحفظة',def:'توزيع الاستثمارات على أصول مختلفة لتقليل المخاطر',ex:'Portfolio diversification is the only free lunch.',exAr:'تنويع المحفظة هو الغداء المجاني الوحيد.',tip:'Don\'t put all eggs in one basket — قاعدة ذهبية'},
+{w:'Transformational leadership',f:'القيادة التحولية',ar:'القيادة التحولية',def:'نمط قيادي يُحفّز التغيير الجذري ويُلهم الآخرين لتجاوز مصالحهم الذاتية',ex:'Transformational leadership drove the turnaround.',exAr:'القيادة التحولية قادت عملية الإنعاش.',tip:'يقابلها Transactional leadership — مكافأة مقابل أداء'},
+{w:'Servant leadership',f:'القيادة التحولية',ar:'القيادة الخادمة',def:'نمط قيادي يضع احتياجات الفريق فوق احتياجات القائد',ex:'Servant leaders build highly engaged teams.',exAr:'القادة الخادمون يبنون فرقاً منخرطة بعمق.',tip:'Robert Greenleaf — مفهوم ثوري في القيادة'},
+{w:'Psychological safety',f:'القيادة التحولية',ar:'الأمان النفسي',def:'بيئة يشعر فيها الأفراد بالأمان للتعبير عن أفكارهم دون خوف',ex:'Teams with psychological safety outperform others.',exAr:'الفرق ذات الأمان النفسي تتفوق على غيرها.',tip:'Google\'s Project Aristotle: العامل الأهم في الفرق'},
+{w:'Radical transparency',f:'القيادة التحولية',ar:'الشفافية الجذرية',def:'مشاركة المعلومات بشكل كامل وصريح حتى المعلومات الصعبة',ex:'Ray Dalio built Bridgewater on radical transparency.',exAr:'راي داليو بنى Bridgewater على الشفافية الجذرية.',tip:'يُبني ثقافة الصدق ويُزيل السياسة الداخلية'},
+{w:'Systems thinking',f:'القيادة التحولية',ar:'التفكير المنظومي',def:'فهم كيف تتفاعل مكونات نظام معقد وتؤثر ببعضها',ex:'Systems thinking reveals non-obvious solutions.',exAr:'التفكير المنظومي يكشف حلولاً غير مباشرة.',tip:'Peter Senge — The Fifth Discipline'},
+{w:'Legacy',f:'القيادة التحولية',ar:'الإرث / الأثر الباقي',def:'التأثير المستدام الذي يتركه القائد بعد رحيله',ex:'Great leaders think about their legacy.',exAr:'القادة العظماء يفكرون في إرثهم.',tip:'ما الذي ستتركه خلفك؟ — سؤال كل قائد حقيقي'},
+{w:'Visionary',f:'القيادة التحولية',ar:'صاحب رؤية استشرافية',def:'القدرة على رؤية المستقبل وقيادة الآخرين نحوه',ex:'Visionary leaders see opportunities others miss.',exAr:'القادة أصحاب الرؤية يرون فرصاً يغفل عنها الآخرون.',tip:'الرؤية بلا تنفيذ = أحلام. الرؤية + التنفيذ = إنجاز'},
+{w:'Cultural intelligence',f:'القيادة التحولية',ar:'الذكاء الثقافي',def:'القدرة على الفهم والتكيف مع ثقافات مختلفة بفاعلية',ex:'Cultural intelligence is essential in global teams.',exAr:'الذكاء الثقافي أساسي في الفرق العالمية.',tip:'CQ — يُقاس ويُطوَّر مثل IQ و EQ'},
+{w:'Emotional intelligence',f:'القيادة التحولية',ar:'الذكاء العاطفي',def:'القدرة على إدراك وإدارة مشاعر النفس والآخرين',ex:'EQ predicts leadership success better than IQ.',exAr:'الذكاء العاطفي يتنبأ بالنجاح القيادي أكثر من الذكاء المعرفي.',tip:'Daniel Goleman: Self-awareness + Empathy + Regulation'},
+{w:'Executive presence',f:'القيادة التحولية',ar:'الهيبة التنفيذية',def:'القدرة على إلهام الثقة والسلطة والمصداقية في غرفة الاجتماعات',ex:'Executive presence is learnable, not innate.',exAr:'الهيبة التنفيذية تُكتسب ولا تُولد معها.',tip:'Voice + Body language + Gravitas = Executive presence'},
+]}
+];
+
+// ════════════════════════════════════════
+// STATE & UTILS
+// ════════════════════════════════════════
+let S={stars:0,seen:{},quizScores:{}}; window.S=S;
+try{const x=localStorage.getItem('masarsa2');if(x)S=JSON.parse(x);window.S=S;}catch(e){}
+let curPhase=null,curIdx=0,qWords=[],qIdx=0,qScore=0,qDone=false,fromBrowse=false;
+let bPhaseFilter='all';
+
+function save(){try{localStorage.setItem('masarsa2',JSON.stringify(S));window.S=S;}catch(e){}; if(window.cloudSaveProgress)window.cloudSaveProgress();}
+// ── TTS: iOS-safe speak ──
+const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+let _voicesReady = false;
+let _voicesList = [];
+
+function _loadVoices(){
+  _voicesList = window.speechSynthesis.getVoices();
+  if(_voicesList.length > 0) _voicesReady = true;
+}
+_loadVoices();
+if(window.speechSynthesis.onvoiceschanged !== undefined){
+  window.speechSynthesis.onvoiceschanged = _loadVoices;
+}
+
+function _pickVoice(){
+  // iOS Siri voices — best quality
+  const preferred = _voicesList.find(v=>/Samantha|Karen|Moira|Tessa/i.test(v.name))
+    || _voicesList.find(v=>v.lang==='en-US' && v.localService)
+    || _voicesList.find(v=>v.lang && v.lang.startsWith('en-US'))
+    || _voicesList.find(v=>v.lang && v.lang.startsWith('en'))
+    || _voicesList[0];
+  return preferred || null;
+}
+
+function _doSpeak(t, r){
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'en-US';
+  u.rate = r;
+  u.pitch = 1.0;
+  const v = _pickVoice();
+  if(v) u.voice = v;
+  // iOS bug: long utterances cut off — chunk if needed
+  window.speechSynthesis.speak(u);
+  // iOS workaround: keep synthesis alive
+  if(_isIOS){
+    const timer = setInterval(()=>{
+      if(!window.speechSynthesis.speaking){ clearInterval(timer); return; }
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }, 5000);
+  }
+}
+
+function speak(t, r=0.85){
+  if(!window.speechSynthesis){ console.warn('TTS not supported'); return; }
+  if(_isIOS){
+    // iOS: must use speechSynthesis only — Google TTS blocked by CORS
+    if(_voicesReady){
+      _doSpeak(t, r);
+    } else {
+      // Wait for voices then speak
+      const wait = setInterval(()=>{
+        _loadVoices();
+        if(_voicesReady){ clearInterval(wait); _doSpeak(t, r); }
+      }, 100);
+      setTimeout(()=>clearInterval(wait), 3000);
+    }
+  } else {
+    // Desktop/Android: try Google TTS first, fallback to speechSynthesis
+    try{
+      const url='https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q='+encodeURIComponent(t);
+      const a = new Audio(url);
+      a.playbackRate = r;
+      a.play().catch(()=>_doSpeak(t, r));
+    } catch(e){ _doSpeak(t, r); }
+  }
+}
+function addStars(n){S.stars+=n;save();updateUI();}
+function totalSeen(){return Object.keys(S.seen).length;}
+function updateUI(){
+  document.getElementById('starsEl').textContent='★ '+S.stars;
+  document.getElementById('seenEl').textContent=totalSeen();
+}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function navTo(id){
+  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
+  const bb=document.getElementById('bb-'+id);if(bb)bb.classList.add('on');
+  if(id==='home'){renderHome();show('pg-home');}
+  else if(id==='browse'){renderBrowse();show('pg-browse');}
+  else if(id==='quiz'){quickQuiz();}
+}
+function celebrate(ico,ttl,sub,cb){
+  document.getElementById('celIco').textContent=ico;
+  document.getElementById('celTtl').textContent=ttl;
+  document.getElementById('celSub').textContent=sub;
+  document.getElementById('celOv').classList.add('show');
+  document.getElementById('celBtn').onclick=()=>{document.getElementById('celOv').classList.remove('show');if(cb)cb();};
+}
+
+// ════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════
+function renderHome(){
+  updateUI();
+  const div=document.getElementById('phasesDiv');div.innerHTML='';
+  // ── مستدام card — before phases ──
+  (function(){
+    const ms=document.createElement('div');
+    ms.className='phase-row';
+    ms.style.setProperty('--pc','#1a6b45');
+    ms.style.cursor='pointer';
+    ms.onclick=function(){ window.openMostadamSection && window.openMostadamSection(); };
+    ms.innerHTML=`
+      <div class="pr-num" style="font-size:18px">🌿</div>
+      <div class="pr-body">
+        <div class="pr-title" style="color:#1a6b45">مستدام <span style="font-size:11px;font-family:'IBM Plex Mono',monospace;opacity:.7">Presentation Training</span></div>
+        <div class="pr-desc">سكريبت · أسئلة الجمهور · مشاريع رائدة · مستدام مو سهل</div>
+        <div class="pr-pbar"><div class="pr-pfill" style="width:100%;background:#1a6b45"></div></div>
+      </div>
+      <div class="pr-count" style="color:#1a6b45;font-size:10px">PRO</div>`;
+    div.appendChild(ms);
+  })();
+  PHASES.forEach((ph,pi)=>{
+    const seen=ph.words.filter(w=>S.seen[ph.id+'_'+w.w]).length;
+    const pct=Math.round(seen/ph.words.length*100);
+    const row=document.createElement('div');row.className='phase-row';
+    row.style.setProperty('--pc',ph.color);
+    row.innerHTML=`
+      <div class="pr-num" style="color:${ph.color}">0${pi+1}</div>
+      <div class="pr-body">
+        <div class="pr-title" style="color:${ph.color}">${ph.title} <span style="font-size:11px;font-family:IBM Plex Mono,monospace;color:${ph.color};opacity:.7">${ph.level}</span></div>
+        <div class="pr-desc">${ph.desc}</div>
+        <div class="pr-pbar"><div class="pr-pfill" style="width:${pct}%;background:${ph.color}"></div></div>
+      </div>
+      <div class="pr-count" style="color:${ph.color}">${seen}/${ph.words.length}</div>`;
+    row.onclick=()=>openPhase(ph);
+    div.appendChild(row);
+  });
+}
+
+// ════════════════════════════════════════
+// WORD LIST
+// ════════════════════════════════════════
+function openPhase(ph){
+  curPhase=ph;fromBrowse=false;
+  document.getElementById('listTitle').textContent=ph.title;
+  document.getElementById('listQBtn').style.background=ph.color;
+  document.getElementById('sInp').value='';
+  buildChips();renderList(ph.words);
+  show('pg-list');
+}
+function buildChips(){
+  const div=document.getElementById('listChips');div.innerHTML='';
+  ['الكل','تعلمتها','الجديدة',...curPhase.fields].forEach((l,i)=>{
+    const c=document.createElement('button');c.className='chip'+(i===0?' on':'');
+    c.textContent=l;c.onclick=()=>{div.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');filterList();};
+    div.appendChild(c);
+  });
+}
+function filterList(){
+  const q=document.getElementById('sInp').value.trim().toLowerCase();
+  const active=document.querySelector('#listChips .chip.on')?.textContent||'الكل';
+  let words=curPhase.words.filter(w=>{
+    const m=!q||(w.w.toLowerCase().includes(q)||w.ar.includes(q)||w.def.includes(q));
+    const sk=curPhase.id+'_'+w.w;
+    if(active==='تعلمتها')return m&&S.seen[sk];
+    if(active==='الجديدة')return m&&!S.seen[sk];
+    if(curPhase.fields.includes(active))return m&&w.f===active;
+    return m;
+  });
+  renderList(words);
+}
+function renderList(words){
+  const div=document.getElementById('wlistDiv');div.innerHTML='';
+  if(!words.length){div.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-family:Tajawal,sans-serif;font-size:14px">لا توجد نتائج</div>';return;}
+  words.forEach(w=>{
+    const sk=curPhase.id+'_'+w.w;
+    const d=document.createElement('div');d.className='wrow';
+    d.innerHTML=`<button class="wr-spk" onclick="event.stopPropagation();speak('${w.w}')">▶</button><div class="wr-bd"><div class="wr-en" style="color:${curPhase.color}">${w.w}</div><div class="wr-ar">${w.ar}</div></div><div class="wr-tag" style="background:${curPhase.color}15;color:${curPhase.color}">${S.seen[sk]?'✓':w.f}</div><div style="font-size:14px;color:var(--muted)">←</div>`;
+    d.onclick=()=>openDetail(curPhase.words.indexOf(curPhase.words.find(x=>x.w===w.w)));
+    div.appendChild(d);
+  });
+}
+function goHome(){renderHome();show('pg-home');document.getElementById('bb-home').classList.add('on');}
+function goList(){if(fromBrowse){renderBrowse();show('pg-browse');}else{renderList(curPhase.words);show('pg-list');}}
+
+// ════════════════════════════════════════
+// DETAIL
+// ════════════════════════════════════════
+function openDetail(idx){
+  curIdx=idx;renderDetail();show('pg-detail');
+  setTimeout(()=>speak(curPhase.words[idx].w,0.75),500);
+}
+function renderDetail(){
+  const w=curPhase.words[curIdx];
+  const sk=curPhase.id+'_'+w.w;
+  if(!S.seen[sk]){S.seen[sk]=true;addStars(1);save();}
+  document.getElementById('dBack').onclick=goList;
+  document.getElementById('dCat').textContent=w.f;
+  document.getElementById('dProg').textContent=(curIdx+1)+'/'+curPhase.words.length;
+  const div=document.getElementById('dContent');div.innerHTML='';
+
+  const hero=document.createElement('div');hero.className='d-hero';
+  hero.innerHTML=`<div class="d-accent" style="background:linear-gradient(90deg,${curPhase.color},${curPhase.color}33)"></div><div class="d-word" style="color:${curPhase.color}">${w.w}</div><div class="d-ar">${w.ar}</div><div class="d-btns"><button class="d-btn" onclick="speak('${w.w}',0.65)">▶ بطيء</button><button class="d-btn" onclick="speak('${w.w}',0.92)">▶ طبيعي</button></div>`;
+  div.appendChild(hero);
+
+  const def=document.createElement('div');def.className='card';
+  def.innerHTML=`<div class="card-lbl">التعريف</div><div class="card-txt">${w.def}</div>`;
+  div.appendChild(def);
+
+  const ex=document.createElement('div');ex.className='ex-card';
+  ex.innerHTML=`<div class="ex-lbl">مثال — اضغط للاستماع</div><div class="ex-en">"${w.ex}"</div><div class="ex-ar">${w.exAr}</div>`;
+  ex.onclick=()=>speak(w.ex,0.8);
+  div.appendChild(ex);
+
+  const tip=document.createElement('div');tip.className='tip-card';
+  tip.innerHTML=`<div class="tip-lbl">نصيحة</div><div class="tip-txt">💡 ${w.tip}</div>`;
+  div.appendChild(tip);
+
+  const nav=document.createElement('div');nav.className='nav-row';
+  const prev=document.createElement('button');prev.className='nb ghost';prev.textContent='→ السابق';prev.disabled=curIdx===0;
+  prev.onclick=()=>{curIdx--;renderDetail();speak(curPhase.words[curIdx].w,0.75);};
+  const next=document.createElement('button');next.className='nb';next.style.background=curPhase.color;
+  next.textContent=curIdx===curPhase.words.length-1?'✓ انتهى':'التالي ←';
+  next.onclick=()=>{if(curIdx<curPhase.words.length-1){curIdx++;renderDetail();speak(curPhase.words[curIdx].w,0.75);}else{goList();celebrate('🎯','أكملت القسم!','راجعت كل الكلمات',null);}};
+  nav.appendChild(prev);nav.appendChild(next);div.appendChild(nav);
+}
+
+// ════════════════════════════════════════
+// BROWSE
+// ════════════════════════════════════════
+function renderBrowse(){
+  const all=PHASES.flatMap(ph=>ph.words.map(w=>({...w,ph})));
+  document.getElementById('browsePill').textContent=all.length;
+  buildPTabs();filterBrowse();
+}
+function buildPTabs(){
+  const div=document.getElementById('pTabs');div.innerHTML='';
+  ['الكل',...PHASES.map(ph=>ph.title)].forEach((l,i)=>{
+    const c=document.createElement('button');c.className='ptab'+(i===0?' on':'');c.textContent=l;
+    c.onclick=()=>{div.querySelectorAll('.ptab').forEach(x=>x.classList.remove('on'));c.classList.add('on');bPhaseFilter=i===0?'all':PHASES[i-1].id;filterBrowse();};
+    div.appendChild(c);
+  });
+}
+function filterBrowse(){
+  const q=document.getElementById('bInp').value.trim().toLowerCase();
+  let words=PHASES.flatMap(ph=>ph.words.map(w=>({...w,ph})));
+  if(bPhaseFilter!=='all')words=words.filter(w=>w.ph.id===bPhaseFilter);
+  if(q)words=words.filter(w=>w.w.toLowerCase().includes(q)||w.ar.includes(q));
+  const div=document.getElementById('bList');div.innerHTML='';
+  words.forEach(w=>{
+    const d=document.createElement('div');d.className='wrow';
+    d.innerHTML=`<button class="wr-spk" onclick="event.stopPropagation();speak('${w.w}')">▶</button><div class="wr-bd"><div class="wr-en" style="color:${w.ph.color}">${w.w}</div><div class="wr-ar">${w.ar}</div></div><div class="wr-tag" style="background:${w.ph.color}15;color:${w.ph.color};font-size:9px">${w.ph.level}</div><div style="font-size:14px;color:var(--muted)">←</div>`;
+    d.onclick=()=>{curPhase=w.ph;fromBrowse=true;const idx=w.ph.words.findIndex(x=>x.w===w.w);openDetail(idx);};
+    div.appendChild(d);
+  });
+  if(!words.length)div.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-family:Tajawal,sans-serif;font-size:14px">لا توجد نتائج</div>';
+}
+
+// ════════════════════════════════════════
+// QUIZ
+// ════════════════════════════════════════
+function quickQuiz(){
+  curPhase=PHASES[Math.floor(Math.random()*PHASES.length)];
+  startQuiz();
+}
+function startQuiz(){
+  qWords=[...curPhase.words].sort(()=>Math.random()-.5).slice(0,15);
+  qIdx=0;qScore=0;qDone=false;
+  document.getElementById('qTitle').textContent=curPhase.title;
+  document.getElementById('qScorePill').textContent='0 ✓';
+  show('pg-quiz');renderQ();
+  setTimeout(()=>speak(qWords[0].w,0.78),600);
+}
+function renderQ(){
+  qDone=false;
+  const w=qWords[qIdx];
+  const div=document.getElementById('qContent');div.innerHTML='';
+  const prog=document.createElement('div');prog.className='qprog';
+  prog.innerHTML=`<div class="qpbar"><div class="qpfill" style="width:${(qIdx/qWords.length*100)}%"></div></div><div class="qpnum">${qIdx+1}/${qWords.length}</div>`;
+  div.appendChild(prog);
+  const qm=document.createElement('div');qm.className='qmain';
+  qm.innerHTML=`<div class="qword" style="color:${curPhase.color}">${w.w}</div><div class="qar">${w.ar}</div><button class="q-listen" onclick="speak('${w.w}',0.78)">▶ استمع</button>`;
+  div.appendChild(qm);
+  const correct=w.def;
+  const others=curPhase.words.filter(x=>x.w!==w.w).sort(()=>Math.random()-.5).slice(0,2).map(x=>x.def);
+  const opts=[correct,...others].sort(()=>Math.random()-.5);
+  const instr=document.createElement('div');instr.className='qinst';instr.textContent='اختر التعريف الصحيح:';
+  div.appendChild(instr);
+  const ol=document.createElement('div');ol.className='opts';
+  opts.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>{
+      if(qDone)return;qDone=true;
+      const ok=o===correct;
+      if(ok){qScore++;speak('Correct! '+w.w,0.9);}else speak(w.w,0.8);
+      ol.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.textContent===correct)x.classList.add('ok');else if(x===b&&!ok)x.classList.add('no');});
+      document.getElementById('qScorePill').textContent=qScore+' ✓';
+      setTimeout(()=>{if(qIdx+1>=qWords.length)showEnd();else{qIdx++;renderQ();setTimeout(()=>speak(qWords[qIdx].w,0.78),350);}},1800);
+    };
+    ol.appendChild(b);
+  });
+  div.appendChild(ol);
+}
+function showEnd(){
+  show('pg-end');
+  const pct=Math.round(qScore/qWords.length*100);
+  addStars(Math.floor(qScore/2));
+  const ico=pct>=80?'🏆':pct>=60?'💪':'📖';
+  const ttl=pct>=80?'أداء استثنائي':pct>=60?'كويس — واصل':'راجع وحاول مجدداً';
+  const desc=pct>=80?'هذه الكلمات باتت جزءاً من قاموسك المهني':pct>=60?'أنت على الطريق الصحيح — كرر المراجعة':'انتقل للقائمة وراجع الكلمات التي فاتتك';
+  const div=document.getElementById('endDiv');div.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='end-wrap';
+  wrap.innerHTML=`<div style="font-size:52px;margin-bottom:10px">${ico}</div><div class="end-sc" style="color:${curPhase.color}">${qScore}/${qWords.length}</div><div class="end-lbl">${pct}% إجابة صحيحة</div><div class="end-ttl">${ttl}</div><div class="end-desc">${desc}</div><div class="end-btns"><button class="nb" style="background:${curPhase.color}" onclick="startQuiz()">🔄 مرة ثانية</button><button class="nb ghost" onclick="goList()">📖 راجع الكلمات</button><button class="nb ghost" onclick="goHome()">🏠 الرئيسية</button></div>`;
+  div.appendChild(wrap);
+}
+
+// INIT
+renderHome();updateUI();
+</script>
+
+<script>
+(function(){
+  const STORE='masarsa_pro_v1';
+  const today=()=>new Date().toISOString().slice(0,10);
+  const allWords=()=>PHASES.flatMap(ph=>ph.words.map((w,i)=>({...w,ph,idx:i,key:ph.id+'_'+w.w.toLowerCase()})));
+  function loadPro(){let P={cards:{},xp:0,streak:0,lastStudy:null,totalReviews:0};try{const x=localStorage.getItem(STORE);if(x)P=Object.assign(P,JSON.parse(x));}catch(e){}return P;}
+  let P=loadPro();
+  function savePro(){try{localStorage.setItem(STORE,JSON.stringify(P));}catch(e){}; if(window.cloudSaveProgress)window.cloudSaveProgress();}
+  function ensureCard(k){if(!P.cards[k])P.cards[k]={box:0,next:today(),seen:0,ok:0,wrong:0,last:null,mastered:false};return P.cards[k];}
+  function dueList(limit=20){const t=today();return allWords().filter(w=>{const c=ensureCard(w.key);return c.next<=t&&!c.mastered;}).sort((a,b)=>ensureCard(a.key).box-ensureCard(b.key).box).slice(0,limit);}
+  function newList(limit=15){return allWords().filter(w=>!P.cards[w.key]).slice(0,limit)}
+  function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+  function touchStudy(){const t=today();if(P.lastStudy!==t){if(P.lastStudy){const y=new Date();y.setDate(y.getDate()-1);P.streak=(P.lastStudy===y.toISOString().slice(0,10))?P.streak+1:1;}else P.streak=1;P.lastStudy=t;}}
+  function grade(k,ok){const c=ensureCard(k);touchStudy();c.seen++;c.last=today();P.totalReviews++;if(ok){c.ok++;c.box=Math.min(5,c.box+1);P.xp+=10;const intervals=[1,1,3,7,14,30];c.next=addDays(intervals[c.box]||30);if(c.box>=5)c.mastered=true;}else{c.wrong++;c.box=0;c.next=addDays(1);P.xp+=2;c.mastered=false;}savePro();}
+  function masteryPct(){const total=allWords().length;const learned=Object.keys(P.cards).filter(k=>P.cards[k].box>=2||P.cards[k].mastered).length;return Math.round(learned/total*100)}
+  window.masarsaPro={P,ensureCard,dueList,newList,grade,masteryPct,allWords};
+
+  const oldUpdate=window.updateUI;
+  window.updateUI=function(){if(oldUpdate)oldUpdate();const el=document.getElementById('starsEl');if(el)el.textContent='★ '+(S.stars||0)+' · XP '+(P.xp||0);const seen=document.getElementById('seenEl');if(seen)seen.textContent=Object.keys(P.cards).length||totalSeen();};
+
+  const oldRenderHome=window.renderHome;
+  window.renderHome=function(){if(oldRenderHome)oldRenderHome();const panel=document.getElementById('proPanel');if(!panel)return;const due=dueList(99).length,mastered=Object.values(P.cards).filter(c=>c.mastered).length,pct=masteryPct();
+    panel.innerHTML=`<div class="pro-panel"><div class="pro-kicker">SMART VOCABULARY ENGINE</div><div class="pro-title">خطة اليوم: 10 دقائق فقط</div><div class="pro-sub">راجع الكلمات المستحقة، ثم خذ اختبار سريع. البرنامج يحفظ تقدمك على نفس المتصفح تلقائياً.</div><div class="pro-grid"><div class="pro-mini"><div class="pro-num">${due}</div><div class="pro-lbl">مستحقة اليوم</div></div><div class="pro-mini"><div class="pro-num">${P.streak||0}</div><div class="pro-lbl">أيام متتالية</div></div><div class="pro-mini"><div class="pro-num">${mastered}</div><div class="pro-lbl">متقنة</div></div></div><div class="mastery-card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#fff"><div class="mastery-head"><div class="mastery-title">إتقانك العام</div><div class="mastery-pct" style="color:rgba(255,255,255,.75)">${pct}%</div></div><div class="mastery-track"><div class="mastery-fill" style="width:${pct}%"></div></div></div><div class="pro-actions"><button class="pro-btn primary" onclick="navTo('review')">ابدأ المراجعة الذكية</button><button class="pro-btn secondary" onclick="quickQuiz()">اختبار سريع</button></div></div>`;
+    updateUI();
+  };
+
+  const oldNav=window.navTo;
+  window.navTo=function(id){document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));const bb=document.getElementById('bb-'+id);if(bb)bb.classList.add('on');if(id==='review'){renderSmartReview();show('pg-review');return;}oldNav(id);};
+
+  const oldOpenDetail=window.openDetail;
+  window.openDetail=function(i){oldOpenDetail(i);injectDetailLearningTools();};
+  const oldRenderDetail=window.renderDetail;
+  window.renderDetail=function(){oldRenderDetail();injectDetailLearningTools();};
+
+  function injectDetailLearningTools(){if(!curPhase||!curPhase.words||!curPhase.words[curIdx])return;const div=document.getElementById('dContent');if(!div||document.getElementById('learnActions'))return;const w=curPhase.words[curIdx],k=curPhase.id+'_'+w.w.toLowerCase(),c=ensureCard(k);const status=document.createElement('div');status.className='d-status';status.innerHTML=`🧠 المستوى ${c.box}/5 · المراجعة القادمة: ${c.next}`;div.insertBefore(status,div.firstChild);const actions=document.createElement('div');actions.id='learnActions';actions.className='learn-actions';actions.innerHTML=`<button class="nb hard" onclick="masarsaPro.grade('${k}',false);S.seen['${curPhase.id}_${w.w}']=1;save();renderDetail();">صعبة — أراجعها بكرة</button><button class="nb easy" onclick="masarsaPro.grade('${k}',true);S.seen['${curPhase.id}_${w.w}']=1;save();renderDetail();celebrate('✅','تم تسجيلها','راح ترجع لك في وقت المراجعة المناسب',null)">عرفتها — احفظ تقدمي</button>`;div.insertBefore(actions,status.nextSibling);}
+
+  window.renderSmartReview=function(){let pool=dueList(15);if(pool.length===0)pool=newList(12);document.getElementById('reviewPill').textContent=pool.length;const div=document.getElementById('reviewDiv');div.innerHTML='';if(pool.length===0){div.innerHTML='<div class="due-empty">🏆 ممتاز، لا توجد كلمات مستحقة الآن.<br>ادخل على قائمة الكلمات وتعلم كلمات جديدة.</div>';return;}let pos=0,score=0;
+    function esc(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ')}
+    function card(){const w=pool[pos],c=ensureCard(w.key);document.getElementById('reviewPill').textContent=(pos+1)+'/'+pool.length;div.innerHTML=`<div class="qprog"><div class="qpbar"><div class="qpfill" style="width:${(pos/pool.length*100)}%"></div></div><div class="qpnum">${pos+1}/${pool.length}</div></div><div class="review-hero"><div class="badge-new ${c.seen?'badge-due':''}">${c.seen?'مراجعة مستحقة':'كلمة جديدة'}</div><div class="review-word">${w.w}</div><div class="d-ar">${w.ar}</div><button class="q-listen" onclick="speak('${esc(w.w)}',0.75)">▶ استمع</button></div><div class="card"><div class="card-lbl">اختبار كتابة</div><div class="card-txt">اكتب الكلمة الإنجليزية كما سمعتها أو قرأتها:</div><input class="review-input" id="typeAnswer" autocomplete="off" placeholder="Type the word here..."><button class="nb" style="background:${w.ph.color};margin-top:4px;width:100%" id="checkBtn">تحقق</button><div id="fb" class="review-feedback"></div></div><div class="ex-card" onclick="speak('${esc(w.ex)}',0.8)"><div class="ex-lbl">مثال</div><div class="ex-en">${w.ex}</div><div class="ex-ar">${w.exAr}</div></div>`;setTimeout(()=>{speak(w.w,0.75);const inp=document.getElementById('typeAnswer');if(inp)inp.focus();},350);document.getElementById('typeAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('checkBtn').click();});document.getElementById('checkBtn').onclick=()=>{const ans=document.getElementById('typeAnswer').value.trim().toLowerCase();const ok=ans===w.w.toLowerCase();const fb=document.getElementById('fb');grade(w.key,ok);S.seen[w.ph.id+'_'+w.w]=1;save();if(ok)score++;fb.className='review-feedback '+(ok?'ok':'no');fb.innerHTML=ok?'✅ صحيح. ممتاز!':`❌ الصحيح: <b style="direction:ltr;display:inline-block">${w.w}</b><br>${w.def}`;document.getElementById('checkBtn').disabled=true;setTimeout(()=>{pos++;if(pos>=pool.length){finish();}else card();},ok?900:1900);};}
+    function finish(){const pct=Math.round(score/pool.length*100);updateUI();div.innerHTML=`<div class="end-wrap"><div style="font-size:54px;margin-bottom:10px">${pct>=80?'🏆':'💪'}</div><div class="end-sc">${score}/${pool.length}</div><div class="end-lbl">${pct}%</div><div class="end-ttl">انتهت مراجعة اليوم</div><div class="end-desc">النظام حدّث مواعيد المراجعة للكلمات حسب إجاباتك.</div><div class="end-btns"><button class="nb" style="background:var(--ink)" onclick="renderSmartReview()">مراجعة مرة ثانية</button><button class="nb ghost" onclick="goHome()">الرئيسية</button></div></div>`;renderHome();}
+    card();
+  };
+
+  const oldStartQuiz=window.startQuiz;
+  window.startQuiz=function(){const weak=curPhase.words.map((w,i)=>({...w,idx:i,key:curPhase.id+'_'+w.w.toLowerCase()})).filter(w=>{const c=ensureCard(w.key);return c.box<3&&!c.mastered;});qWords=[...(weak.length?weak:curPhase.words)].sort(()=>Math.random()-.5).slice(0,15);qIdx=0;qScore=0;qDone=false;document.getElementById('qTitle').textContent=curPhase.title+' · اختبار ذكي';document.getElementById('qScorePill').textContent='0 ✓';show('pg-quiz');renderQ();setTimeout(()=>speak(qWords[0].w,0.78),600);};
+
+  const oldRenderQ=window.renderQ;
+  window.renderQ=function(){oldRenderQ();const w=qWords[qIdx];if(!w)return;const ol=document.querySelector('#qContent .opts');if(!ol)return;ol.querySelectorAll('.opt').forEach(btn=>{const old=btn.onclick;btn.onclick=function(){const wasCorrect=btn.textContent===w.def;grade((curPhase.id+'_'+w.w.toLowerCase()),wasCorrect);old.call(btn);};});};
+
+  window.exportProgress=function(){const blob=new Blob([JSON.stringify(P,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='english-work-progress.json';a.click();URL.revokeObjectURL(a.href);};
+
+  renderHome();updateUI();
+})();
+</script>
+
+<style>
+/* EXECUTIVE + MEETING SIMULATION UPGRADE */
+.meet-hero{background:linear-gradient(135deg,#10121a,#2b3144);color:#fff;border-radius:20px;padding:20px;margin:14px 0 16px;box-shadow:0 18px 45px rgba(15,15,20,.14);position:relative;overflow:hidden}.meet-hero:before{content:'';position:absolute;inset:-80px -70px auto auto;width:190px;height:190px;border-radius:50%;background:rgba(232,213,163,.18)}.meet-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold-light);text-transform:uppercase;margin-bottom:7px}.meet-title{font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px}.meet-sub{font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.8;color:rgba(255,255,255,.76)}.meet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.meet-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:15px;cursor:pointer;transition:all .18s}.meet-card:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(15,15,20,.08);border-color:var(--gold-light)}.meet-card-title{font-family:'Tajawal',sans-serif;font-weight:900;font-size:15px;margin-bottom:5px}.meet-card-sub{font-family:'Tajawal',sans-serif;font-size:12px;color:var(--muted);line-height:1.6}.scenario-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px}.scenario-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.scenario-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;border-radius:999px;padding:4px 8px;background:var(--gold-pale);color:#7b5510;border:1px solid var(--gold-light)}.manager-line{direction:ltr;text-align:left;font-family:'DM Sans',sans-serif;font-size:18px;font-weight:600;line-height:1.5;background:#f7f5f0;border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:10px}.meet-opt{background:#fff;border:1px solid var(--border);border-radius:13px;padding:14px 15px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);text-align:left;direction:ltr;line-height:1.6;transition:all .15s}.meet-opt:hover:not(:disabled){background:var(--gold-pale);border-color:var(--gold-light)}.meet-opt.good{background:#eaf3de;border-color:#3b6d11;color:#1a6b45}.meet-opt.bad{background:#fcebeb;border-color:#a32d2d;color:#a32d2d}.meet-input{width:100%;border:1px solid var(--border);border-radius:14px;background:#fff;padding:13px 14px;font-family:'DM Sans',sans-serif;font-size:14px;direction:ltr;text-align:left;outline:none;min-height:92px;resize:vertical;margin-top:10px}.meet-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,11,.12)}.score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.score-box{background:#fff;border:1px solid var(--border);border-radius:13px;padding:11px;text-align:center}.score-num{font-family:'Playfair Display',serif;font-size:24px}.score-lbl{font-family:'Tajawal',sans-serif;font-size:10px;color:var(--muted)}.phrase-chip{display:inline-block;margin:4px 4px 0 0;padding:5px 9px;border-radius:999px;background:var(--cream);font-family:'DM Sans',sans-serif;font-size:11px;direction:ltr}.director-note{background:linear-gradient(135deg,#fff,#faf6ed);border:1px solid var(--gold-light);border-radius:15px;padding:14px;margin:12px 0}.director-note .card-lbl{color:var(--gold)}
+</style>
+<script>
+(function(){
+  const EXEC_PHASE={id:'p6',title:'المستوى التنفيذي',level:'Senior / Executive',color:'#2c2c2c',desc:'لغة الإدارة العليا · العقود · التصعيد · اتخاذ القرار',fields:['Executive','Contracts','Site','Analysis'],words:[
+    {w:'Derisking',f:'Executive',ar:'تقليل المخاطر استباقياً',def:'إجراءات عملية تقلل احتمالية الخطر أو أثره قبل وقوعه',ex:'We are implementing derisking measures to protect the schedule.',exAr:'نطبق إجراءات لتقليل المخاطر لحماية الجدول.',tip:'تستخدم عند عرض خطة استباقية للإدارة'},
+    {w:'Gate approval',f:'Executive',ar:'اعتماد مرحلة',def:'موافقة رسمية للانتقال من مرحلة إلى المرحلة التالية',ex:'The package cannot proceed without gate approval.',exAr:'لا يمكن للحزمة الانتقال دون اعتماد المرحلة.',tip:'ممتازة في المشاريع ذات المراحل الرسمية'},
+    {w:'Commercial exposure',f:'Executive',ar:'تعرض مالي / مخاطر مالية',def:'حجم المخاطر المالية المحتملة على المشروع أو الشركة',ex:'This delay increases our commercial exposure.',exAr:'هذا التأخير يزيد التعرض المالي للمشروع.',tip:'كلمة قوية عند التصعيد'},
+    {w:'Execution risk',f:'Executive',ar:'مخاطر التنفيذ',def:'مخاطر مرتبطة بطريقة أو قدرة تنفيذ العمل فعلياً',ex:'The execution risk remains high due to interface constraints.',exAr:'ما زالت مخاطر التنفيذ عالية بسبب قيود الواجهات.',tip:'أقوى من كلمة risk العامة'},
+    {w:'Critical path slippage',f:'Executive',ar:'انزلاق المسار الحرج',def:'تأخير في أنشطة المسار الحرج يؤثر مباشرة على تاريخ الإنجاز',ex:'We are experiencing critical path slippage impacting the completion date.',exAr:'نواجه انزلاقاً في المسار الحرج يؤثر على تاريخ الإنجاز.',tip:'تستخدم مع الجداول الزمنية والتأخير'},
+    {w:'Readiness assessment',f:'Executive',ar:'تقييم الجاهزية',def:'تقييم مدى الاستعداد قبل التفتيش أو التشغيل أو التسليم',ex:'A readiness assessment will be completed before the handover meeting.',exAr:'سيتم إكمال تقييم الجاهزية قبل اجتماع التسليم.',tip:'مناسبة للـ handover والcommissioning'},
+    {w:'Decision framework',f:'Executive',ar:'إطار اتخاذ القرار',def:'منهجية واضحة تساعد الإدارة على اختيار القرار المناسب',ex:'We need a decision framework to compare the available options.',exAr:'نحتاج إطار قرار لمقارنة الخيارات المتاحة.',tip:'تعطي كلامك نضجاً إدارياً'},
+    {w:'Strategic alignment',f:'Executive',ar:'توافق استراتيجي',def:'مدى توافق القرار أو المشروع مع أهداف الجهة العليا',ex:'The proposal has strong strategic alignment with the department objectives.',exAr:'المقترح متوافق استراتيجياً مع أهداف الإدارة.',tip:'ممتازة في العروض والإنجازات'},
+    {w:'Operational constraints',f:'Executive',ar:'قيود تشغيلية',def:'قيود ناتجة من التشغيل أو الصيانة أو متطلبات الجهة المستفيدة',ex:'Operational constraints are limiting the proposed implementation window.',exAr:'القيود التشغيلية تحد من نافذة التنفيذ المقترحة.',tip:'استخدمها بدل صعوبة العمل بشكل عام'},
+    {w:'Without prejudice',f:'Contracts',ar:'دون الإخلال بالحقوق',def:'صياغة تحفظ الحقوق القانونية عند الرد أو الاستمرار',ex:'We proceed without prejudice to our contractual rights.',exAr:'نستمر دون الإخلال بحقوقنا التعاقدية.',tip:'تستخدم بحذر في المراسلات العقدية'},
+    {w:'Time-barred claim',f:'Contracts',ar:'مطالبة متأخرة نظامياً',def:'مطالبة تم تقديمها بعد المدة المسموح بها تعاقدياً',ex:'The claim may be time-barred under the contract provisions.',exAr:'قد تكون المطالبة متأخرة بموجب أحكام العقد.',tip:'كلمة قوية جداً في إدارة المطالبات'},
+    {w:'Substantiate the claim',f:'Contracts',ar:'دعم المطالبة بالأدلة',def:'تقديم مستندات وحسابات تثبت صحة المطالبة',ex:'The contractor must substantiate the claim with supporting records.',exAr:'يجب على المقاول دعم المطالبة بسجلات مؤيدة.',tip:'أفضل من فقط provide documents'},
+    {w:'Material breach',f:'Contracts',ar:'إخلال جوهري',def:'إخلال كبير يؤثر على جوهر الالتزام التعاقدي',ex:'This may constitute a material breach if not rectified immediately.',exAr:'قد يشكل ذلك إخلالاً جوهرياً إذا لم يتم تصحيحه فوراً.',tip:'لا تستخدمها إلا عند الحاجة'},
+    {w:'Contractual entitlement',f:'Contracts',ar:'استحقاق تعاقدي',def:'حق مثبت بموجب شروط العقد',ex:'No contractual entitlement can be confirmed without full substantiation.',exAr:'لا يمكن تأكيد أي استحقاق تعاقدي دون إثبات كامل.',tip:'مهمة في المطالبات والتغييرات'},
+    {w:'Reservation of rights',f:'Contracts',ar:'الاحتفاظ بالحقوق',def:'تأكيد أن التصرف الحالي لا يعني التنازل عن الحقوق',ex:'This response is issued under full reservation of rights.',exAr:'يصدر هذا الرد مع الاحتفاظ الكامل بالحقوق.',tip:'تستخدم في المواقف الحساسة'},
+    {w:'Cost recovery',f:'Contracts',ar:'استرداد التكاليف',def:'استرجاع التكاليف المتكبدة بسبب طرف آخر أو ظرف محدد',ex:'We will evaluate the cost recovery mechanism under the contract.',exAr:'سنقيّم آلية استرداد التكاليف بموجب العقد.',tip:'أقوى من compensation في سياق المشاريع'},
+    {w:'Constructability issues',f:'Site',ar:'مشاكل قابلية التنفيذ',def:'مشاكل تجعل التصميم أو الخطة صعبة التنفيذ في الموقع',ex:'Constructability issues were identified during the site walkthrough.',exAr:'تم تحديد مشاكل قابلية تنفيذ أثناء الجولة الميدانية.',tip:'مفيدة مع المصمم والمقاول'},
+    {w:'Interface conflict',f:'Site',ar:'تعارض واجهات',def:'تضارب بين أعمال أو أنظمة أو جهات مختلفة',ex:'The delay is mainly driven by interface conflicts between work packages.',exAr:'التأخير ناتج أساساً من تعارض الواجهات بين الحزم.',tip:'كلمة مهمة في المشاريع متعددة الجهات'},
+    {w:'Latent defect',f:'Site',ar:'عيب خفي',def:'عيب غير ظاهر وقت الاستلام ويظهر لاحقاً',ex:'The issue may be treated as a latent defect subject to further investigation.',exAr:'قد تُعامل المشكلة كعيب خفي بناءً على التحقيق.',tip:'مهمة في العيوب بعد التسليم'},
+    {w:'Inspection hold point',f:'Site',ar:'نقطة إيقاف للفحص',def:'مرحلة لا يمكن تجاوزها إلا بعد فحص أو موافقة',ex:'The inspection hold point must be cleared before backfilling.',exAr:'يجب إغلاق نقطة الفحص قبل الردم.',tip:'ممتازة للتفتيش والجودة'},
+    {w:'System handover readiness',f:'Site',ar:'جاهزية تسليم النظام',def:'مدى جاهزية النظام فنياً ووثائقياً للتسليم',ex:'System handover readiness will be verified with the proponent.',exAr:'سيتم التحقق من جاهزية تسليم النظام مع الجهة المستفيدة.',tip:'مناسبة لخطابات التسليم'},
+    {w:'Root cause validation',f:'Analysis',ar:'التحقق من السبب الجذري',def:'التأكد من السبب الحقيقي قبل اعتماد الحل',ex:'Root cause validation is required before closing the finding.',exAr:'يلزم التحقق من السبب الجذري قبل إغلاق الملاحظة.',tip:'تمنع الحلول السطحية'},
+    {w:'Trend deviation',f:'Analysis',ar:'انحراف في الاتجاه',def:'خروج الأداء عن النمط أو التوقعات المعتادة',ex:'The trend deviation indicates a potential deterioration in productivity.',exAr:'يشير انحراف الاتجاه إلى تدهور محتمل في الإنتاجية.',tip:'مفيدة في التقارير الشهرية'},
+    {w:'Forecast variance',f:'Analysis',ar:'فرق التوقعات',def:'الفرق بين المتوقع والفعلي أو المتوقع الجديد',ex:'The forecast variance must be explained in the monthly report.',exAr:'يجب شرح فرق التوقعات في التقرير الشهري.',tip:'أقوى من difference'},
+    {w:'Corrective measures',f:'Analysis',ar:'إجراءات تصحيحية',def:'إجراءات تعالج مشكلة قائمة أو انحرافاً حدث فعلاً',ex:'Corrective measures have been implemented to recover the delay.',exAr:'تم تنفيذ إجراءات تصحيحية لتعويض التأخير.',tip:'مرتبطة بالمشكلة الحالية'},
+    {w:'Preventive actions',f:'Analysis',ar:'إجراءات وقائية',def:'إجراءات تمنع تكرار المشكلة مستقبلاً',ex:'Preventive actions are required to avoid recurrence.',exAr:'يلزم اتخاذ إجراءات وقائية لمنع التكرار.',tip:'مرتبطة بمنع التكرار'}
+  ]};
+  if(typeof PHASES!=='undefined' && !PHASES.some(p=>p.id==='p6')) PHASES.push(EXEC_PHASE);
+
+  const MEETINGS=[
+    {title:'Delay Escalation',level:'Senior PMT',tag:'Schedule',situation:'The contractor is behind schedule and management asks for a concise update.',manager:'Why are we delayed, and what is the impact?',best:'We are experiencing critical path slippage driven by execution constraints and interface conflicts. Mitigation measures are in progress, but escalation is required to avoid further schedule impact and commercial exposure.',phrases:['critical path slippage','execution constraints','interface conflicts','commercial exposure'],options:[['There is delay from contractor and we are following.',false],['We are experiencing critical path slippage driven by execution constraints and interface conflicts.',true],['The contractor has some problems and needs more time.',false]]},
+    {title:'Contractor Claim',level:'Contracts',tag:'Claim',situation:'A contractor submitted a claim without enough documents.',manager:'What is our position on this claim?',best:'The claim is under review; however, no contractual entitlement can be confirmed until the contractor fully substantiates the claim with supporting records and demonstrates causation, impact, and incurred cost.',phrases:['contractual entitlement','substantiate the claim','causation','incurred cost'],options:[['We should reject the claim because it is not clear.',false],['No contractual entitlement can be confirmed until the contractor substantiates the claim.',true],['The claim is not good and we need more papers.',false]]},
+    {title:'Third-Party Handover',level:'Executive',tag:'Handover',situation:'A third-party committee is delaying inspection and handover.',manager:'How do we move this forward?',best:'We recommend escalating the matter through the appropriate channels to secure committee mobilization, as all major comments have been addressed and the remaining items should not prevent the start of inspection.',phrases:['committee mobilization','major comments addressed','should not prevent','start of inspection'],options:[['We wait until they respond.',false],['We recommend escalation to secure committee mobilization since all major comments have been addressed.',true],['They are late and we cannot do anything.',false]]},
+    {title:'Readiness Review',level:'Commissioning',tag:'Readiness',situation:'Before a site visit, you need to brief the team professionally.',manager:'Are we ready for the visit?',best:'Based on the readiness assessment, the site is generally ready. We will keep the discussion focused on verified evidence, completed works, and any pending items with clear ownership and target dates.',phrases:['readiness assessment','verified evidence','pending items','clear ownership'],options:[['Yes, everything is ready.',false],['The site is generally ready based on the readiness assessment and verified evidence.',true],['We will see during the visit.',false]]},
+    {title:'Design Issue',level:'Engineering',tag:'Constructability',situation:'The design looks good on paper but has field execution issues.',manager:'What is the concern with this design?',best:'The main concern is constructability. The design requires field validation to resolve interface conflicts before proceeding, otherwise it may lead to rework and schedule impact.',phrases:['constructability','field validation','interface conflicts','rework'],options:[['The design is difficult.',false],['The main concern is constructability and potential interface conflicts leading to rework.',true],['The contractor does not like the design.',false]]},
+    {title:'Audit Finding',level:'Governance',tag:'Finding',situation:'Audit raised a concern and you need to respond without being defensive.',manager:'How will you close this finding?',best:'We will perform root cause validation, implement corrective measures for the current issue, and define preventive actions to avoid recurrence. Closure evidence will be submitted once verified.',phrases:['root cause validation','corrective measures','preventive actions','closure evidence'],options:[['We already fixed it, so close it.',false],['We will validate the root cause, implement corrective measures, and define preventive actions.',true],['The finding is not accurate.',false]]},
+    {title:'Executive Brief',level:'Director Level',tag:'Briefing',situation:'You need to brief a director in one strong sentence.',manager:'What is the key message?',best:'The key message is that the project remains recoverable, provided that the pending decisions are resolved this week and the mitigation plan is implemented without further slippage.',phrases:['remains recoverable','pending decisions','mitigation plan','further slippage'],options:[['The project is okay but needs support.',false],['The project remains recoverable provided pending decisions are resolved this week.',true],['We are trying our best to finish.',false]]},
+    {title:'Reservation of Rights',level:'Legal/Contracts',tag:'Sensitive Reply',situation:'You need to respond to a contractor while protecting company rights.',manager:'How should the response be framed?',best:'The response should be issued without prejudice and under full reservation of rights, while requesting the contractor to provide complete substantiation before any further evaluation.',phrases:['without prejudice','reservation of rights','complete substantiation','further evaluation'],options:[['We disagree with your letter.',false],['The response should be issued without prejudice and under full reservation of rights.',true],['We will check and reply later.',false]]}
+  ];
+  let mIndex=0, mAnswered=false;
+  function safeSpeakText(s){return String(s||'').replace(/`/g,"'");}
+  window.startMeeting=function(i=0){mIndex=i;mAnswered=false;renderMeetingIntro();navTo('meeting');};
+  window.renderMeetingIntro=function(){const div=document.getElementById('meetingDiv');if(!div)return;div.innerHTML=`<div class="meet-hero"><div class="meet-kicker">MEETING SIMULATION MODE</div><div class="meet-title">تدرّب على ردود الاجتماعات باحتراف</div><div class="meet-sub">اختر سيناريو واقعي من بيئة المشاريع، ثم جاوب كأنك في اجتماع مع الإدارة. النظام يعطيك الرد الأقوى والكلمات التي ترفع مستوى الصياغة.</div></div><div class="score-row"><div class="score-box"><div class="score-num">${MEETINGS.length}</div><div class="score-lbl">سيناريوهات</div></div><div class="score-box"><div class="score-num">4</div><div class="score-lbl">مجالات</div></div><div class="score-box"><div class="score-num">AI</div><div class="score-lbl">تقييم ذاتي</div></div></div><div class="meet-grid">${MEETINGS.map((m,i)=>`<div class="meet-card" onclick="openMeetingScenario(${i})"><div class="meet-card-title">${m.title}</div><div class="meet-card-sub">${m.level} · ${m.tag}<br>${m.situation}</div></div>`).join('')}</div>`;};
+  window.openMeetingScenario=function(i){mIndex=i;mAnswered=false;const m=MEETINGS[i];const div=document.getElementById('meetingDiv');document.getElementById('meetingPill').textContent=(i+1)+'/'+MEETINGS.length;div.innerHTML=`<div class="scenario-card"><div class="scenario-meta"><span class="scenario-tag">${m.level}</span><span class="scenario-tag">${m.tag}</span></div><div class="card-lbl">Situation</div><div class="card-txt">${m.situation}</div><div class="card-lbl" style="margin-top:13px">Manager asks</div><div class="manager-line">${m.manager}</div></div><div class="opts">${m.options.map((o,idx)=>`<button class="meet-opt" onclick="checkMeetingOption(${idx})">${o[0]}</button>`).join('')}</div><div class="director-note"><div class="card-lbl">اكتب ردك بنفسك - اختياري</div><div class="card-txt">اكتب جملة واحدة، ثم اضغط تقييم. التقييم يعتمد على وجود الكلمات التنفيذية في الرد.</div><textarea class="meet-input" id="freeReply" placeholder="Type your professional reply here..."></textarea><button class="nb" style="background:#0f0f14;width:100%;margin-top:8px" onclick="evaluateFreeReply()">تقييم الرد المكتوب</button></div><div id="meetingResult"></div>`;};
+  window.checkMeetingOption=function(idx){if(mAnswered)return;mAnswered=true;const m=MEETINGS[mIndex], opt=m.options[idx];const btns=[...document.querySelectorAll('.meet-opt')];btns.forEach((b,i)=>{b.disabled=true;if(m.options[i][1])b.classList.add('good');else if(i===idx)b.classList.add('bad');});if(opt[1]&&window.masarsaPro){window.masarsaPro.P.xp=(window.masarsaPro.P.xp||0)+15;try{localStorage.setItem('masarsa_pro_v1',JSON.stringify(window.masarsaPro.P));}catch(e){}}showMeetingResult(opt[1]);};
+  window.evaluateFreeReply=function(){const m=MEETINGS[mIndex];const val=(document.getElementById('freeReply').value||'').toLowerCase();const hits=m.phrases.filter(p=>val.includes(p.toLowerCase())||val.includes(p.toLowerCase().split(' ')[0])).length;showMeetingResult(hits>=2,hits);};
+  function showMeetingResult(ok,hits=null){const m=MEETINGS[mIndex];const div=document.getElementById('meetingResult');const phraseHtml=m.phrases.map(p=>`<span class="phrase-chip">${p}</span>`).join('');div.innerHTML=`<div class="card" style="border-color:${ok?'#b9d6a5':'#f0bcbc'};background:${ok?'#eaf3de':'#fcebeb'}"><div class="card-lbl">${ok?'Strong Answer':'Needs Upgrade'}</div><div class="card-txt">${ok?'ممتاز. ردك قريب من مستوى مدير مشروع محترف.':'الرد يحتاج كلمات أقوى وربط أوضح بالأثر والإجراء.'}${hits!==null?`<br>الكلمات التنفيذية المستخدمة: ${hits}/${m.phrases.length}`:''}</div></div><div class="director-note"><div class="card-lbl">Best Professional Answer</div><div class="card-txt ltr" style="font-size:14px">${m.best}</div><div style="margin-top:10px">${phraseHtml}</div><button class="nb" style="background:#0f0f14;width:100%;margin-top:12px" onclick="speak(\`${safeSpeakText(m.best)}\`,0.78)">▶ استمع للرد الاحترافي</button></div><div class="nav-row"><button class="nb ghost" onclick="renderMeetingIntro()">كل السيناريوهات</button><button class="nb" style="background:#2c2c2c" onclick="openMeetingScenario(${(mIndex+1)%MEETINGS.length})">التالي</button></div>`;if(window.updateUI)updateUI();if(window.cloudSaveProgress)window.cloudSaveProgress();}
+  const prevNav=window.navTo;
+  window.navTo=function(id){document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));const bb=document.getElementById('bb-'+id);if(bb)bb.classList.add('on');if(id==='meeting'){renderMeetingIntro();show('pg-meeting');return;}prevNav(id);};
+  const prevRenderHome=window.renderHome;
+  window.renderHome=function(){prevRenderHome();const panel=document.getElementById('proPanel');if(panel && !document.getElementById('meetingHomeBtn')){const wrap=document.createElement('div');wrap.id='meetingHomeBtn';wrap.className='mastery-card';wrap.innerHTML='<div class="mastery-head"><div class="mastery-title">🗣️ محاكاة اجتماعات المشاريع</div><div class="mastery-pct">Senior Mode</div></div><div class="card-txt">تدرّب على ردود التأخير، المطالبات، التصعيد، والتسليم بصياغة تنفيذية.</div><button class="nb" style="background:#2c2c2c;width:100%;margin-top:10px" onclick="startMeeting()">ابدأ تدريب الاجتماعات</button>';panel.insertAdjacentElement('afterend',wrap);}}
+  if(window.renderHome)renderHome();
+})();
+</script>
+
+
+
+<!-- MOSTADAM FIXED ADDON - PRESERVES ORIGINAL FILE -->
+<script>
+(function(){
+  const MS_VOCAB = [["Mostadam", "مستدام", "Saudi Arabia’s national sustainability rating system."], ["Sustainability Rating System", "نظام تقييم الاستدامة", "A framework to measure and certify sustainability performance."], ["Built Environment", "البيئة العمرانية", "Buildings, communities, infrastructure, and developed spaces."], ["Vision 2030", "رؤية 2030", "Mostadam supports Vision 2030 and quality-of-life objectives."], ["Saudi Building Code (SBC)", "كود البناء السعودي", "Mostadam is aligned with SBC and goes beyond minimum requirements."], ["Keystones", "متطلبات إلزامية", "Mandatory requirements that must be achieved to proceed with certification."], ["Credits", "نقاط اختيارية", "Optional requirements that allow projects to earn additional points."], ["Certification Level", "مستوى الشهادة", "The rating level achieved based on total points."], ["Green / Bronze / Silver / Gold / Diamond", "مستويات الشهادة", "Mostadam certification levels."], ["Diamond", "ماسي", "The highest level of Mostadam certification."], ["Design and Construction (D+C)", "التصميم والتنفيذ", "Evaluation of design compliance and construction implementation."], ["Commercial Buildings D+C", "المباني التجارية تصميم وتنفيذ", "A Mostadam pathway for commercial buildings."], ["Residential Buildings D+C", "المباني السكنية تصميم وتنفيذ", "A Mostadam pathway for residential buildings."], ["Communities", "المجتمعات", "A Mostadam pathway for community-scale sustainability."], ["Credit Categories", "فئات النقاط", "Categories where credits and points can be earned."], ["Total Points", "إجمالي النقاط", "The score used to determine the final certification level."], ["Energy Efficiency", "كفاءة الطاقة", "Reducing energy consumption and improving building performance."], ["Water Efficiency", "كفاءة المياه", "Reducing water consumption through efficient systems and fixtures."], ["Waste Management", "إدارة النفايات", "Managing, segregating, recycling, and reducing waste."], ["Indoor Environmental Quality (IEQ)", "جودة البيئة الداخلية", "Comfort, health, air quality, lighting, and wellbeing."], ["Health and Wellbeing", "الصحة والرفاهية", "Supporting healthier and more comfortable spaces."], ["Connectivity", "الترابط والوصول", "Improving access, movement, and connection to services."], ["Performance Parameters", "معايير الأداء", "Measures used to verify sustainability performance."], ["Commissioning", "التشغيل الأولي والتحقق", "Ensuring building systems operate as intended."], ["Compliance", "الامتثال", "Meeting Mostadam, SBC, and project requirements."], ["Evidence Submission", "تقديم الأدلة", "Submitting drawings, calculations, photos, reports, and documents."], ["Date-stamped Evidence", "أدلة مؤرخة", "Photos or records showing implementation dates for verification."], ["Documentation", "التوثيق", "The complete record proving compliance."], ["Mostadam AP", "محترف مستدام المعتمد", "The accredited professional supporting certification compliance and submission."], ["Gap Analysis", "تحليل الفجوات", "Identifying missing requirements before submission."], ["Construction Stage Submission", "تقديم مرحلة التنفيذ", "Submission proving implementation during construction."]];
+  const MS_QA = [["What is Mostadam?", "Mostadam is Saudi Arabia’s national sustainability rating system for the built environment. It supports Vision 2030 by promoting high-performance, resource-efficient, and environmentally responsible buildings and communities."], ["What is the difference between Keystones and Credits?", "Keystones are mandatory requirements that must be achieved to proceed with certification, while Credits are optional requirements that allow projects to earn additional points and reach higher certification levels. Keystones ensure compliance, while Credits drive excellence."], ["Give examples of Keystones and Credits.", "A Keystone example is achieving minimum water efficiency fixtures or complying with Saudi Building Code requirements. A Credit example is installing solar panels or using high-efficiency LED lighting with smart controls to earn additional points."], ["How is the certification level determined?", "The certification level is determined based on the total points achieved after meeting all required Keystones. The levels progress from Green, Bronze, Silver, and Gold up to Diamond, which is the highest level."], ["What does D+C mean?", "D+C stands for Design and Construction. It means the project is evaluated based on design compliance and actual implementation during construction, supported by proper evidence and documentation."], ["What is your role as Mostadam AP?", "As a Mostadam AP, my role is to guide the project team on compliance requirements, coordinate evidence collection, identify certification gaps, and support the submission process."], ["How can we link Ajyal with Mostadam?", "Ajyal demonstrates practical Mostadam implementation at the community and infrastructure level, including water efficiency, environmental compliance, smart systems, and community-level sustainability practices."], ["How can we link the Stadium with Mostadam?", "In the Stadium project, Keystones support mandatory compliance, while Credits such as energy-efficient lighting, BMS integration, and water-efficient systems can improve the total score and support higher certification levels."]];
+  const MS_SCRIPT = "Good morning everyone.\n\nToday I will briefly introduce Mostadam, Saudi Arabia’s national sustainability rating system for the built environment.\n\nMostadam supports Vision 2030 by promoting high-performance, resource-efficient, and environmentally responsible buildings and communities.\n\nThe system is aligned with the Saudi Building Code and goes beyond minimum code requirements to ensure a higher level of sustainability and performance.\n\nMostadam is based on two key components: Keystones and Credits.\n\nKeystones are mandatory requirements that must be achieved to proceed with certification, while Credits are optional requirements that allow projects to earn additional points and reach higher certification levels.\n\nFor example, in the Stadium project, compliance-related requirements such as SBC alignment, safety systems, and basic performance requirements are treated as Keystones, while energy-efficient lighting, smart controls, BMS integration, and water-efficient solutions can support additional Credits.\n\nIn Ajyal community, sustainability was implemented at the community and infrastructure level, including water efficiency, environmental compliance, smart systems, and community-level sustainability practices.\n\nWhile giga projects such as the Red Sea and Diriyah represent large-scale sustainability strategies, Ajyal and the Stadium demonstrate practical Mostadam implementation on the ground. Our strength is implementation, not scale.\n\nIn summary, Mostadam ensures that sustainability is not only designed, but also implemented, documented, and verified.\n\nThank you.";
+  const MS_SLIDES = [["What is Mostadam?", "Mostadam is Saudi Arabia’s national sustainability rating system for the built environment."], ["Why Mostadam?", "It supports Vision 2030, improves quality of life, and verifies sustainability performance."], ["Keystones vs Credits", "Keystones ensure compliance, while Credits drive excellence and higher certification levels."], ["Certification Levels", "The level depends on total points achieved after meeting all required Keystones."], ["Stadium Example", "The Stadium shows construction-stage implementation through evidence, efficient systems, BMS, and water-efficiency measures."], ["Ajyal Example", "Ajyal demonstrates sustainability at the community and infrastructure level."], ["Key Takeaway", "Mostadam is not only a certification; it is a framework to design, implement, document, and verify sustainability."]];
+  const MS_SCENARIOS = [{"title": "Keystones vs Credits", "situation": "A manager asks: What is the difference between Keystones and Credits?", "options": [["Keystones are mandatory, while Credits are optional points.", true], ["Keystones and Credits are the same.", false], ["Credits are mandatory and Keystones are optional.", false]], "best": "Keystones are mandatory requirements that must be achieved to proceed with certification, while Credits are optional requirements that allow projects to earn additional points and reach higher certification levels."}, {"title": "Stadium Example", "situation": "You need to explain Mostadam implementation in the Stadium project.", "options": [["In the Stadium project, Keystones ensure compliance, while Credits such as energy-efficient lighting, BMS integration, and water-efficient solutions help improve the rating level.", true], ["The Stadium only needs a certificate and no documentation.", false], ["Credits are not important for the Stadium project.", false]], "best": "In the Stadium project, Keystones ensure compliance with mandatory requirements, while Credits such as energy-efficient lighting, BMS integration, and water-efficient solutions help increase the total score and support a higher certification level."}, {"title": "Ajyal Example", "situation": "You need to position Ajyal as a strong community sustainability example.", "options": [["Ajyal demonstrates real Mostadam implementation at the community and infrastructure level.", true], ["Ajyal is not related to sustainability.", false], ["Ajyal only focuses on buildings, not community-level outcomes.", false]], "best": "Ajyal demonstrates real Mostadam implementation at the community and infrastructure level through water efficiency, environmental compliance, smart systems, and practical sustainability solutions."}, {"title": "Diamond Question", "situation": "A director asks: Why didn’t we achieve Diamond?", "options": [["From a Mostadam perspective, we met the required Keystones, but we need more Credits and stronger evidence to reach Diamond.", true], ["We did our best.", false], ["Diamond is not possible for any project.", false]], "best": "From a Mostadam perspective, achieving Diamond requires meeting all required Keystones and maximizing optional Credits with strong evidence. The gap is not only compliance; it is the additional points needed to reach the highest level."}];
+  let msIndex = 0;
+
+  function msEsc(s){ return String(s||'').replace(/'/g,"\\'").replace(/`/g,"'"); }
+
+  function msStyle(){
+    if(document.getElementById('msFixedStyle')) return;
+    const st=document.createElement('style');
+    st.id='msFixedStyle';
+    st.innerHTML=`
+      .ms-hero{background:linear-gradient(135deg,#153b2a,#1a6b45);color:#fff;border-radius:18px;padding:18px;margin:16px 0;box-shadow:0 16px 40px rgba(15,15,20,.12)}
+      .ms-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:#e8d5a3;margin-bottom:7px;text-transform:uppercase}
+      .ms-title{font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px}
+      .ms-sub{font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.8;color:rgba(255,255,255,.82)}
+      .ms-btn{background:#1a6b45!important;color:#fff!important}
+      .ms-opt{background:#fff;border:1px solid var(--border);border-radius:12px;padding:13px 15px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);text-align:left;direction:ltr;transition:all .15s;line-height:1.5;margin-bottom:8px;width:100%}
+      .ms-opt.good{background:#eaf3de!important;border-color:#3b6d11;color:#1a6b45}
+      .ms-opt.bad{background:#fcebeb!important;border-color:#a32d2d;color:#a32d2d}
+      .ms-chip{display:inline-block;background:#eaf3de;color:#1a6b45;border:1px solid #c5dfb2;border-radius:999px;padding:5px 9px;font-family:'Tajawal',sans-serif;font-size:11px;margin:3px}
+    `;
+    document.head.appendChild(st);
+  }
+
+  function speakMS(text){
+    try{
+      if(!window.speechSynthesis)return;
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      const voices=speechSynthesis.getVoices();
+      const voice=voices.find(v=>/Samantha|Zira|Google UK English Female|Google US English|Microsoft Jenny|Microsoft Aria|Daniel/i.test(v.name)) || voices.find(v=>v.lang&&v.lang.startsWith('en')) || voices[0];
+      if(voice)u.voice=voice;
+      u.lang='en-US'; u.rate=0.78; u.pitch=0.95;
+      speechSynthesis.speak(u);
+    }catch(e){console.log(e)}
+  }
+  window.speakMS=speakMS;
+
+  window.renderMostadam = function(){
+    msStyle();
+    const div=document.getElementById('mostadamDiv');
+    if(!div)return;
+    document.getElementById('mostadamPill').textContent='PRO';
+    div.innerHTML=`
+      <div class="ms-hero">
+        <div class="ms-kicker">MOSTADAM PRESENTATION TRAINING</div>
+        <div class="ms-title">🌿 مستدام — مساعد البرزنتيشن</div>
+        <div class="ms-sub">سكريبت، كلمات، نطق، أمثلة الملعب وأجيال، Q&A، وتدريب تفاعلي. تم إضافته بدون حذف أي شيء من ملفك الأصلي.</div>
+      </div>
+      <div class="nav-row" style="margin-bottom:10px">
+        <button class="nb ms-btn" onclick="renderMostadamOpening()">🎯 افتتاح وختام</button>
+        <button class="nb ghost" onclick="renderMostadamSlideScripts()">📋 سكريبت السلايدات</button>
+      </div>
+      <div class="nav-row" style="margin-bottom:10px">
+        <button class="nb ghost" onclick="renderMostadamAudienceQA()">❓ أسئلة الجمهور</button>
+        <button class="nb ghost" onclick="renderMostadamKeyPhrases()">💬 جمل احترافية</button>
+      </div>
+      <div class="nav-row" style="margin-bottom:10px">
+        <button class="nb ghost" onclick="renderMostadamNotEasy()">💪 مستدام مو سهل</button>
+        <button class="nb ghost" onclick="renderMostadamProjects()">🏆 المشاريع الرائدة</button>
+      </div>
+      <div class="nav-row" style="margin-bottom:10px">
+        <button class="nb ms-btn" onclick="renderMostadamScript()">🎤 سكريبت العرض</button>
+        <button class="nb ghost" onclick="renderMostadamVocab()">📚 الكلمات</button>
+      </div>
+      <div class="nav-row" style="margin-bottom:10px">
+        <button class="nb ghost" onclick="renderMostadamQA()">🧠 Q&A تدريب</button>
+        <button class="nb ghost" onclick="openMostadamScenario(0)">🎭 سيناريو</button>
+      </div>
+      <div class="card">
+        <div class="card-lbl">Keystones vs Credits</div>
+        <div class="card-txt ltr"><b>Keystones</b> are mandatory requirements that must be achieved to proceed with certification, while <b>Credits</b> are optional requirements that allow projects to earn additional points and reach higher certification levels.</div>
+        <div style="margin-top:8px"><span class="ms-chip">Keystones ensure compliance</span><span class="ms-chip">Credits drive excellence</span></div>
+        <button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('Keystones are mandatory requirements that must be achieved to proceed with certification, while Credits are optional requirements that allow projects to earn additional points and reach higher certification levels.')">🎤 استمع</button>
+      </div>
+      <div class="ex-card"><div class="ex-lbl">🏟️ Stadium Example</div><div class="ex-en">In the Stadium project, Keystones ensure compliance with mandatory requirements, while Credits such as energy-efficient lighting, BMS integration, and water-efficient solutions help increase the total score and support a higher certification level.</div></div>
+      <div class="ex-card"><div class="ex-lbl">🏡 Ajyal Community Example</div><div class="ex-en">Ajyal demonstrates real Mostadam implementation at the community and infrastructure level through water efficiency, environmental compliance, smart systems, and practical sustainability solutions.</div></div>
+      <div class="card"><div class="card-lbl">Project Comparison</div><div class="card-txt ltr">While giga projects such as the Red Sea and Diriyah represent large-scale sustainability strategies, Ajyal and the Stadium demonstrate practical Mostadam implementation on the ground. Our strength is implementation, not scale.</div></div>
+    `;
+  };
+
+  window.renderMostadamScript=function(){
+    const div=document.getElementById('mostadamDiv');
+    div.innerHTML=`<div class="ms-hero"><div class="ms-title">🎤 سكريبت مستدام</div><div class="ms-sub">سكريبت جاهز للبرزنتيشن مع نطق محسّن.</div></div>
+    <div class="nav-row" style="margin-bottom:12px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button><button class="nb ms-btn" onclick="speakMS(MS_SCRIPT)">🎤 استمع للسكريبت</button></div>
+    <div class="card"><div class="card-lbl">Presentation Script</div><div class="card-txt ltr" style="white-space:pre-line;font-size:14px">${MS_SCRIPT}</div></div>`;
+  };
+
+  window.renderMostadamSlides=function(){
+    const div=document.getElementById('mostadamDiv');
+    div.innerHTML=`<div class="ms-hero"><div class="ms-title">🖥️ Presentation Mode</div><div class="ms-sub">بطاقات مرتبة تحفظها قبل العرض.</div></div>
+    <div class="nav-row" style="margin-bottom:12px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+    ${MS_SLIDES.map((s,i)=>`<div class="card"><div class="card-lbl">Slide ${i+1}</div><div class="card-txt"><b>${s[0]}</b></div><div class="card-txt ltr" style="margin-top:7px">${s[1]}</div><button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${msEsc(s[1])}')">🎤 استمع</button></div>`).join('')}`;
+  };
+
+  window.renderMostadamVocab=function(){
+    const div=document.getElementById('mostadamDiv');
+    div.innerHTML=`<div class="ms-hero"><div class="ms-title">📘 كلمات مستدام المهمة</div><div class="ms-sub">اضغط الكلمة لسماع النطق.</div></div>
+    <div class="nav-row" style="margin-bottom:12px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+    <div class="wlist">${MS_VOCAB.map(v=>`<div class="wrow" onclick="speakMS('${msEsc(v[0])}')"><button class="wr-spk">🎤</button><div class="wr-bd"><div class="wr-en">${v[0]}</div><div class="wr-ar">${v[1]}</div><div class="tip-txt">${v[2]}</div></div></div>`).join('')}</div>`;
+  };
+
+  window.renderMostadamQA=function(){
+    const div=document.getElementById('mostadamDiv');
+    div.innerHTML=`<div class="ms-hero"><div class="ms-title">❓ أسئلة وأجوبة مستدام</div><div class="ms-sub">إجابات احترافية جاهزة للبرزنتيشن.</div></div>
+    <div class="nav-row" style="margin-bottom:12px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+    ${MS_QA.map((x,i)=>`<div class="card"><div class="card-lbl">Q${i+1}</div><div class="card-txt"><b>${x[0]}</b></div><div class="card-txt ltr" style="margin-top:8px">${x[1]}</div><button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${msEsc(x[1])}')">🎤 استمع</button></div>`).join('')}`;
+  };
+
+  window.openMostadamScenario=function(i){
+    msIndex=i;const s=MS_SCENARIOS[i];document.getElementById('mostadamPill').textContent=(i+1)+'/'+MS_SCENARIOS.length;
+    const div=document.getElementById('mostadamDiv');
+    div.innerHTML=`<div class="ms-hero"><div class="ms-title">🎮 تدريب مستدام</div><div class="ms-sub">${s.title}</div></div>
+    <div class="nav-row" style="margin-bottom:12px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+    <div class="card"><div class="card-lbl">Situation</div><div class="card-txt">${s.situation}</div></div>
+    <div class="card">${s.options.map((o,idx)=>`<button class="ms-opt" onclick="checkMostadam(${idx})">${o[0]}</button>`).join('')}</div>
+    <div id="msResult"></div>`;
+  };
+
+  window.checkMostadam=function(idx){
+    const s=MS_SCENARIOS[msIndex];const btns=[...document.querySelectorAll('.ms-opt')];
+    btns.forEach((b,i)=>{b.disabled=true;if(s.options[i][1])b.classList.add('good');else if(i===idx)b.classList.add('bad');});
+    const ok=s.options[idx][1];
+    document.getElementById('msResult').innerHTML=`<div class="card" style="background:${ok?'#eaf3de':'#fcebeb'}"><div class="card-lbl">${ok?'Strong Answer':'Needs Upgrade'}</div><div class="card-txt">${ok?'ممتاز. هذا رد احترافي.':'الرد يحتاج مصطلحات مستدام وربطها بالشهادة والنقاط.'}</div></div>
+    <div class="director-note"><div class="card-lbl">Best Answer</div><div class="card-txt ltr">${s.best}</div><button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${msEsc(s.best)}')">🎤 استمع</button></div>
+    <div class="nav-row"><button class="nb ghost" onclick="renderMostadam()">سكشن مستدام</button><button class="nb ms-btn" onclick="openMostadamScenario(${(msIndex+1)%MS_SCENARIOS.length})">التالي</button></div>`;
+  };
+
+
+  // ── SLIDES ──
+  window.renderMostadamSlideScripts = function(){
+    const div=document.getElementById('mostadamDiv');
+    const slides=[
+      {num:"Slide 1",title:"What is Mostadam?",script:"Mostadam is Saudi Arabia's national sustainability rating system. It supports Vision 2030 by focusing on real performance — not just design intent.",tip:"ابدأ بتعريف واضح. الجمهور غير التقني يحتاج جملة واحدة يفهم منها الصورة كاملة."},
+      {num:"Slide 2",title:"Why Mostadam?",script:"Mostadam improves energy and water efficiency, enhances quality of life, and provides measurable sustainability performance — with numbers, not just intentions.",tip:"ركز على كلمة measurable — تعطي مصداقية عند المسؤولين."},
+      {num:"Slide 3",title:"Keystones vs Credits",script:"Think of it this way: Keystones are the floor — you must meet them. Credits are the ceiling — they determine how high you go. From Green to Diamond.",tip:"هذي الاستعارة تبقى في الذهن. قلها ببطء."},
+      {num:"Slide 4",title:"Process",script:"The process goes from Registration, through Design and Construction, to Final Certification. The critical stage is construction — because that is where implementation must be proven.",tip:"التوقف عند كلمة proven — هي لب الموضوع."},
+      {num:"Slide 5",title:"Evidence",script:"Evidence is everything in Mostadam: drawings, calculations, reports, date-stamped photos, and datasheets. Without evidence, even the best implementation does not count.",tip:"الجملة الأخيرة قوية — قلها بثقة."},
+      {num:"Slide 6",title:"Stadium Example",script:"In the Stadium project, we apply Keystones for safety and SBC compliance, and Credits through energy systems and BMS integration. Every credit requires documented proof.",tip:"الأمثلة المحلية تشد الجمهور أكثر من الأرقام."},
+      {num:"Slide 7",title:"Ajyal Example",script:"Ajyal demonstrates Mostadam at community scale — water efficiency, smart systems, and environmental compliance. Five Diamond certifications. The highest in Saudi Arabia.",tip:"خمس ماسيات — رقم يتكلم لوحده. قله بثقة."},
+      {num:"Slide 8",title:"Key Message",script:"Mostadam is not about design — it is about proof of implementation.",tip:"هذي الجملة الذهبية. أوقف بعدها. خل الجمهور يستوعب."}
+    ];
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">SLIDE-BY-SLIDE</div><div class="ms-title">📋 سكريبت السلايدات</div><div class="ms-sub">جملة قوية لكل سلايد مع نصيحة تقديم.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      ${slides.map(s=>`
+      <div class="card" style="margin-bottom:10px;border-right:4px solid #1a6b45">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;background:#e8f5ee;color:#1a6b45;padding:3px 8px;border-radius:4px">${s.num}</span>
+          <span style="font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;color:#1a3a6b">${s.title}</span>
+        </div>
+        <div class="card-txt ltr" style="font-size:13px;color:#222;font-style:italic;margin-bottom:8px">"${s.script}"</div>
+        <div style="background:#fffbea;border-radius:6px;padding:8px 10px;font-family:'Tajawal',sans-serif;font-size:12px;color:#7a6000;margin-bottom:8px">💡 ${s.tip}</div>
+        <button class="nb ms-btn" style="width:100%" onclick="speakMS('${s.script.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>`).join('')}`;
+  };
+
+  // ── OPENING ──
+  window.renderMostadamOpening = function(){
+    const div=document.getElementById('mostadamDiv');
+    const OPEN="Every building you enter, every community you live in — leaves a footprint. Mostadam is Saudi Arabia's answer to making that footprint count.";
+    const BRIDGE="Today I will walk you through what Mostadam is, how it works, and why it matters — whether you are a developer, engineer, or decision-maker.";
+    const CLOSE="Mostadam is not just about getting a certificate on a wall. It is about building Saudi Arabia's future — one high-performance building at a time.";
+    const GOLDEN="Mostadam is not about design — it is about proof of implementation.";
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">PRESENTATION TOOLKIT</div><div class="ms-title">🎯 جمل الافتتاح والختام</div><div class="ms-sub">جمل مصممة تشد الجمهور من أول ثانية.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      <div class="card" style="border-right:4px solid #1a6b45">
+        <div class="card-lbl">🎤 Opening Line</div>
+        <div class="card-txt ltr" style="font-style:italic;color:#1a3a6b">"${OPEN}"</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${OPEN.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>
+      <div class="card">
+        <div class="card-lbl">🔗 Bridge Line</div>
+        <div class="card-txt ltr" style="font-style:italic">"${BRIDGE}"</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${BRIDGE.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>
+      <div class="card" style="border-right:4px solid #b8860b">
+        <div class="card-lbl">🏁 Closing Line</div>
+        <div class="card-txt ltr" style="font-style:italic">"${CLOSE}"</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:10px" onclick="speakMS('${CLOSE.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>
+      <div style="background:linear-gradient(135deg,#1a3a6b,#0b3d91);border-radius:12px;padding:20px;text-align:center">
+        <div style="font-family:'Tajawal',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:8px">💣 الجملة الذهبية</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#fff;font-style:italic">"${GOLDEN}"</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:12px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3)" onclick="speakMS('${GOLDEN}')">🎤 استمع</button>
+      </div>`;
+  };
+
+  // ── AUDIENCE Q&A ──
+  window.renderMostadamAudienceQA = function(){
+    const div=document.getElementById('mostadamDiv');
+    const qa=[
+      {q:"Why Mostadam?",a:"Mostadam verifies sustainability performance with documented evidence — not just design intent. It creates accountability.",tag:"عام"},
+      {q:"Why not Diamond?",a:"Diamond requires 80 or more points and strong evidence across all categories. It takes full team commitment and rigorous documentation.",tag:"مستوى"},
+      {q:"What is the biggest risk?",a:"Weak documentation. Projects can implement everything correctly but still lose points because they failed to document properly.",tag:"مخاطر"},
+      {q:"What is your role as AP?",a:"As a Mostadam Accredited Professional, my role is to ensure compliance, coordinate evidence submission, and guide the team toward the target certification level.",tag:"دوري"},
+      {q:"Is Mostadam mandatory?",a:"Currently required for certain government and large-scale projects. The trend is toward broader mandates aligned with Vision 2030.",tag:"سياسة"},
+      {q:"How is it different from LEED?",a:"LEED is global. Mostadam is built specifically for Saudi climate, the Saudi Building Code, and national sustainability priorities.",tag:"تقني"}
+    ];
+    const tagColor={"عام":"#1a6b45","مستوى":"#1a3a6b","مخاطر":"#8b3a00","دوري":"#4a1a6b","سياسة":"#555","تقني":"#1a6b45"};
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">AUDIENCE Q&A PREP</div><div class="ms-title">❓ أسئلة الجمهور</div><div class="ms-sub">6 أسئلة واقعية مع الرد الاحترافي الجاهز.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      ${qa.map((x,i)=>`
+      <div class="card" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#888">Q${i+1}</span>
+          <span style="font-size:10px;background:${tagColor[x.tag]}20;color:${tagColor[x.tag]};padding:2px 8px;border-radius:10px;font-family:'Tajawal',sans-serif">${x.tag}</span>
+        </div>
+        <div class="card-txt ltr" style="font-weight:700;color:#0b3d91;margin-bottom:6px">"${x.q}"</div>
+        <div class="card-txt ltr" style="font-size:13px;color:#333;border-right:3px solid ${tagColor[x.tag]};padding-right:10px;margin-bottom:8px">${x.a}</div>
+        <button class="nb ms-btn" style="width:100%" onclick="speakMS('${x.a.replace(/'/g,"\'")}')">🎤 استمع للرد</button>
+      </div>`).join('')}`;
+  };
+
+  // ── NOT EASY ──
+  window.renderMostadamNotEasy = function(){
+    const div=document.getElementById('mostadamDiv');
+    const points=[
+      {icon:"🟢",title:"Green مو كافي",en:"Green starts at just 20 points. Gold requires 55 or more. Diamond requires 80 or more. The gap between Green and Diamond is enormous — and most people do not realize this.",ar:"أي مشروع يحقق الـ Keystones يحصل Green. لكن Gold وDiamond مختلفان تماماً."},
+      {icon:"📋",title:"الـ Keystones مو checkboxes",en:"Each Keystone requires documented evidence, site inspection, and assessor review. The documentation alone requires a dedicated team.",ar:"الناس تفكر في الـ Keystones كـ checklist بسيط — لكن كل واحد يحتاج evidence كامل."},
+      {icon:"9️⃣",title:"9 فئات — كل واحدة عالم",en:"Energy, Water, Indoor Air Quality, Site Sustainability, Transportation, Health and Comfort, Management, Education and Innovation, Region and Culture. Coordinating all nine during active construction is a real challenge.",ar:"تنسيق الـ 9 فئات في نفس الوقت أثناء الإنشاء = ضغط حقيقي."},
+      {icon:"📁",title:"التوثيق يقتل المشاريع",en:"The biggest reason projects lose points is not that they failed to implement — it is that they failed to document. Mostadam requires evidence for every credit.",ar:"كثير مشاريع تنفذ كل شيء صح لكن تخسر النقاط لأنها ما وثّقت."},
+      {icon:"🔄",title:"Recertification كل 5 سنوات",en:"O plus E certification requires reassessment every five years. You cannot earn Diamond and then stop.",ar:"الاستدامة التزام مستمر — مو إنجاز مرة واحدة."},
+      {icon:"💎",title:"Diamond نادر جداً",en:"In all of Saudi Arabia, only a handful of projects have achieved Diamond. Aramco achieved six Diamond certifications. Red Sea Global achieved the first ever Commercial Diamond.",ar:"عدد محدود جداً من المشاريع في السعودية كلها حقق Diamond. هذا يقول كل شيء."}
+    ];
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">REALITY CHECK</div><div class="ms-title">💪 مستدام مو سهل</div><div class="ms-sub">6 حقائق تكسر الفكرة الخاطئة.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      ${points.map(p=>`
+      <div class="card" style="margin-bottom:10px;border-right:4px solid #1a6b45">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:20px">${p.icon}</span>
+          <span style="font-family:'Tajawal',sans-serif;font-weight:700;font-size:14px;color:#1a3a6b">${p.title}</span>
+        </div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:13px;color:#555;margin-bottom:8px">${p.ar}</div>
+        <div class="card-txt ltr" style="font-size:12px;color:#1a6b45;font-style:italic;border-top:1px solid #e8f5ee;padding-top:8px;margin-bottom:8px">"${p.en}"</div>
+        <button class="nb ms-btn" style="width:100%" onclick="speakMS('${p.en.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>`).join('')}`;
+  };
+
+  // ── PROJECTS ──
+  window.renderMostadamProjects = function(){
+    const div=document.getElementById('mostadamDiv');
+    const GOLDEN="The biggest projects in Saudi Arabia — NEOM, Diriyah, Qiddiya — are built on sustainability principles. But having a sustainability vision is not the same as earning a Mostadam certificate. Red Sea Global proved the difference. They did not just talk about sustainability — they documented it, got assessed, passed inspection, and earned Diamond. That is what Mostadam is about: proof, not promises.";
+    const certified=[
+      {badge:"💎",level:"Diamond",color:"#1a3a6b",name:"Turtle Bay Hotel — Red Sea Global",detail:"أول مشروع تجاري يحقق Diamond في D+C. يعمل بـ 100% طاقة متجددة.",date:"سبتمبر 2023",fact:"First Commercial Diamond in Saudi Arabia."},
+      {badge:"💎",level:"Diamond ×5",color:"#1a3a6b",name:"أجيال 1 و2 — أرامكو السعودية",detail:"5 شهادات ماسية في فئة المجتمعات D+C. أكبر حصاد في تاريخ مستدام.",date:"نوفمبر 2024",fact:"5 Diamond certifications in one ceremony."},
+      {badge:"💎",level:"Diamond O+E",color:"#1a3a6b",name:"إثراء — أرامكو السعودية",detail:"أول مشروع قائم في السعودية يحقق Diamond في O+E.",date:"مارس 2025",fact:"First existing building Diamond in Saudi Arabia."},
+      {badge:"🥇",level:"Gold",color:"#b8860b",name:"SPARK — مدينة الملك سلمان للطاقة",detail:"أول مدينة صناعية تحقق Gold في مستدام.",date:"ديسمبر 2021",fact:"First industrial city certified under Mostadam."}
+    ];
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">TRACK RECORD</div><div class="ms-title">🏆 المشاريع الرائدة</div><div class="ms-sub">من حقق مستدام فعلاً — ومن بقي عند الوعود.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:#1a6b45;margin-bottom:10px">✅ حصلت على شهادة مستدام فعلاً</div>
+      ${certified.map(p=>`
+      <div class="card" style="margin-bottom:10px;border-right:4px solid ${p.color}">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px">
+          <span style="font-family:'Tajawal',sans-serif;font-weight:700;font-size:13px">${p.badge} ${p.name}</span>
+          <span style="font-size:10px;background:${p.color}20;color:${p.color};padding:2px 8px;border-radius:10px;font-family:'IBM Plex Mono',monospace;white-space:nowrap">${p.level}</span>
+        </div>
+        <div style="font-family:'Tajawal',sans-serif;font-size:12px;color:#555;margin-bottom:4px">${p.detail}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1a6b45;font-style:italic;margin-bottom:4px">"${p.fact}"</div>
+        <div style="font-size:11px;color:#999">${p.date}</div>
+      </div>`).join('')}
+      <div style="background:linear-gradient(135deg,#1a3a6b,#0b3d91);border-radius:12px;padding:18px;margin-top:16px">
+        <div style="font-family:'Tajawal',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:8px">💡 الجملة الذهبية للبرزنتيشن</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;line-height:1.8;font-style:italic">"${GOLDEN}"</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:12px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3)" onclick="speakMS('${GOLDEN.replace(/'/g,"\'")}')">🎤 استمع</button>
+      </div>`;
+  };
+
+  // ── KEY PHRASES ──
+  window.renderMostadamKeyPhrases = function(){
+    const div=document.getElementById('mostadamDiv');
+    const phrases=[
+      "From a Mostadam perspective",
+      "We need full compliance",
+      "This is critical for certification",
+      "We need strong evidence",
+      "This impacts certification level",
+      "We need to close this",
+      "Let us define ownership and timeline",
+      "Documentation is non-negotiable",
+      "This is a Keystone requirement",
+      "We are not there yet on evidence"
+    ];
+    div.innerHTML=`
+      <div class="ms-hero"><div class="ms-kicker">KEY PHRASES</div><div class="ms-title">💬 جمل مستدام الاحترافية</div><div class="ms-sub">اضغط أي جملة للاستماع وحفظ النطق.</div></div>
+      <div class="nav-row" style="margin-bottom:16px"><button class="nb ghost" onclick="renderMostadam()">رجوع</button></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${phrases.map(p=>`<button onclick="speakMS('${p.replace(/'/g,"\'")}'); this.style.background='#1a6b45';this.style.color='#fff';" style="background:#f0f4ff;border:1px solid #c5d4f5;border-radius:20px;padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a3a6b;cursor:pointer;transition:all .2s">${p}</button>`).join('')}
+      </div>
+      <div style="background:linear-gradient(135deg,#1a3a6b,#0b3d91);border-radius:12px;padding:18px;margin-top:16px;text-align:center">
+        <div style="font-family:'Tajawal',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:8px">💣 الجملة الذهبية</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#fff;font-style:italic">"Mostadam is not about design — it is about proof of implementation."</div>
+        <button class="nb ms-btn" style="width:100%;margin-top:12px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3)" onclick="speakMS('Mostadam is not about design — it is about proof of implementation.')">🎤 استمع</button>
+      </div>`;
+  };
+
+  const oldNavTo=window.navTo;
+  window.navTo=function(id){
+    document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
+    const bb=document.getElementById('bb-'+id);if(bb)bb.classList.add('on');
+    if(id==='mostadam'){renderMostadam();show('pg-mostadam');return;}
+    oldNavTo(id);
+  };
+
+  const oldRenderHome=window.renderHome;
+  window.renderHome=function(){
+    oldRenderHome();
+    const phases=document.getElementById('phasesDiv');
+    if(phases&&!document.getElementById('mostadamHomeRow')){
+      const row=document.createElement('div');row.id='mostadamHomeRow';row.className='phase-row';row.style.setProperty('--pc','#1a6b45');
+      row.onclick=()=>navTo('mostadam');
+      row.innerHTML='<div class="pr-num">🌿</div><div class="pr-body"><div class="pr-title" style="color:#1a6b45">مستدام Presentation Training</div><div class="pr-desc">سكريبت · Q&A · أمثلة الملعب وأجيال · نطق</div><div class="pr-pbar"><div class="pr-pfill" style="width:100%;background:#1a6b45"></div></div></div><div class="pr-count" style="color:#1a6b45">PRO</div>';
+      phases.prepend(row);
+    }
+  };
+
+  if(window.speechSynthesis) window.speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+  setTimeout(()=>{try{renderHome();}catch(e){console.log(e)}},600);
+})();
+</script>
+
+</body>
+</html>
