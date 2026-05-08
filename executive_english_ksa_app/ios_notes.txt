@@ -1,3 +1,0 @@
-// SwiftUI WebView content reference
-// URL: https://masarsa.online/
-// App Name: Executive English KSA
