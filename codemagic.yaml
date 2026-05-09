@@ -3,28 +3,25 @@ workflows:
     name: MASARSA iOS Build
     max_build_duration: 60
     instance_type: mac_mini_m2
-
     environment:
-      flutter: stable
       xcode: latest
       cocoapods: default
-
+      node: 18
       ios_signing:
         distribution_type: app_store
         bundle_identifier: online.masarsa.app
-
     scripts:
-      - name: Get Flutter packages
+      - name: Install dependencies
         script: |
-          flutter pub get
+          npm install
 
-      - name: Create iOS project
+      - name: Add iOS platform
         script: |
-          flutter create .
+          npx cap add ios || true
 
-      - name: Set Bundle Identifier
+      - name: Sync Capacitor
         script: |
-          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = online.masarsa.app;/g' ios/Runner.xcodeproj/project.pbxproj
+          npx cap sync ios
 
       - name: Apply Provisioning Profiles
         script: |
@@ -32,7 +29,14 @@ workflows:
 
       - name: Build IPA
         script: |
-          flutter build ipa --release
+          xcode-project build-ipa \
+            --project ios/App/App.xcodeproj \
+            --scheme App
 
     artifacts:
-      - build/ios/ipa/*.ipa
+      - "**/*.ipa"
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
