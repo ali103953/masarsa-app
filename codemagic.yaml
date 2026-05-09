@@ -8,6 +8,7 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+
       groups:
         - apple
 
@@ -45,7 +46,7 @@ workflows:
           xcrun altool --upload-app \
             --type ios \
             --file "$IPA_PATH" \
-            --username "alyamiali-@hotmail.com" \
+            --username "tlana20232023@gmail.com" \
             --password "$APP_SPECIFIC_PASSWORD"
 
     artifacts:
