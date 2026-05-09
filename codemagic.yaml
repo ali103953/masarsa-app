@@ -8,6 +8,7 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+
       groups:
         - apple
 
@@ -36,12 +37,14 @@ workflows:
 
       - name: Build IPA
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --export-options-plist=/Users/builder/export_options.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
+      - /Users/builder/clone/build/ios/ipa/*.ipa
 
     publishing:
       app_store_connect:
         apple_id: alyamiali-@hotmail.com
         password: $APP_SPECIFIC_PASSWORD
+        submit_to_testflight: true
