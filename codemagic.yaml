@@ -3,13 +3,18 @@ workflows:
     name: MASARSA iOS Build
     max_build_duration: 60
     instance_type: mac_mini_m2
+
     environment:
       xcode: latest
       cocoapods: default
       node: 18
+      groups:
+        - apple
+
       ios_signing:
         distribution_type: app_store
         bundle_identifier: online.masarsa.app
+
     scripts:
       - name: Install dependencies
         script: |
@@ -34,9 +39,10 @@ workflows:
             --scheme App
 
     artifacts:
+      - build/ios/ipa/*.ipa
       - "**/*.ipa"
 
     publishing:
       app_store_connect:
-        auth: integration
-        submit_to_testflight: true
+        apple_id: alyamiali-@hotmail.com
+        password: $APP_SPECIFIC_PASSWORD
