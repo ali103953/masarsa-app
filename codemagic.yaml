@@ -20,6 +20,16 @@ workflows:
         script: |
           flutter pub get
 
+      - name: Recreate iOS project
+        script: |
+          rm -rf ios
+          flutter create --platforms=ios .
+          flutter pub get
+
+      - name: Set Bundle ID
+        script: |
+          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = online.masarsa.app;/g' ios/Runner.xcodeproj/project.pbxproj
+
       - name: Apply provisioning profiles
         script: |
           xcode-project use-profiles
