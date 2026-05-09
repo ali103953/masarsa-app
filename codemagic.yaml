@@ -3,18 +3,13 @@ workflows:
     name: MASARSA iOS Build
     max_build_duration: 60
     instance_type: mac_mini_m2
-
     environment:
       xcode: latest
       cocoapods: default
       node: 18
-      groups:
-        - apple
-
       ios_signing:
         distribution_type: app_store
         bundle_identifier: online.masarsa.app
-
     scripts:
       - name: Install dependencies
         script: |
@@ -22,11 +17,15 @@ workflows:
 
       - name: Add iOS platform
         script: |
-          npx cap add ios || true
+          npx cap add ios
+
+      - name: Copy capacitor config
+        script: |
+          cp capacitor.config.json ios/App/App/capacitor.config.json
 
       - name: Sync Capacitor
         script: |
-          npx cap sync ios
+          npx cap sync ios --inline
 
       - name: Apply Provisioning Profiles
         script: |
@@ -39,10 +38,9 @@ workflows:
             --scheme App
 
     artifacts:
-      - build/ios/ipa/*.ipa
       - "**/*.ipa"
 
     publishing:
       app_store_connect:
-        apple_id: alyamiali-@hotmail.com
-        password: $APP_SPECIFIC_PASSWORD
+        auth: integration
+        submit_to_testflight: true
