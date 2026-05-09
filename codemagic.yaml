@@ -1,46 +1,42 @@
 workflows:
-  ios-testflight:
-    name: MASARSA iOS Build
+  ios-release:
+    name: MASARSA Flutter iOS
     max_build_duration: 60
     instance_type: mac_mini_m2
+
     environment:
+      flutter: stable
       xcode: latest
       cocoapods: default
-      node: 18
+      groups:
+        - apple
+
       ios_signing:
         distribution_type: app_store
         bundle_identifier: online.masarsa.app
+
     scripts:
-      - name: Install dependencies
+      - name: Flutter pub get
         script: |
-          npm install
+          flutter pub get
 
-      - name: Add iOS platform
+      - name: Install pods
         script: |
-          npx cap add ios
+          cd ios
+          pod install
 
-      - name: Copy capacitor config
-        script: |
-          cp capacitor.config.json ios/App/App/capacitor.config.json
-
-      - name: Sync Capacitor
-        script: |
-          npx cap sync ios --inline
-
-      - name: Apply Provisioning Profiles
+      - name: Apply provisioning profiles
         script: |
           xcode-project use-profiles
 
       - name: Build IPA
         script: |
-          xcode-project build-ipa \
-            --project ios/App/App.xcodeproj \
-            --scheme App
+          flutter build ipa --release
 
     artifacts:
-      - "**/*.ipa"
+      - build/ios/ipa/*.ipa
 
     publishing:
       app_store_connect:
-        auth: integration
-        submit_to_testflight: true
+        apple_id: alyamiali-@hotmail.com
+        password: $APP_SPECIFIC_PASSWORD
