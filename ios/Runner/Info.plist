@@ -5,7 +5,7 @@
   <key>CFBundleDevelopmentRegion</key>
   <string>$(DEVELOPMENT_LANGUAGE)</string>
   <key>CFBundleDisplayName</key>
-  <string>Executive English KSA</string>
+  <string>مسارسا</string>
   <key>CFBundleExecutable</key>
   <string>$(EXECUTABLE_NAME)</string>
   <key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
-  <string>Executive English KSA</string>
+  <string>MASARSA</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>
@@ -41,5 +41,9 @@
   <true/>
   <key>UIApplicationSupportsIndirectInputEvents</key>
   <true/>
+  <key>ITSAppUsesNonExemptEncryption</key>
+  <false/>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>يستخدم مسارسا موقعك لعرض رحلات النقل المدرسي وتتبع الحافلة أثناء الاستخدام.</string>
 </dict>
 </plist>

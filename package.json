@@ -1,10 +1,10 @@
 {
   "name": "masarsa-app",
   "version": "1.0.0",
-  "description": "مسارسا - إنجليزي الشغل",
-  "main": "index.js",
+  "description": "MASARSA school transportation web shell utilities",
+  "private": true,
   "scripts": {
-    "build": "echo 'No build step needed'",
+    "build": "echo \"Flutter is the production iOS build path; no web build step is configured.\"",
     "cap:add:ios": "npx cap add ios",
     "cap:sync": "npx cap sync"
   },

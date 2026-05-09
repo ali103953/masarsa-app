@@ -1,5 +1,5 @@
-name: executive_english_ksa
-description: Executive English KSA WebView App
+name: masarsa_app
+description: Arabic-first school transportation and bus tracking app for MASARSA.
 publish_to: 'none'
 version: 1.0.0+1
 

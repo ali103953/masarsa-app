@@ -8,28 +8,37 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-
       groups:
         - apple
-
+      vars:
+        BUNDLE_ID: online.masarsa.app
+        APP_STORE_APPLE_ID: ""
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: online.masarsa.app
+        bundle_identifier: $BUNDLE_ID
 
     scripts:
       - name: Flutter pub get
         script: |
           flutter pub get
 
-      - name: Recreate iOS project
+      - name: Ensure iOS project exists
         script: |
-          rm -rf ios
-          flutter create --platforms=ios .
-          flutter pub get
+          if [ ! -d "ios/Runner.xcodeproj" ]; then
+            echo "iOS project is missing; generating Flutter iOS scaffold."
+            flutter create --platforms=ios --org online.masarsa .
+            flutter pub get
+          fi
 
-      - name: Set Bundle ID
+      - name: Configure iOS bundle identifier
         script: |
-          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = online.masarsa.app;/g' ios/Runner.xcodeproj/project.pbxproj
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName مسارسا" ios/Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleName MASARSA" ios/Runner/Info.plist
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;/g" ios/Runner.xcodeproj/project.pbxproj
+
+      - name: Run Flutter analysis
+        script: |
+          flutter analyze
 
       - name: Apply provisioning profiles
         script: |
@@ -37,17 +46,25 @@ workflows:
 
       - name: Build IPA
         script: |
-          flutter build ipa --release --export-options-plist=/Users/builder/export_options.plist
+          BUILD_NUMBER="${BUILD_NUMBER:-1}"
+          if [ -n "$APP_STORE_APPLE_ID" ]; then
+            LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" || echo 0)
+            BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+          fi
 
-      - name: Upload to TestFlight
-        script: |
-          IPA_PATH=$(find build -name "*.ipa" | head -n 1)
-          echo "IPA_PATH=$IPA_PATH"
-          xcrun altool --upload-app \
-            --type ios \
-            --file "$IPA_PATH" \
-            --username "tlana20232023@gmail.com" \
-            --password "$APP_SPECIFIC_PASSWORD"
+          flutter build ipa --release \
+            --build-name=1.0.0 \
+            --build-number="$BUILD_NUMBER"
 
     artifacts:
-      - "**/*.ipa"
+      - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive
+      - flutter_drive.log
+
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+        expire_build_submitted_for_review: true
