@@ -8,7 +8,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-
       groups:
         - apple
 
@@ -39,12 +38,15 @@ workflows:
         script: |
           flutter build ipa --release --export-options-plist=/Users/builder/export_options.plist
 
-    artifacts:
-      - build/ios/ipa/*.ipa
-      - /Users/builder/clone/build/ios/ipa/*.ipa
+      - name: Upload to TestFlight
+        script: |
+          IPA_PATH=$(find build -name "*.ipa" | head -n 1)
+          echo "IPA_PATH=$IPA_PATH"
+          xcrun altool --upload-app \
+            --type ios \
+            --file "$IPA_PATH" \
+            --username "alyamiali-@hotmail.com" \
+            --password "$APP_SPECIFIC_PASSWORD"
 
-    publishing:
-      app_store_connect:
-        apple_id: alyamiali-@hotmail.com
-        password: $APP_SPECIFIC_PASSWORD
-        submit_to_testflight: true
+    artifacts:
+      - "**/*.ipa"
