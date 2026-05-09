@@ -1,11 +1,8 @@
 workflows:
   ios-testflight:
-    name: MASARSA iOS TestFlight
+    name: MASARSA iOS Build
     max_build_duration: 60
     instance_type: mac_mini_m2
-
-    integrations:
-      app_store_connect: codemagic1
 
     environment:
       flutter: stable
@@ -21,13 +18,17 @@ workflows:
         script: |
           flutter pub get
 
-      - name: Create iOS project if missing
+      - name: Create iOS project
         script: |
           flutter create .
 
-      - name: Set iOS bundle identifier
+      - name: Set Bundle Identifier
         script: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier online.masarsa.app" ios/Runner/Info.plist
+          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = online.masarsa.app;/g' ios/Runner.xcodeproj/project.pbxproj
+
+      - name: Apply Provisioning Profiles
+        script: |
+          xcode-project use-profiles
 
       - name: Build IPA
         script: |
@@ -35,11 +36,3 @@ workflows:
 
     artifacts:
       - build/ios/ipa/*.ipa
-
-    publishing:
-      app_store_connect:
-        auth: integration
-
-      email:
-        recipients:
-          - alyamiali@hotmail.com
