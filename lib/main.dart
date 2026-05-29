@@ -43,7 +43,7 @@ class MasarsaWebView extends StatefulWidget {
 }
 
 class _MasarsaWebViewState extends State<MasarsaWebView> {
-  static final Uri _homeUri = Uri.parse('https://masarsa.online/');
+  static final Uri _homeUri = Uri.parse('https://masarsa.online/?v=skills-20260530');
   static const Set<String> _allowedHosts = {
     'masarsa.online',
     'www.masarsa.online',
@@ -117,6 +117,7 @@ class _MasarsaWebViewState extends State<MasarsaWebView> {
           },
         ),
       )
+      ..clearCache()
       ..loadRequest(_homeUri);
   }
 
@@ -134,6 +135,7 @@ class _MasarsaWebViewState extends State<MasarsaWebView> {
       _hasError = false;
       _progress = 0;
     });
+    await _controller.clearCache();
     await _controller.loadRequest(_homeUri);
   }
 
