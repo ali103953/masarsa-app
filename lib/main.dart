@@ -141,8 +141,17 @@ class _MasarsaWebViewState extends State<MasarsaWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _handleBackNavigation,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
+        final navigator = Navigator.of(context);
+        if (await _handleBackNavigation()) {
+          navigator.maybePop();
+        }
+      },
       child: Scaffold(
         body: SafeArea(
           child: Stack(
