@@ -12,7 +12,6 @@ workflows:
         - apple
       vars:
         BUNDLE_ID: online.masarsa.app
-        APP_STORE_APPLE_ID: ""
       ios_signing:
         distribution_type: app_store
         bundle_identifier: $BUNDLE_ID
@@ -47,10 +46,6 @@ workflows:
       - name: Build IPA
         script: |
           BUILD_NUMBER="${BUILD_NUMBER:-2}"
-          if [ -n "$APP_STORE_APPLE_ID" ]; then
-            LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" || echo 0)
-            BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
-          fi
 
           flutter build ipa --release \
             --build-name=1.0.1 \
