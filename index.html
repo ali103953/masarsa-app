@@ -1354,5 +1354,266 @@ renderHome();updateUI();
 })();
 </script>
 
+<!-- SKILLS LAB UPGRADE - REPLACES MOSTADAM UX -->
+<script>
+(function(){
+  const SKILL_SECTIONS = [
+    {
+      icon: '🎯',
+      title: 'ردود الاجتماعات',
+      tag: 'Meetings',
+      desc: 'جمل جاهزة للرد على التأخير، التصعيد، الاعتراض، وتحديد الخطوة التالية.',
+      phrases: [
+        ['Let me clarify the next step.', 'خلني أوضح الخطوة التالية.'],
+        ['We need to align on the priority.', 'نحتاج نتفق على الأولوية.'],
+        ['I will follow up with a clear action plan.', 'سأرسل خطة عمل واضحة بعد الاجتماع.']
+      ]
+    },
+    {
+      icon: '📊',
+      title: 'العروض المهنية',
+      tag: 'Presentations',
+      desc: 'افتتاحيات وخواتيم وربط أفكار تساعدك تقدم بثقة أمام الإدارة أو الفريق.',
+      phrases: [
+        ['Today I will walk you through the key points.', 'اليوم سأشرح لكم النقاط الرئيسية.'],
+        ['The main takeaway is simple.', 'الخلاصة الرئيسية بسيطة.'],
+        ['Let me close with one practical recommendation.', 'أختم بتوصية عملية واحدة.']
+      ]
+    },
+    {
+      icon: '✉️',
+      title: 'الإيميلات الرسمية',
+      tag: 'Emails',
+      desc: 'صيغ مختصرة ومهذبة للمتابعة، الطلب، الاعتذار، وتأكيد القرارات.',
+      phrases: [
+        ['Could you please confirm the timeline?', 'هل يمكنك تأكيد الجدول الزمني؟'],
+        ['Thank you for your prompt response.', 'شكرًا على ردك السريع.'],
+        ['Please find the updated summary below.', 'تجد أدناه الملخص المحدث.']
+      ]
+    },
+    {
+      icon: '🧭',
+      title: 'مواقف العمل',
+      tag: 'Work Scenarios',
+      desc: 'تدريب سريع على مواقف حقيقية: عميل صعب، مدير مستعجل، أو اجتماع غير واضح.',
+      phrases: [
+        ['I understand the concern, and here is my proposal.', 'أتفهم الملاحظة، وهذا اقتراحي.'],
+        ['Let us separate the issue from the solution.', 'خلينا نفصل المشكلة عن الحل.'],
+        ['I can take ownership of this item.', 'أقدر أتحمل مسؤولية هذه النقطة.']
+      ]
+    }
+  ];
+
+  const DAILY_CHALLENGES = [
+    {
+      title: 'تحدي الرد المختصر',
+      prompt: 'مديرك يقول: المشروع متأخر. كيف ترد بجملة مهنية واحدة؟',
+      answer: 'You are right to flag the delay. I will share a recovery plan with clear owners and dates today.'
+    },
+    {
+      title: 'تحدي العرض',
+      prompt: 'ابدأ عرضًا أمام الإدارة بجملة قوية ومباشرة.',
+      answer: 'Today I will focus on three points: the current status, the key risk, and the recommended next step.'
+    },
+    {
+      title: 'تحدي الإيميل',
+      prompt: 'اكتب جملة متابعة بعد اجتماع بدون ضغط زائد.',
+      answer: 'Following our discussion, I am sharing the agreed action items and proposed timeline below.'
+    }
+  ];
+
+  let selectedSkill = 0;
+  let selectedChallenge = 0;
+
+  function skillStyle(){
+    if(document.getElementById('skillsUpgradeStyle')) return;
+    const st = document.createElement('style');
+    st.id = 'skillsUpgradeStyle';
+    st.innerHTML = `
+      .skills-hero{background:linear-gradient(135deg,#10223c,#1f5f7a);color:#fff;border-radius:18px;padding:18px;margin:16px 0;box-shadow:0 16px 40px rgba(15,15,20,.12)}
+      .skills-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:#e8d5a3;margin-bottom:7px;text-transform:uppercase}
+      .skills-title{font-family:'Tajawal',sans-serif;font-size:23px;font-weight:900;margin-bottom:7px}
+      .skills-sub{font-family:'Tajawal',sans-serif;font-size:13px;line-height:1.8;color:rgba(255,255,255,.84)}
+      .skill-tile{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+      .skill-tile:active{transform:scale(.99)}
+      .skill-tile.on{border-color:#1f5f7a;box-shadow:0 10px 24px rgba(31,95,122,.12)}
+      .skill-head{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+      .skill-ico{width:38px;height:38px;border-radius:12px;background:#eef7fb;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+      .skill-name{font-family:'Tajawal',sans-serif;font-weight:900;font-size:16px;color:#10223c}
+      .skill-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#1f5f7a;margin-top:2px}
+      .skill-desc{font-family:'Tajawal',sans-serif;font-size:13px;color:#5b6470;line-height:1.7}
+      .phrase-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:8px}
+      .phrase-en{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#10223c;direction:ltr;text-align:left;line-height:1.6}
+      .phrase-ar{font-family:'Tajawal',sans-serif;font-size:13px;color:#64748b;margin-top:4px}
+      .skills-btn{background:#1f5f7a!important;color:#fff!important}
+      .challenge-box{background:linear-gradient(135deg,#fff7ed,#f8fafc);border:1px solid #f4d7b5;border-radius:14px;padding:14px;margin:12px 0}
+      .challenge-title{font-family:'Tajawal',sans-serif;font-weight:900;color:#8b3a00;margin-bottom:6px}
+      .challenge-prompt{font-family:'Tajawal',sans-serif;font-size:14px;color:#374151;line-height:1.7;margin-bottom:10px}
+      .answer-box{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#10223c;direction:ltr;text-align:left;line-height:1.7}
+      .answer-box.show{display:block}
+    `;
+    document.head.appendChild(st);
+  }
+
+  function setSkillsLabels(){
+    const title = document.querySelector('#pg-mostadam .tnav-title');
+    const pill = document.getElementById('mostadamPill');
+    const bottom = document.querySelector('#bb-mostadam .bi-lbl');
+    const icon = document.querySelector('#bb-mostadam .bi-icon');
+    if(title) title.textContent = 'مهارات';
+    if(pill) pill.textContent = 'PRO';
+    if(bottom) bottom.textContent = 'مهارات';
+    if(icon) icon.textContent = '⚡';
+  }
+
+  function speakSkill(text){
+    try{
+      if(!window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      const voices = speechSynthesis.getVoices();
+      const voice = voices.find(v => /Samantha|Zira|Google US English|Microsoft Jenny|Microsoft Aria|Daniel/i.test(v.name)) || voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
+      if(voice) u.voice = voice;
+      u.lang = 'en-US';
+      u.rate = 0.78;
+      u.pitch = 0.96;
+      speechSynthesis.speak(u);
+    }catch(e){ console.log(e); }
+  }
+  window.speakSkill = speakSkill;
+
+  function renderSkillPhrases(index){
+    selectedSkill = index;
+    const section = SKILL_SECTIONS[index];
+    const div = document.getElementById('mostadamDiv');
+    if(!div) return;
+    document.getElementById('mostadamPill').textContent = section.tag;
+    div.innerHTML = `
+      <div class="skills-hero">
+        <div class="skills-kicker">${section.tag.toUpperCase()} LAB</div>
+        <div class="skills-title">${section.icon} ${section.title}</div>
+        <div class="skills-sub">${section.desc}</div>
+      </div>
+      <div class="nav-row" style="margin-bottom:12px">
+        <button class="nb ghost" onclick="renderMostadam()">رجوع</button>
+        <button class="nb skills-btn" onclick="renderDailyChallenge()">تحدي اليوم</button>
+      </div>
+      ${section.phrases.map(p => `
+        <div class="phrase-card">
+          <div class="phrase-en">${p[0]}</div>
+          <div class="phrase-ar">${p[1]}</div>
+          <button class="nb skills-btn" style="width:100%;margin-top:10px" onclick="speakSkill('${p[0].replace(/'/g,"\\'")}')">استمع للجملة</button>
+        </div>
+      `).join('')}
+    `;
+  }
+  window.renderSkillPhrases = renderSkillPhrases;
+
+  window.renderDailyChallenge = function(){
+    skillStyle();
+    setSkillsLabels();
+    const c = DAILY_CHALLENGES[selectedChallenge % DAILY_CHALLENGES.length];
+    const div = document.getElementById('mostadamDiv');
+    if(!div) return;
+    document.getElementById('mostadamPill').textContent = 'Challenge';
+    div.innerHTML = `
+      <div class="skills-hero">
+        <div class="skills-kicker">DAILY PROFESSIONAL ENGLISH</div>
+        <div class="skills-title">⚡ تحدي اليوم</div>
+        <div class="skills-sub">تمرين قصير يحول الكلمات إلى ردود جاهزة في مواقف العمل.</div>
+      </div>
+      <div class="challenge-box">
+        <div class="challenge-title">${c.title}</div>
+        <div class="challenge-prompt">${c.prompt}</div>
+        <button class="nb skills-btn" style="width:100%" onclick="document.getElementById('dailyAnswer').classList.toggle('show')">عرض الرد المقترح</button>
+        <div class="answer-box" id="dailyAnswer">${c.answer}</div>
+      </div>
+      <div class="nav-row">
+        <button class="nb ghost" onclick="renderMostadam()">رجوع</button>
+        <button class="nb skills-btn" onclick="selectedChallenge++;renderDailyChallenge()">تحدي آخر</button>
+      </div>
+    `;
+  };
+
+  window.renderMostadam = function(){
+    skillStyle();
+    setSkillsLabels();
+    const div = document.getElementById('mostadamDiv');
+    if(!div) return;
+    document.getElementById('mostadamPill').textContent = 'PRO';
+    div.innerHTML = `
+      <div class="skills-hero">
+        <div class="skills-kicker">PROFESSIONAL ENGLISH SKILLS</div>
+        <div class="skills-title">⚡ مختبر المهارات</div>
+        <div class="skills-sub">تدريب عملي على الجمل التي تحتاجها في العمل: اجتماعات، عروض، إيميلات، ومواقف يومية. اختر مهارة وابدأ بجمل قصيرة قابلة للاستخدام فورًا.</div>
+      </div>
+      <div class="challenge-box">
+        <div class="challenge-title">اقتراح اليوم</div>
+        <div class="challenge-prompt">ابدأ بتحدي قصير، ثم انتقل للمهارة التي تحتاجها في عملك اليوم.</div>
+        <button class="nb skills-btn" style="width:100%" onclick="renderDailyChallenge()">ابدأ تحدي اليوم</button>
+      </div>
+      ${SKILL_SECTIONS.map((s,i) => `
+        <div class="skill-tile ${i===selectedSkill?'on':''}" onclick="renderSkillPhrases(${i})">
+          <div class="skill-head">
+            <div class="skill-ico">${s.icon}</div>
+            <div>
+              <div class="skill-name">${s.title}</div>
+              <div class="skill-tag">${s.tag}</div>
+            </div>
+          </div>
+          <div class="skill-desc">${s.desc}</div>
+        </div>
+      `).join('')}
+    `;
+  };
+
+  const previousNavTo = window.navTo;
+  window.navTo = function(id){
+    setSkillsLabels();
+    if(id === 'mostadam'){
+      document.querySelectorAll('.bi').forEach(b => b.classList.remove('on'));
+      const bb = document.getElementById('bb-mostadam');
+      if(bb) bb.classList.add('on');
+      window.renderMostadam();
+      show('pg-mostadam');
+      return;
+    }
+    previousNavTo(id);
+    setSkillsLabels();
+  };
+
+  const previousRenderHome = window.renderHome;
+  window.renderHome = function(){
+    previousRenderHome();
+    setSkillsLabels();
+    const phases = document.getElementById('phasesDiv');
+    if(!phases) return;
+    phases.querySelectorAll('#skillsHomeRow').forEach(el => el.remove());
+    phases.querySelectorAll('#mostadamHomeRow').forEach(el => el.remove());
+    const firstRows = Array.from(phases.querySelectorAll('.phase-row')).filter(row => row.textContent.includes('مستدام') || row.textContent.includes('Presentation Training'));
+    firstRows.forEach(row => row.remove());
+    const row = document.createElement('div');
+    row.id = 'skillsHomeRow';
+    row.className = 'phase-row';
+    row.style.setProperty('--pc','#1f5f7a');
+    row.onclick = () => navTo('mostadam');
+    row.innerHTML = `
+      <div class="pr-num" style="font-size:18px">⚡</div>
+      <div class="pr-body">
+        <div class="pr-title" style="color:#1f5f7a">مهارات <span style="font-size:11px;font-family:'IBM Plex Mono',monospace;opacity:.7">Professional Lab</span></div>
+        <div class="pr-desc">اجتماعات · عروض · إيميلات · مواقف عمل · تحدي يومي</div>
+        <div class="pr-pbar"><div class="pr-pfill" style="width:100%;background:#1f5f7a"></div></div>
+      </div>
+      <div class="pr-count" style="color:#1f5f7a;font-size:10px">PRO</div>`;
+    phases.prepend(row);
+  };
+
+  setTimeout(() => {
+    setSkillsLabels();
+    try{ if(window.renderHome) window.renderHome(); }catch(e){ console.log(e); }
+  }, 700);
+})();
+</script>
+
 </body>
 </html>
