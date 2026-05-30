@@ -4,6 +4,9 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
 
+    integrations:
+      app_store_connect: codemagic
+
     environment:
       flutter: stable
       xcode: latest
@@ -58,7 +61,8 @@ workflows:
 
           flutter build ipa --release \
             --build-name=1.0.1 \
-            --build-number="$BUILD_NUMBER"
+            --build-number="$BUILD_NUMBER" \
+            --export-options-plist=/Users/builder/export_options.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -67,8 +71,6 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        auth: integration
         submit_to_testflight: true
         expire_build_submitted_for_review: true
