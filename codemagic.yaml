@@ -53,22 +53,24 @@ workflows:
 
       - name: Build IPA
         script: |
-          BUILD_NUMBER="${BUILD_NUMBER:-2}"
+          BUILD_NUMBER="${BUILD_NUMBER:-3}"
 
           flutter build ipa --release \
             --build-name=1.0.1 \
             --build-number="$BUILD_NUMBER" \
             --export-options-plist=/Users/builder/export_options.plist
 
+      - name: Upload to TestFlight
+        script: |
+          IPA_PATH=$(find build/ios/ipa -name "*.ipa" | head -n 1)
+          echo "Uploading $IPA_PATH to TestFlight"
+          xcrun altool --upload-app \
+            --type ios \
+            --file "$IPA_PATH" \
+            --username "tlana20232023@gmail.com" \
+            --password "$APP_SPECIFIC_PASSWORD"
+
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/archive/*.xcarchive
       - flutter_drive.log
-
-    publishing:
-      app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        submit_to_testflight: true
-        expire_build_submitted_for_review: true
