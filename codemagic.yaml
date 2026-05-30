@@ -4,9 +4,6 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
 
-    integrations:
-      app_store_connect: codemagic
-
     environment:
       flutter: stable
       xcode: latest
@@ -33,13 +30,11 @@ workflows:
         script: |
           flutter pub get
 
-      - name: Ensure iOS project exists
+      - name: Recreate clean iOS project for CI
         script: |
-          if [ ! -d "ios/Runner.xcodeproj" ]; then
-            echo "iOS project is missing; generating Flutter iOS scaffold."
-            flutter create --platforms=ios --org online.masarsa .
-            flutter pub get
-          fi
+          rm -rf ios
+          flutter create --platforms=ios --org online.masarsa .
+          flutter pub get
 
       - name: Configure iOS bundle identifier
         script: |
@@ -71,6 +66,8 @@ workflows:
 
     publishing:
       app_store_connect:
-        auth: integration
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         expire_build_submitted_for_review: true
