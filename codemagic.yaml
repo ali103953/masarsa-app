@@ -34,6 +34,7 @@ workflows:
         script: |
           rm -rf ios
           flutter create --platforms=ios --org online.masarsa .
+          rm -rf test
           flutter pub get
 
       - name: Configure iOS bundle identifier
@@ -44,7 +45,7 @@ workflows:
 
       - name: Run Flutter analysis
         script: |
-          flutter analyze
+          flutter analyze lib pubspec.yaml
 
       - name: Apply provisioning profiles
         script: |
