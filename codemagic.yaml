@@ -1,6 +1,6 @@
 workflows:
   ios-testflight:
-    name: MASARSA Flutter iOS
+    name: English for Work SA iOS
     max_build_duration: 60
     instance_type: mac_mini_m2
 
@@ -37,10 +37,10 @@ workflows:
           rm -rf test
           flutter pub get
 
-      - name: Configure iOS bundle identifier
+      - name: Configure iOS app identity
         script: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName مسارسا" ios/Runner/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :CFBundleName MASARSA" ios/Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName English for Work SA" ios/Runner/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleName EnglishWorkSA" ios/Runner/Info.plist
           sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = .*;/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;/g" ios/Runner.xcodeproj/project.pbxproj
 
       - name: Run Flutter analysis
@@ -56,7 +56,7 @@ workflows:
           BUILD_NUMBER="${BUILD_NUMBER:-3}"
 
           flutter build ipa --release \
-            --build-name=1.0.1 \
+            --build-name=1.0.2 \
             --build-number="$BUILD_NUMBER" \
             --export-options-plist=/Users/builder/export_options.plist
 

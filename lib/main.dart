@@ -4,24 +4,24 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MasarsaApp());
+  runApp(const EnglishWorkApp());
 }
 
-class MasarsaApp extends StatelessWidget {
-  const MasarsaApp({super.key});
+class EnglishWorkApp extends StatelessWidget {
+  const EnglishWorkApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MASARSA',
+      title: 'English for Work SA',
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF155E75),
+          seedColor: const Color(0xFF111827),
           brightness: Brightness.light,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        scaffoldBackgroundColor: const Color(0xFFFAF8F1),
         useMaterial3: true,
       ),
       builder: (context, child) {
@@ -30,20 +30,22 @@ class MasarsaApp extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
-      home: const MasarsaWebView(),
+      home: const EnglishWorkWebView(),
     );
   }
 }
 
-class MasarsaWebView extends StatefulWidget {
-  const MasarsaWebView({super.key});
+class EnglishWorkWebView extends StatefulWidget {
+  const EnglishWorkWebView({super.key});
 
   @override
-  State<MasarsaWebView> createState() => _MasarsaWebViewState();
+  State<EnglishWorkWebView> createState() => _EnglishWorkWebViewState();
 }
 
-class _MasarsaWebViewState extends State<MasarsaWebView> {
-  static final Uri _homeUri = Uri.parse('https://masarsa.online/?v=skills-20260530');
+class _EnglishWorkWebViewState extends State<EnglishWorkWebView> {
+  static final Uri _homeUri = Uri.parse(
+    'https://masarsa.online/?v=english-work-20260531-voice',
+  );
   static const Set<String> _allowedHosts = {
     'masarsa.online',
     'www.masarsa.online',
@@ -70,7 +72,7 @@ class _MasarsaWebViewState extends State<MasarsaWebView> {
 
     _controller = WebViewController.fromPlatformCreationParams(params)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0xFFF8FAFC))
+      ..setBackgroundColor(const Color(0xFFFAF8F1))
       ..enableZoom(false)
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -175,7 +177,7 @@ class _LoadingOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: const Color(0xFFF8FAFC),
+      color: const Color(0xFFFAF8F1),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
@@ -186,29 +188,37 @@ class _LoadingOverlay extends StatelessWidget {
                 width: 76,
                 height: 76,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF155E75),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF111827),
+                      Color(0xFF183B4A),
+                      Color(0xFFEAD79C),
+                    ],
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 alignment: Alignment.center,
                 child: const Icon(
-                  Icons.directions_bus_filled_rounded,
+                  Icons.record_voice_over_rounded,
                   color: Colors.white,
                   size: 38,
                 ),
               ),
               const SizedBox(height: 20),
               const Text(
-                'مسارسا',
+                'English for Work SA',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF0F172A),
-                  fontSize: 28,
+                  color: Color(0xFF111827),
+                  fontSize: 26,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 8),
               const Text(
-                'نظام تتبع النقل المدرسي',
+                'تدريب إنجليزي عملي للعمل والاجتماعات',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFF475569),
@@ -238,7 +248,7 @@ class _ErrorOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: const Color(0xFFF8FAFC),
+      color: const Color(0xFFFAF8F1),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(28),
@@ -251,22 +261,22 @@ class _ErrorOverlay extends StatelessWidget {
                   width: 72,
                   height: 72,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE0F2FE),
+                    color: const Color(0xFFF3E8BE),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   alignment: Alignment.center,
                   child: const Icon(
                     Icons.wifi_off_rounded,
-                    color: Color(0xFF155E75),
+                    color: Color(0xFF111827),
                     size: 38,
                   ),
                 ),
                 const SizedBox(height: 18),
                 const Text(
-                  'تعذر فتح التطبيق',
+                  'تعذر فتح التدريب',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color(0xFF0F172A),
+                    color: Color(0xFF111827),
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                   ),
